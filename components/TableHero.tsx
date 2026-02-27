@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -188,13 +188,12 @@ const NumberSwitcher = ({
   activeId: string;
   onSelect: (id: string) => void;
 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 16 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: 16 }}
-    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-    className="fixed bottom-10 inset-x-0 flex justify-center z-50 pointer-events-none"
-  >
+  <div className="sticky bottom-10 w-full flex justify-center z-50 pointer-events-none pb-10">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+    >
     <motion.div
       layout
       className="pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
@@ -226,7 +225,8 @@ const NumberSwitcher = ({
         </motion.button>
       ))}
     </motion.div>
-  </motion.div>
+    </motion.div>
+  </div>
 );
 
 // =========================================
@@ -237,25 +237,6 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   const [products, setProducts] = useState<ProductData[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [activePhoto, setActivePhoto] = useState(0);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const [showSwitcher, setShowSwitcher] = useState(true);
-
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    // sentinel이 뷰포트에서 위쪽으로 벗어나는 순간 숫자 숨김
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const exitedFromTop = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-        const notYetReached = !entry.isIntersecting && entry.boundingClientRect.top > 0;
-        if (exitedFromTop) setShowSwitcher(false);
-        if (notYetReached || entry.isIntersecting) setShowSwitcher(true);
-      },
-      { threshold: 0 }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -314,9 +295,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   if (!product) return null;
 
   return (
-    <section className="relative min-h-screen w-full bg-black text-zinc-100 overflow-hidden flex flex-col items-center justify-center selection:bg-zinc-800">
-      {/* 섹션 하단 근처에 숫자 switcher 감지용 sentinel */}
-      <div ref={sentinelRef} className="absolute bottom-24 left-0 w-full h-px pointer-events-none" aria-hidden="true" />
+    <section className="relative min-h-screen w-full bg-black text-zinc-100 flex flex-col selection:bg-zinc-800">
       <Background product={product} />
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -326,7 +305,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
       >
         EEL Studio
       </motion.div>
-      <main className="relative z-10 w-full px-6 py-16 max-w-7xl mx-auto">
+      <main className="relative z-10 w-full px-6 pt-24 pb-8 max-w-7xl mx-auto flex-1 flex items-center justify-center">
         <motion.div
           layout
           transition={{ type: 'spring', bounce: 0, duration: 0.8 }}
@@ -336,11 +315,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
           <ProductInfo product={product} onBuild={onBuildClick} />
         </motion.div>
       </main>
-      <AnimatePresence>
-        {showSwitcher && (
-          <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />
-        )}
-      </AnimatePresence>
+      <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />
     </section>
   );
 }
