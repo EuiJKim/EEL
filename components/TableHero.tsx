@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Layers, Ruler, Palette, ChevronRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
@@ -188,7 +188,13 @@ const NumberSwitcher = ({
   activeId: string;
   onSelect: (id: string) => void;
 }) => (
-  <div className="fixed bottom-10 inset-x-0 flex justify-center z-50 pointer-events-none">
+  <motion.div
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 16 }}
+    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+    className="fixed bottom-10 inset-x-0 flex justify-center z-50 pointer-events-none"
+  >
     <motion.div
       layout
       className="pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
@@ -220,7 +226,7 @@ const NumberSwitcher = ({
         </motion.button>
       ))}
     </motion.div>
-  </div>
+  </motion.div>
 );
 
 // =========================================
@@ -231,6 +237,8 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   const [products, setProducts] = useState<ProductData[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [activePhoto, setActivePhoto] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0 });
 
   useEffect(() => {
     async function fetchProducts() {
@@ -289,7 +297,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   if (!product) return null;
 
   return (
-    <section className="relative min-h-screen w-full bg-black text-zinc-100 overflow-hidden flex flex-col items-center justify-center selection:bg-zinc-800">
+    <section ref={sectionRef} className="relative min-h-screen w-full bg-black text-zinc-100 overflow-hidden flex flex-col items-center justify-center selection:bg-zinc-800">
       <Background product={product} />
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -309,7 +317,11 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
           <ProductInfo product={product} onBuild={onBuildClick} />
         </motion.div>
       </main>
-      <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />
+      <AnimatePresence>
+        {isInView && (
+          <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
