@@ -237,23 +237,24 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   const [products, setProducts] = useState<ProductData[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [activePhoto, setActivePhoto] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isInView, setIsInView] = useState(true);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [showSwitcher, setShowSwitcher] = useState(true);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    function check() {
-      const rect = section!.getBoundingClientRect();
-      // 섹션 하단이 뷰포트 85% 위치보다 아래 있을 때만 표시
-      // → CraftBridge 텍스트가 보이기 직전에 사라짐
-      setIsInView(rect.bottom > window.innerHeight * 0.85);
-    }
-
-    check();
-    window.addEventListener('scroll', check, { passive: true });
-    return () => window.removeEventListener('scroll', check);
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    // sentinel이 뷰포트에서 위쪽으로 벗어나는 순간 숫자 숨김
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const exitedFromTop = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        const notYetReached = !entry.isIntersecting && entry.boundingClientRect.top > 0;
+        if (exitedFromTop) setShowSwitcher(false);
+        if (notYetReached || entry.isIntersecting) setShowSwitcher(true);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -313,7 +314,9 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   if (!product) return null;
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen w-full bg-black text-zinc-100 overflow-hidden flex flex-col items-center justify-center selection:bg-zinc-800">
+    <section className="relative min-h-screen w-full bg-black text-zinc-100 overflow-hidden flex flex-col items-center justify-center selection:bg-zinc-800">
+      {/* 섹션 하단 근처에 숫자 switcher 감지용 sentinel */}
+      <div ref={sentinelRef} className="absolute bottom-24 left-0 w-full h-px pointer-events-none" aria-hidden="true" />
       <Background product={product} />
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -334,7 +337,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
         </motion.div>
       </main>
       <AnimatePresence>
-        {isInView && (
+        {showSwitcher && (
           <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />
         )}
       </AnimatePresence>
