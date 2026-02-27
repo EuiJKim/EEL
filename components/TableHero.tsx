@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, Ruler, Palette, ChevronRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
@@ -238,7 +238,18 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   const [activeId, setActiveId] = useState<string>('');
   const [activePhoto, setActivePhoto] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { amount: 0 });
+  const [isInView, setIsInView] = useState(true);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     async function fetchProducts() {
