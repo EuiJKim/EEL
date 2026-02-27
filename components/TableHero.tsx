@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, Ruler, Palette, ChevronRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+
+const MotionImage = motion(Image);
 
 // =========================================
 // 1. TYPES
@@ -66,31 +70,34 @@ const ProductGallery = ({
   activePhoto: number;
   onPhotoChange: (i: number) => void;
 }) => (
-  <div className="flex flex-col items-center gap-5 shrink-0">
-    <div className="relative w-[340px] h-[340px] md:w-[460px] md:h-[460px] rounded-2xl overflow-hidden border border-white/8 bg-zinc-900/60 backdrop-blur-sm shadow-2xl">
+  <div className="flex flex-col items-center gap-5 shrink-0 w-full sm:w-auto">
+    <div className="relative w-full max-w-[340px] sm:max-w-[460px] aspect-square rounded-2xl overflow-hidden border border-white/8 bg-zinc-900/60 backdrop-blur-sm shadow-2xl mx-auto">
       <motion.div
         animate={{ background: `radial-gradient(circle at 50% 80%, ${product.colors.glow}, transparent 70%)` }}
         transition={{ duration: 1 }}
         className="absolute inset-0 z-0"
       />
       <AnimatePresence mode="wait">
-        <motion.img
+        <MotionImage
           key={`${product.id}-${activePhoto}`}
           src={product.images[activePhoto]}
           alt={product.name}
+          fill
+          sizes="(max-width: 640px) 340px, 460px"
+          className="relative z-10 object-cover"
           variants={imageVariant}
           initial="initial"
           animate="animate"
           exit="exit"
-          className="relative z-10 w-full h-full object-cover"
           draggable={false}
+          priority={activePhoto === 0}
         />
       </AnimatePresence>
       <div className="absolute bottom-3 right-3 z-20 text-[11px] font-mono text-white/40 bg-black/40 px-2 py-1 rounded-full backdrop-blur-sm">
         {activePhoto + 1} / {product.images.length}
       </div>
     </div>
-    <div className="flex gap-3">
+    <div className="flex gap-3 flex-wrap justify-center">
       {product.images.map((src, i) => (
         <motion.button
           key={i}
@@ -100,7 +107,7 @@ const ProductGallery = ({
             activePhoto === i ? 'border-white/60' : 'border-white/10 hover:border-white/30'
           }`}
         >
-          <img src={src} alt="" className="w-full h-full object-cover" />
+          <Image src={src} alt="" fill sizes="64px" className="object-cover" />
           {activePhoto === i && (
             <motion.div
               layoutId="thumb-active"
@@ -116,7 +123,7 @@ const ProductGallery = ({
 
 const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () => void }) => (
   <AnimatePresence mode="wait">
-    <motion.div key={product.id} className="flex flex-col items-start max-w-sm">
+    <motion.div key={product.id} className="flex flex-col items-start max-w-sm w-full sm:w-auto">
       <motion.p custom={0} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
         className="text-xs font-bold uppercase tracking-[0.2em] mb-2"
         style={{ color: product.colors.accent }}
@@ -148,15 +155,26 @@ const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () =
           </div>
         ))}
       </motion.div>
-      <motion.button
-        custom={4} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-        onClick={onBuild}
-        whileTap={{ scale: 0.97 }}
-        className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 transition-all group"
-      >
-        직접 만들어보기
-        <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" />
-      </motion.button>
+      <div className="flex items-center gap-3 flex-wrap">
+        <motion.button
+          custom={4} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
+          onClick={onBuild}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-white hover:bg-zinc-100 transition-all"
+        >
+          직접 만들어보기
+          <ChevronRight size={15} />
+        </motion.button>
+        <motion.div custom={5} variants={fadeUp} initial="hidden" animate="visible" exit="exit">
+          <Link
+            href={`/products/${product.id}`}
+            className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 transition-all group"
+          >
+            자세히 보기
+            <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+      </div>
     </motion.div>
   </AnimatePresence>
 );

@@ -70,7 +70,7 @@ function SizeStep({ value, onChange, sizes }: { value: string; onChange: (v: str
 
 function ResinStep({ value, onChange, resins }: { value: string; onChange: (v: string) => void; resins: ResinOption[] }) {
   return (
-    <div className="grid grid-cols-3 gap-3 w-full">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
       {resins.map((opt) => (
         <motion.button key={opt.id} onClick={() => onChange(opt.id)} whileTap={{ scale: 0.96 }}
           className={`relative p-3 rounded-xl border text-left transition-all ${value === opt.id ? 'border-white/30 bg-white/8' : 'border-white/8 bg-zinc-900/50 hover:border-white/15'}`}
@@ -284,19 +284,48 @@ export default function BTOBuilder() {
     setSubmitting(true);
     const total = calcPrice(sel, data);
 
-    const { error } = await supabase.from('orders').insert({
+    const { data: inserted, error } = await supabase.from('orders').insert({
       user_id: user.id,
       size_id: sel.size,
       resin_id: sel.resin,
       wood_id: sel.wood,
       leg_id: sel.leg,
       total_price: total,
-    });
+    }).select('id').single();
 
     setSubmitting(false);
 
-    if (!error) {
+    if (!error && inserted) {
       setShowSuccess(true);
+
+      const size  = data.sizes.find((s) => s.id === sel.size);
+      const resin = data.resins.find((r) => r.id === sel.resin);
+      const wood  = data.woods.find((w) => w.id === sel.wood);
+      const leg   = data.legs.find((l)  => l.id === sel.leg);
+
+      const { data: { user: freshUser } } = await supabase.auth.getUser();
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('id', user.id)
+        .single();
+
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: inserted.id,
+          userEmail: profile?.email ?? freshUser?.email,
+          userName: profile?.full_name,
+          summary: {
+            size:       size  ? `${size.label} (${size.size})` : '-',
+            resin:      resin?.label ?? '-',
+            wood:       wood?.label  ?? '-',
+            leg:        leg?.label   ?? '-',
+            totalPrice: total.toLocaleString('ko-KR') + '원',
+          },
+        }),
+      }).catch(() => {});
     }
   }
 
@@ -314,7 +343,7 @@ export default function BTOBuilder() {
         {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} />}
       </AnimatePresence>
 
-      <section className="relative w-full bg-black text-zinc-100 px-6 py-20">
+      <section className="relative w-full bg-black text-zinc-100 px-4 sm:px-6 py-16 sm:py-20">
         <div className="max-w-xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

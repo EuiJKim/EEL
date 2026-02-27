@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
@@ -43,7 +44,7 @@ export default function Header() {
   }
 
   return (
-    <div className="fixed top-5 right-6 z-50">
+    <div className="fixed top-4 right-4 sm:top-5 sm:right-6 z-50">
       <AnimatePresence mode="wait">
         {profile ? (
           <motion.div key="user" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="relative">
@@ -62,7 +63,7 @@ export default function Header() {
               }}
             >
               {profile.avatar_url ? (
-                <img src={profile.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
+                <Image src={profile.avatar_url} alt="" width={28} height={28} className="rounded-full object-cover" />
               ) : (
                 <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-white">
                   {(profile.full_name ?? profile.email ?? '?')[0].toUpperCase()}
@@ -86,6 +87,7 @@ export default function Header() {
                     top: 'calc(100% + 8px)',
                     right: 0,
                     minWidth: '180px',
+                    maxWidth: 'calc(100vw - 32px)',
                     background: 'linear-gradient(135deg, rgba(30,30,30,0.95) 0%, rgba(20,20,20,0.95) 100%)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     borderRadius: '16px',

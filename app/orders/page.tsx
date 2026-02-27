@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
 import { ShoppingBag, Clock, CheckCircle, Wrench, XCircle, ChevronLeft } from 'lucide-react';
+import { STATUS_CONFIG as STATUS_CONFIG_BASE } from '@/lib/constants';
 
 interface Order {
   id: string;
@@ -17,13 +18,17 @@ interface Order {
   leg: { label: string };
 }
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  pending:     { label: '접수 대기',   color: 'text-amber-400 bg-amber-400/10 border-amber-400/20',   icon: <Clock size={13} /> },
-  confirmed:   { label: '주문 확정',   color: 'text-blue-400 bg-blue-400/10 border-blue-400/20',      icon: <CheckCircle size={13} /> },
-  in_progress: { label: '제작 중',     color: 'text-purple-400 bg-purple-400/10 border-purple-400/20', icon: <Wrench size={13} /> },
-  completed:   { label: '제작 완료',   color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20', icon: <CheckCircle size={13} /> },
-  cancelled:   { label: '취소됨',      color: 'text-zinc-500 bg-zinc-500/10 border-zinc-500/20',      icon: <XCircle size={13} /> },
+const STATUS_ICONS: Record<string, React.ReactNode> = {
+  pending:     <Clock size={13} />,
+  confirmed:   <CheckCircle size={13} />,
+  in_progress: <Wrench size={13} />,
+  completed:   <CheckCircle size={13} />,
+  cancelled:   <XCircle size={13} />,
 };
+
+const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = Object.fromEntries(
+  Object.entries(STATUS_CONFIG_BASE).map(([k, v]) => [k, { ...v, icon: STATUS_ICONS[k] }])
+);
 
 function formatKRW(n: number) { return n.toLocaleString('ko-KR') + '원'; }
 

@@ -40,7 +40,7 @@ export default function CraftBridge() {
     <section
       ref={sectionRef}
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: '#0d0d0d', padding: '120px 24px' }}
+      style={{ backgroundColor: '#0d0d0d', padding: 'clamp(64px, 10vw, 120px) clamp(16px, 4vw, 24px)' }}
     >
       {/* Background texture lines */}
       <div
@@ -111,11 +111,11 @@ export default function CraftBridge() {
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex items-center justify-center gap-0 mb-20"
+          className="grid grid-cols-3 sm:flex sm:items-center sm:justify-center gap-0 mb-14 sm:mb-20"
         >
           {STATS.map((stat, i) => (
             <div key={stat.label} className="flex items-center">
-              <div className="flex flex-col items-center px-10 py-5" style={{
+              <div className="flex flex-col items-center px-4 sm:px-10 py-4 sm:py-5" style={{
                 borderLeft: i === 0 ? '1px solid rgba(255,255,255,0.06)' : undefined,
                 borderRight: '1px solid rgba(255,255,255,0.06)',
               }}>
