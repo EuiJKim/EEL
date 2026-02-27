@@ -243,12 +243,17 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0 }
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
+
+    function check() {
+      const rect = section!.getBoundingClientRect();
+      // 섹션 하단이 뷰포트 85% 위치보다 아래 있을 때만 표시
+      // → CraftBridge 텍스트가 보이기 직전에 사라짐
+      setIsInView(rect.bottom > window.innerHeight * 0.85);
+    }
+
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
   }, []);
 
   useEffect(() => {
