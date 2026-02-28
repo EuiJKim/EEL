@@ -18,7 +18,7 @@ export default function Home() {
       <Header />
       <TableHero onBuildClick={scrollToBuilder} />
       <CraftBridge />
-      <div ref={builderRef}>
+      <div ref={builderRef} id="build">
         <BTOBuilder />
       </div>
     </main>

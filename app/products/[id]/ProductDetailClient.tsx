@@ -67,10 +67,10 @@ export default function ProductDetailClient({
           className="mb-10"
         >
           <Link
-            href="/"
+            href="/products"
             className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
           >
-            <ChevronLeft size={16} /> 홈으로
+            <ChevronLeft size={16} /> 제품 목록
           </Link>
         </motion.div>
 
@@ -193,7 +193,7 @@ export default function ProductDetailClient({
                 직접 만들어보기
               </Link>
               <Link
-                href="/"
+                href="/products"
                 className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-white/8 hover:bg-white/12 border border-white/10 transition-colors"
               >
                 다른 제품 보기

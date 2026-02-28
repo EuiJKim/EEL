@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
 import { ShoppingBag, LogOut, ChevronDown } from 'lucide-react';
@@ -15,6 +16,7 @@ interface Profile {
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -44,7 +46,44 @@ export default function Header() {
   }
 
   return (
-    <div className="fixed top-4 right-4 sm:top-5 sm:right-6 z-50">
+    <div
+      className="fixed top-4 inset-x-4 z-50 flex items-center justify-between max-w-5xl mx-auto px-4 py-2"
+      style={{
+        background: 'rgba(10,10,10,0.8)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '40px',
+        backdropFilter: 'blur(20px)',
+      }}
+    >
+      {/* Left: Brand */}
+      <Link
+        href="/"
+        className="text-sm font-bold tracking-[0.15em] uppercase text-zinc-300 hover:text-white transition-colors"
+      >
+        EEL
+      </Link>
+
+      {/* Center: Nav links */}
+      <nav className="hidden sm:flex items-center gap-1">
+        <Link
+          href="/products"
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            pathname === '/products' || pathname.startsWith('/products/')
+              ? 'text-white bg-white/10'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          제품
+        </Link>
+        <Link
+          href="/#build"
+          className="px-4 py-1.5 rounded-full text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
+        >
+          주문하기
+        </Link>
+      </nav>
+
+      {/* Right: Auth */}
       <AnimatePresence mode="wait">
         {profile ? (
           <motion.div key="user" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="relative">
@@ -54,22 +93,21 @@ export default function Header() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '6px 12px 6px 6px',
+                padding: '5px 10px 5px 5px',
                 borderRadius: '40px',
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(16px)',
                 cursor: 'pointer',
               }}
             >
               {profile.avatar_url ? (
-                <Image src={profile.avatar_url} alt="" width={28} height={28} className="rounded-full object-cover" />
+                <Image src={profile.avatar_url} alt="" width={24} height={24} className="rounded-full object-cover" />
               ) : (
-                <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-white">
+                <div className="w-6 h-6 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-white">
                   {(profile.full_name ?? profile.email ?? '?')[0].toUpperCase()}
                 </div>
               )}
-              <span className="text-xs text-zinc-300 font-medium max-w-[100px] truncate">
+              <span className="text-xs text-zinc-300 font-medium max-w-[80px] truncate hidden sm:block">
                 {profile.full_name ?? profile.email}
               </span>
               <ChevronDown size={13} className={`text-zinc-500 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -122,11 +160,10 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             onClick={() => router.push('/auth')}
             style={{
-              padding: '7px 16px',
+              padding: '6px 14px',
               borderRadius: '40px',
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(16px)',
               color: 'rgba(255,255,255,0.7)',
               fontSize: '13px',
               fontWeight: '500',

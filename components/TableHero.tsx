@@ -297,14 +297,6 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
   return (
     <section className="relative min-h-screen w-full bg-black text-zinc-100 flex flex-col selection:bg-zinc-800">
       <Background product={product} />
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-xs font-bold uppercase tracking-[0.35em] text-zinc-600"
-      >
-        EEL Studio
-      </motion.div>
       <main className="relative z-10 w-full px-6 pt-24 pb-8 max-w-7xl mx-auto flex-1 flex items-center justify-center">
         <motion.div
           layout
