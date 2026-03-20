@@ -1,14 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronRight, ChevronLeft, ShoppingBag, X, CheckCircle, Loader2 } from 'lucide-react';
+import {
+  Check, ChevronRight, ChevronLeft, ShoppingBag, X, CheckCircle, Loader2,
+  Maximize2,
+} from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { formatKRW } from '@/lib/utils';
 
 const TablePreview3D = dynamic(() => import('./TablePreview3D'), { ssr: false });
+
+const LS_KEY = 'eel-bto-selection';
 
 // =========================================
 // 1. TYPES
@@ -33,7 +38,34 @@ interface Selection {
 const STEPS = ['사이즈', '레진 색상', '우드 종류', '다리 스타일', '주문'];
 
 // =========================================
-// 2. HELPERS
+// 2. COUNT-UP HOOK
+// =========================================
+
+function useCountUp(target: number, duration = 420) {
+  const [display, setDisplay] = useState(target);
+  const prevRef = useRef(target);
+
+  useEffect(() => {
+    if (prevRef.current === target) return;
+    const start    = prevRef.current;
+    const started  = performance.now();
+    prevRef.current = target;
+
+    const tick = (now: number) => {
+      const p = Math.min((now - started) / duration, 1);
+      const e = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      setDisplay(Math.round(start + (target - start) * e));
+      if (p < 1) requestAnimationFrame(tick);
+      else setDisplay(target);
+    };
+    requestAnimationFrame(tick);
+  }, [target, duration]);
+
+  return display;
+}
+
+// =========================================
+// 3. HELPERS
 // =========================================
 
 function calcPrice(sel: Partial<Selection>, data: BTOData): number {
@@ -44,7 +76,7 @@ function calcPrice(sel: Partial<Selection>, data: BTOData): number {
 }
 
 // =========================================
-// 3. OPTION CARDS
+// 4. OPTION CARDS
 // =========================================
 
 function SizeStep({ value, onChange, sizes }: { value: string; onChange: (v: string) => void; sizes: SizeOption[] }) {
@@ -170,7 +202,7 @@ function OrderStep({
 }
 
 // =========================================
-// 4. SUCCESS MODAL
+// 5. SUCCESS MODAL
 // =========================================
 
 function SuccessModal({ onClose }: { onClose: () => void }) {
@@ -203,7 +235,6 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
         <button onClick={onClose} className="absolute top-4 right-4 text-zinc-600 hover:text-zinc-400 transition-colors">
           <X size={18} />
         </button>
-
         <div className="flex flex-col items-center text-center">
           <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mb-5">
             <CheckCircle size={28} className="text-emerald-400" />
@@ -226,24 +257,44 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
 }
 
 // =========================================
-// 5. MAIN
+// 6. MAIN
 // =========================================
 
 export default function BTOBuilder() {
   const router = useRouter();
-  const [step, setStep] = useState(0);
-  const [sel, setSel] = useState<Partial<Selection>>({});
-  const [data, setData] = useState<BTOData>({ sizes: [], resins: [], woods: [], legs: [] });
-  const [submitting, setSubmitting] = useState(false);
+  const [step, setStep]               = useState(0);
+  const [sel, setSel]                 = useState<Partial<Selection>>({});
+  const [data, setData]               = useState<BTOData>({ sizes: [], resins: [], woods: [], legs: [] });
+  const [submitting, setSubmitting]   = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
+  // Fetch BTO options + restore saved selection
   useEffect(() => {
     fetch('/api/bto-options')
       .then((r) => r.json())
-      .then(setData)
+      .then((fetched: BTOData) => {
+        setData(fetched);
+        try {
+          const saved = localStorage.getItem(LS_KEY);
+          if (saved) {
+            const parsed: Partial<Selection> = JSON.parse(saved);
+            const valid: Partial<Selection>  = {};
+            if (fetched.sizes.find((s) => s.id === parsed.size))   valid.size  = parsed.size;
+            if (fetched.resins.find((r) => r.id === parsed.resin)) valid.resin = parsed.resin;
+            if (fetched.woods.find((w) => w.id === parsed.wood))   valid.wood  = parsed.wood;
+            if (fetched.legs.find((l)  => l.id === parsed.leg))    valid.leg   = parsed.leg;
+            if (Object.keys(valid).length) setSel(valid);
+          }
+        } catch { /* ignore */ }
+      })
       .catch(() => {});
   }, []);
+
+  // Persist selections to localStorage
+  useEffect(() => {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(sel)); } catch { /* ignore */ }
+  }, [sel]);
 
   const update = (key: keyof Selection, val: string) =>
     setSel((prev) => ({ ...prev, [key]: val }));
@@ -251,49 +302,62 @@ export default function BTOBuilder() {
   const keys: (keyof Selection)[] = ['size', 'resin', 'wood', 'leg'];
   const canNext = step === 4 || (step < 4 && sel[keys[step]] !== undefined);
 
+  // Free step navigation — can jump to completed steps or any step whose prerequisites are met
+  const canJumpToStep = (i: number): boolean => {
+    if (i <= step) return true;
+    if (i === 4) return keys.every((k) => sel[k] !== undefined);
+    return keys.slice(0, i).every((k) => sel[k] !== undefined);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+      if ((e.key === 'ArrowRight' || e.key === 'Enter') && canNext && step < 4) {
+        setStep((s) => s + 1);
+      } else if (e.key === 'ArrowLeft' && step > 0) {
+        setStep((s) => s - 1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [canNext, step]);
+
+  // Count-up animated price
+  const livePrice    = calcPrice(sel, data);
+  const displayPrice = useCountUp(livePrice);
+
   async function handleSubmit() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      router.push('/auth');
-      return;
-    }
+    if (!user) { router.push('/auth'); return; }
 
     setSubmitting(true);
     setSubmitError(false);
     const total = calcPrice(sel, data);
 
-    const res = await fetch('/api/orders', {
+    const res    = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sizeId: sel.size,
-        resinId: sel.resin,
-        woodId: sel.wood,
-        legId: sel.leg,
-        totalPrice: total,
-      }),
+      body: JSON.stringify({ sizeId: sel.size, resinId: sel.resin, woodId: sel.wood, legId: sel.leg, totalPrice: total }),
     });
     const result = await res.json();
-
     setSubmitting(false);
 
     if (res.ok && result.id) {
       setShowSuccess(true);
-
       const size  = data.sizes.find((s) => s.id === sel.size);
       const resin = data.resins.find((r) => r.id === sel.resin);
       const wood  = data.woods.find((w) => w.id === sel.wood);
       const leg   = data.legs.find((l)  => l.id === sel.leg);
-
       fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          orderId: result.id,
-          userEmail: result.profile?.email ?? user.email,
-          userName: result.profile?.fullName,
+          orderId:   result.id,
+          userEmail: result.profile?.email    ?? user.email,
+          userName:  result.profile?.fullName,
           summary: {
             size:       size  ? `${size.label} (${size.size})` : '-',
             resin:      resin?.label ?? '-',
@@ -308,18 +372,18 @@ export default function BTOBuilder() {
     }
   }
 
-  const stepContent = [
-    <SizeStep  key="size"  value={sel.size  ?? ''} onChange={(v) => update('size',  v)} sizes={data.sizes} />,
-    <ResinStep key="resin" value={sel.resin ?? ''} onChange={(v) => update('resin', v)} resins={data.resins} />,
-    <SwatchStep key="wood" value={sel.wood ?? ''} onChange={(v) => update('wood', v)} options={data.woods} />,
-    <SwatchStep key="leg"  value={sel.leg  ?? ''} onChange={(v) => update('leg',  v)} options={data.legs} />,
-    <OrderStep key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} />,
-  ];
+  // Derive current preview colors
+  const previewResin = data.resins.find((r) => r.id === sel.resin)?.hex   ?? '#4a90d9';
+  const previewWood  = data.woods.find((w)  => w.id === sel.wood)?.color  ?? '#8B6F3E';
+  const previewLeg   = data.legs.find((l)   => l.id === sel.leg)?.color   ?? '#5a5a5a';
 
-  // Derive current preview colors from selection
-  const previewResin = data.resins.find((r) => r.id === sel.resin)?.hex ?? '#4a90d9';
-  const previewWood  = data.woods.find((w) => w.id === sel.wood)?.color  ?? '#8B6F3E';
-  const previewLeg   = data.legs.find((l)  => l.id === sel.leg)?.color   ?? '#5a5a5a';
+  const stepContent = [
+    <SizeStep   key="size"  value={sel.size  ?? ''} onChange={(v) => update('size',  v)} sizes={data.sizes} />,
+    <ResinStep  key="resin" value={sel.resin ?? ''} onChange={(v) => update('resin', v)} resins={data.resins} />,
+    <SwatchStep key="wood"  value={sel.wood  ?? ''} onChange={(v) => update('wood',  v)} options={data.woods} />,
+    <SwatchStep key="leg"   value={sel.leg   ?? ''} onChange={(v) => update('leg',   v)} options={data.legs} />,
+    <OrderStep  key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} />,
+  ];
 
   return (
     <>
@@ -329,6 +393,7 @@ export default function BTOBuilder() {
 
       <section className="relative w-full bg-black text-zinc-100 px-4 sm:px-6 py-16 sm:py-20">
         <div className="max-w-5xl mx-auto">
+
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -342,7 +407,7 @@ export default function BTOBuilder() {
             </h2>
           </motion.div>
 
-          {/* Two-column layout: 3D preview (left) + step controls (right) */}
+          {/* Two-column layout */}
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
             {/* 3D Preview Panel */}
@@ -364,56 +429,130 @@ export default function BTOBuilder() {
                   resinHex={previewResin}
                   woodColor={previewWood}
                   legColor={previewLeg}
+                  sizeId={sel.size}
+                  resinId={sel.resin}
+                  woodId={sel.wood}
                 />
-                {/* Label overlay */}
-                <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-4 pointer-events-none">
-                  {sel.resin && (
-                    <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10">
-                      <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ background: previewResin }} />
-                      <span className="text-[10px] text-zinc-400">
-                        {data.resins.find((r) => r.id === sel.resin)?.label}
-                      </span>
-                    </div>
-                  )}
-                  {sel.wood && (
-                    <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10">
-                      <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ background: previewWood }} />
-                      <span className="text-[10px] text-zinc-400">
-                        {data.woods.find((w) => w.id === sel.wood)?.label}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                {/* Placeholder when nothing selected yet */}
+
+                {/* Drag hint */}
                 {!sel.resin && !sel.wood && !sel.leg && (
-                  <div className="absolute inset-0 flex items-end justify-center pb-8 pointer-events-none">
-                    <p className="text-[11px] text-zinc-600 tracking-wide">옵션을 선택하면 실시간으로 반영됩니다</p>
+                  <div className="absolute inset-0 flex flex-col items-end justify-end p-3 pointer-events-none gap-1">
+                    <p className="text-[10px] text-zinc-600 tracking-wide">드래그로 회전 가능</p>
+                    <p className="text-[10px] text-zinc-700 tracking-wide">옵션을 선택하면 실시간으로 반영됩니다</p>
+                  </div>
+                )}
+
+                {/* Current selection label overlays */}
+                {(sel.resin || sel.wood) && (
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-3 pointer-events-none">
+                    {sel.resin && (
+                      <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10">
+                        <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ background: previewResin }} />
+                        <span className="text-[10px] text-zinc-400">{data.resins.find((r) => r.id === sel.resin)?.label}</span>
+                      </div>
+                    )}
+                    {sel.wood && (
+                      <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10">
+                        <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ background: previewWood }} />
+                        <span className="text-[10px] text-zinc-400">{data.woods.find((w) => w.id === sel.wood)?.label}</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
+
+              {/* Selection summary chips */}
+              {(sel.size || sel.resin || sel.wood || sel.leg) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-wrap gap-1.5 mt-3 px-1"
+                >
+                  {sel.size && (
+                    <button onClick={() => setStep(0)}
+                      className="flex items-center gap-1.5 bg-white/5 hover:bg-white/8 border border-white/10 rounded-full px-2.5 py-1 text-[10px] text-zinc-400 transition-colors"
+                    >
+                      <Maximize2 size={9} className="text-zinc-600" />
+                      {data.sizes.find((s) => s.id === sel.size)?.label}
+                    </button>
+                  )}
+                  {sel.resin && (
+                    <button onClick={() => setStep(1)}
+                      className="flex items-center gap-1.5 bg-white/5 hover:bg-white/8 border border-white/10 rounded-full px-2.5 py-1 text-[10px] text-zinc-400 transition-colors"
+                    >
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ background: previewResin }} />
+                      {data.resins.find((r) => r.id === sel.resin)?.label}
+                    </button>
+                  )}
+                  {sel.wood && (
+                    <button onClick={() => setStep(2)}
+                      className="flex items-center gap-1.5 bg-white/5 hover:bg-white/8 border border-white/10 rounded-full px-2.5 py-1 text-[10px] text-zinc-400 transition-colors"
+                    >
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ background: previewWood }} />
+                      {data.woods.find((w) => w.id === sel.wood)?.label}
+                    </button>
+                  )}
+                  {sel.leg && (
+                    <button onClick={() => setStep(3)}
+                      className="flex items-center gap-1.5 bg-white/5 hover:bg-white/8 border border-white/10 rounded-full px-2.5 py-1 text-[10px] text-zinc-400 transition-colors"
+                    >
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ background: previewLeg }} />
+                      {data.legs.find((l) => l.id === sel.leg)?.label}
+                    </button>
+                  )}
+                </motion.div>
+              )}
             </motion.div>
 
             {/* Step Controls */}
             <div className="flex-1 w-full min-w-0">
+
               {/* Step indicator */}
-              <div className="flex items-center justify-center mb-10 gap-0">
-                {STEPS.map((label, i) => (
-                  <div key={label} className="flex items-center">
-                    <button onClick={() => i <= step && setStep(i)} className="flex flex-col items-center gap-1 focus:outline-none">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                        i < step ? 'bg-white text-black' : i === step ? 'bg-white/15 text-white border border-white/30' : 'bg-zinc-900 text-zinc-600 border border-white/8'
-                      }`}>
-                        {i < step ? <Check size={13} /> : i + 1}
-                      </div>
-                      <span className={`text-[10px] hidden md:block transition-colors ${i === step ? 'text-zinc-300' : 'text-zinc-600'}`}>{label}</span>
-                    </button>
-                    {i < STEPS.length - 1 && (
-                      <div className={`w-8 md:w-12 h-px mx-1 transition-colors duration-500 ${i < step ? 'bg-white/30' : 'bg-white/8'}`} />
-                    )}
-                  </div>
-                ))}
+              <div className="flex items-center justify-center mb-8 gap-0">
+                {STEPS.map((label, i) => {
+                  const jumpable = canJumpToStep(i);
+                  return (
+                    <div key={label} className="flex items-center">
+                      <button
+                        onClick={() => jumpable && setStep(i)}
+                        className={`flex flex-col items-center gap-1 focus:outline-none ${jumpable ? 'cursor-pointer' : 'cursor-default'}`}
+                      >
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                          i < step  ? 'bg-white text-black'
+                          : i === step ? 'bg-white/15 text-white border border-white/30'
+                          : 'bg-zinc-900 text-zinc-600 border border-white/8'
+                        }`}>
+                          {i < step ? <Check size={13} /> : i + 1}
+                        </div>
+                        <span className={`text-[10px] hidden md:block transition-colors ${i === step ? 'text-zinc-300' : 'text-zinc-600'}`}>{label}</span>
+                      </button>
+                      {i < STEPS.length - 1 && (
+                        <div className={`w-8 md:w-12 h-px mx-1 transition-colors duration-500 ${i < step ? 'bg-white/30' : 'bg-white/8'}`} />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
+              {/* Floating price badge */}
+              <AnimatePresence>
+                {livePrice > 0 && step < 4 && (
+                  <motion.div
+                    key="price-badge"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="flex justify-end mb-4"
+                  >
+                    <div className="flex items-center gap-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5">
+                      <span className="text-[10px] text-zinc-600 uppercase tracking-widest">예상 금액</span>
+                      <span className="text-sm font-bold text-white tabular-nums">{formatKRW(displayPrice)}</span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Step content */}
               <div className="min-h-[280px]">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -429,6 +568,7 @@ export default function BTOBuilder() {
                 </AnimatePresence>
               </div>
 
+              {/* Navigation buttons */}
               {step < 4 && (
                 <div className="flex items-center justify-between mt-8">
                   <button
@@ -449,6 +589,11 @@ export default function BTOBuilder() {
                   </motion.button>
                 </div>
               )}
+
+              {/* Keyboard hint */}
+              <p className="text-center text-[10px] text-zinc-700 mt-4 hidden md:block">
+                ← → 키로 이동 가능
+              </p>
             </div>
           </div>
         </div>
