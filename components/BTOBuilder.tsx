@@ -116,9 +116,9 @@ function SwatchStep({ value, onChange, options }: {
 }
 
 function OrderStep({
-  sel, data, onSubmit, submitting,
+  sel, data, onSubmit, submitting, error,
 }: {
-  sel: Partial<Selection>; data: BTOData; onSubmit: () => void; submitting: boolean;
+  sel: Partial<Selection>; data: BTOData; onSubmit: () => void; submitting: boolean; error: boolean;
 }) {
   const size  = data.sizes.find((s) => s.id === sel.size);
   const resin = data.resins.find((r) => r.id === sel.resin);
@@ -151,6 +151,10 @@ function OrderStep({
       <p className="text-[11px] text-zinc-600 leading-relaxed">
         * 모든 제품은 수작업 제작되며 주문 확정 후 6~10주 소요됩니다. 최종 가격은 상담 후 확정됩니다.
       </p>
+
+      {error && (
+        <p className="text-xs text-red-400 text-center">주문 접수에 실패했습니다. 다시 시도해주세요.</p>
+      )}
 
       <motion.button
         onClick={onSubmit}
@@ -232,6 +236,7 @@ export default function BTOBuilder() {
   const [data, setData] = useState<BTOData>({ sizes: [], resins: [], woods: [], legs: [] });
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   useEffect(() => {
     fetch('/api/bto-options')
@@ -256,6 +261,7 @@ export default function BTOBuilder() {
     }
 
     setSubmitting(true);
+    setSubmitError(false);
     const total = calcPrice(sel, data);
 
     const res = await fetch('/api/orders', {
@@ -297,6 +303,8 @@ export default function BTOBuilder() {
           },
         }),
       }).catch(() => {});
+    } else {
+      setSubmitError(true);
     }
   }
 
@@ -305,7 +313,7 @@ export default function BTOBuilder() {
     <ResinStep key="resin" value={sel.resin ?? ''} onChange={(v) => update('resin', v)} resins={data.resins} />,
     <SwatchStep key="wood" value={sel.wood ?? ''} onChange={(v) => update('wood', v)} options={data.woods} />,
     <SwatchStep key="leg"  value={sel.leg  ?? ''} onChange={(v) => update('leg',  v)} options={data.legs} />,
-    <OrderStep key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} />,
+    <OrderStep key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} />,
   ];
 
   // Derive current preview colors from selection
