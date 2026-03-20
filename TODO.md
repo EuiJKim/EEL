@@ -5,7 +5,7 @@
 - **스택**: Next.js 16 + TypeScript + Supabase + Framer Motion + Tailwind CSS v4
 - **배포**: Vercel → https://eel-smoky.vercel.app
 - **로컬**: http://localhost:3000
-- **패키지 매니저**: pnpm
+- **패키지 매니저**: bun
 
 ---
 
@@ -53,9 +53,9 @@
 - [ ] **사업자등록증 자격 문제** — 예비창업패키지 신청 전 주관기관에 직접 문의 필요 (등록일 2025.11.03, 기준일 2026.01.22)
 
 ### 🟡 Minor
-- [ ] **`EarbudHero.tsx` 미사용 컴포넌트** — 어디에도 import되지 않음. 삭제 or 활용 여부 결정 필요
+- [x] **`EarbudHero.tsx` 미사용 컴포넌트** — 삭제 완료 (2026-03-20)
 - [ ] **`app/admin/page.tsx` 타입 핵** — `(orders ?? []) as never[]` → 제대로 된 타입 정의 필요
-- [ ] **`app/hello/page.tsx`** — 내용 미확인, 불필요하면 삭제
+- [x] **`app/hello/page.tsx`** — 삭제 완료 (2026-03-20)
 - [ ] **Spec 아이콘 로직 중복** — `TableHero.tsx`와 `ProductDetailClient.tsx`에서 `spec.label === 'Material'` 문자열 비교 동일하게 존재
 
 ---
