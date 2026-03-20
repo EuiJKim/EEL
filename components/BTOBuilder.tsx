@@ -16,8 +16,8 @@ const TablePreview3D = dynamic(() => import('./TablePreview3D'), { ssr: false })
 
 interface SizeOption   { id: string; label: string; size: string; description: string; price: number; }
 interface ResinOption  { id: string; label: string; hex: string; description: string; }
-interface WoodOption   { id: string; label: string; description: string; color: string; price_addition: number; }
-interface LegOption    { id: string; label: string; description: string; color: string; price_addition: number; }
+interface WoodOption   { id: string; label: string; description: string; color: string; priceAddition: number; }
+interface LegOption    { id: string; label: string; description: string; color: string; priceAddition: number; }
 
 interface BTOData {
   sizes: SizeOption[];
@@ -38,8 +38,8 @@ const STEPS = ['사이즈', '레진 색상', '우드 종류', '다리 스타일'
 
 function calcPrice(sel: Partial<Selection>, data: BTOData): number {
   const base = data.sizes.find((s) => s.id === sel.size)?.price ?? 0;
-  const wood = data.woods.find((w) => w.id === sel.wood)?.price_addition ?? 0;
-  const leg  = data.legs.find((l)  => l.id === sel.leg)?.price_addition  ?? 0;
+  const wood = data.woods.find((w) => w.id === sel.wood)?.priceAddition ?? 0;
+  const leg  = data.legs.find((l)  => l.id === sel.leg)?.priceAddition  ?? 0;
   return base + wood + leg;
 }
 
@@ -106,8 +106,8 @@ function SwatchStep({ value, onChange, options }: {
             </div>
           </div>
           <div className="text-[11px] text-zinc-500">{opt.description}</div>
-          {opt.price_addition > 0 && (
-            <div className="mt-1.5 text-[10px] font-semibold text-amber-500/80">+{formatKRW(opt.price_addition)}</div>
+          {opt.priceAddition > 0 && (
+            <div className="mt-1.5 text-[10px] font-semibold text-amber-500/80">+{formatKRW(opt.priceAddition)}</div>
           )}
         </motion.button>
       ))}
