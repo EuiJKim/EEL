@@ -46,11 +46,14 @@ export default function AdminOrderList({ initialOrders }: { initialOrders: Admin
   async function handleStatusChange(orderId: string, newStatus: string) {
     startTransition(async () => {
       updateOptimistic({ id: orderId, status: newStatus });
-      await fetch('/api/admin/update-order', {
+      const res = await fetch('/api/admin/update-order', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId, status: newStatus }),
       });
+      if (!res.ok) {
+        alert('상태 변경에 실패했습니다. 페이지를 새로고침해주세요.');
+      }
     });
   }
 
