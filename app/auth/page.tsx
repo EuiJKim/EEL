@@ -131,43 +131,13 @@ export default function AuthPage() {
           {/* Google Sign In Button */}
           <button
             onClick={signInWithGoogle}
+            className="w-full flex items-center justify-center gap-3 px-5 py-3.5 rounded-[14px] border text-[15px] font-medium cursor-pointer transition-all duration-200 hover:-translate-y-px active:translate-y-0 active:scale-[0.99]"
             style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
-              padding: "14px 20px",
-              borderRadius: "14px",
               background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)",
               border: "1px solid rgba(255,255,255,0.14)",
               boxShadow: "0 4px 16px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.1) inset",
               color: "rgba(255,255,255,0.9)",
-              fontSize: "15px",
-              fontWeight: "500",
               letterSpacing: "-0.1px",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.background = "linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.10) 100%)";
-              el.style.borderColor = "rgba(255,255,255,0.22)";
-              el.style.transform = "translateY(-1px)";
-              el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.12) inset";
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget;
-              el.style.background = "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)";
-              el.style.borderColor = "rgba(255,255,255,0.14)";
-              el.style.transform = "translateY(0)";
-              el.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.1) inset";
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = "translateY(0px) scale(0.99)";
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = "translateY(-1px) scale(1)";
             }}
           >
             {/* Google Logo */}

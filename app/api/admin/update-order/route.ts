@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { prisma } from '@/lib/prisma';
 import { STATUS_ORDER } from '@/lib/constants';
 
 export async function PATCH(req: NextRequest) {
@@ -17,15 +17,10 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
   }
 
-  const admin = createAdminClient();
-  const { error } = await admin
-    .from('orders')
-    .update({ status })
-    .eq('id', orderId);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    await prisma.order.update({ where: { id: orderId }, data: { status } });
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: 'Update failed' }, { status: 500 });
   }
-
-  return NextResponse.json({ ok: true });
 }

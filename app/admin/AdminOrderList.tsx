@@ -2,9 +2,10 @@
 
 import { useState, useOptimistic, useTransition } from 'react';
 import { STATUS_CONFIG, STATUS_ORDER } from '@/lib/constants';
+import { formatKRW, formatDate } from '@/lib/utils';
 import { Clock, CheckCircle, Wrench, XCircle } from 'lucide-react';
 
-interface AdminOrder {
+export interface AdminOrder {
   id: string;
   created_at: string;
   status: string;
@@ -25,10 +26,6 @@ const STATUS_ICONS: Record<string, React.ReactNode> = {
   cancelled:   <XCircle size={12} />,
 };
 
-function formatKRW(n: number) { return n.toLocaleString('ko-KR') + '원'; }
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' });
-}
 
 const FILTER_TABS = ['전체', ...STATUS_ORDER.map((s) => STATUS_CONFIG[s].label)];
 

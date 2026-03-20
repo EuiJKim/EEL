@@ -1,29 +1,44 @@
 import { notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { prisma } from '@/lib/prisma';
 import ProductDetailClient from './ProductDetailClient';
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
 
-  const { data: product } = await supabase
-    .from('products')
-    .select('*')
-    .eq('id', id)
-    .single();
+  const product = await prisma.product.findUnique({ where: { id } });
 
   if (!product) notFound();
 
-  const [{ data: images }, { data: specs }] = await Promise.all([
-    supabase.from('product_images').select('*').eq('product_id', id).order('sort_order'),
-    supabase.from('product_specs').select('*').eq('product_id', id).order('sort_order'),
+  const [images, specs] = await Promise.all([
+    prisma.productImage.findMany({
+      where: { productId: id },
+      orderBy: { sortOrder: 'asc' },
+    }),
+    prisma.productSpec.findMany({
+      where: { productId: id },
+      orderBy: { sortOrder: 'asc' },
+    }),
   ]);
+
+  // Map Prisma camelCase to snake_case shape expected by ProductDetailClient
+  const mappedImages = images.map((img) => ({
+    id: img.id,
+    url: img.url,
+    sort_order: img.sortOrder,
+  }));
+
+  const mappedSpecs = specs.map((s) => ({
+    id: s.id,
+    label: s.label,
+    value: s.value,
+    sort_order: s.sortOrder,
+  }));
 
   return (
     <ProductDetailClient
       product={product}
-      images={images ?? []}
-      specs={specs ?? []}
+      images={mappedImages}
+      specs={mappedSpecs}
     />
   );
 }
