@@ -4,7 +4,11 @@
       "Bash(npm install:*)",
       "Bash(bun run:*)",
       "Read(//c/Users/ASUS/.claude/skills/**)",
-      "Read(//c/Users/ASUS/.claude/skills/gstack/**)"
+      "Read(//c/Users/ASUS/.claude/skills/gstack/**)",
+      "Bash(source ~/.claude/skills/gstack/bin/gstack-slug)",
+      "Bash(mkdir -p ~/.gstack/projects/EuiJKim-EEL)",
+      "Read(//c/Users/ASUS/.gstack/projects/EuiJKim-EEL/**)",
+      "Skill(design-review)"
     ]
   },
   "enableAllProjectMcpServers": true,
