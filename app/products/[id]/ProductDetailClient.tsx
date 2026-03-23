@@ -48,7 +48,7 @@ export default function ProductDetailClient({
   const [activePhoto, setActivePhoto] = useState(0);
 
   return (
-    <main className="min-h-screen bg-black text-zinc-100 px-6 py-16">
+    <main className="bg-black text-zinc-100 px-6 py-16 pb-24">
       <div className="relative max-w-5xl mx-auto">
         {/* Back */}
         <motion.div
