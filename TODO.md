@@ -54,9 +54,12 @@
 
 ### 🟡 Minor
 - [x] **`EarbudHero.tsx` 미사용 컴포넌트** — 삭제 완료 (2026-03-20)
-- [ ] **`app/admin/page.tsx` 타입 핵** — `(orders ?? []) as never[]` → 제대로 된 타입 정의 필요
+- [x] **`app/admin/page.tsx` 타입 핵** — `AdminOrder[]` 타입으로 수정 완료
 - [x] **`app/hello/page.tsx`** — 삭제 완료 (2026-03-20)
-- [ ] **Spec 아이콘 로직 중복** — `TableHero.tsx`와 `ProductDetailClient.tsx`에서 `spec.label === 'Material'` 문자열 비교 동일하게 존재
+- [x] **Spec 아이콘 로직 중복** — `components/SpecIcon.tsx`로 추출 완료
+- [ ] **Prisma 스키마 타입 불일치** — `product_images.id`가 DB에서 integer이지만 스키마에는 `String @id @default(uuid())`로 선언됨. 현재는 Supabase 직접 쿼리로 우회 중이나, 누군가 Prisma로 image 쿼리 추가 시 P2032 에러 발생. 스키마를 `Int @id @default(autoincrement())`로 수정 필요
+- [ ] **테스트 없음** — Vitest 세팅 후 최소 단위 테스트 작성: `calcPrice()`, URL 파라미터 인코드/디코드 round-trip, `SpecIcon` label 분기, 결제 webhook 서명 검증
+- [ ] **DESIGN.md 생성** — 코드베이스에서 확인되는 디자인 토큰(`bg-black`, `border-white/6`, 에메랄드 상태 색상, 간격 스케일 등)을 문서화. 새 컴포넌트 추가 시 참조 가능한 지침서. `/design-consultation` 스킬로 생성 가능
 
 ---
 
@@ -65,8 +68,12 @@
 ### 기능 개발
 - [x] **3D 레진 미리보기** — BTOBuilder에 Three.js/WebGL 기반 실시간 렌더링 추가 (2026-03-16)
 - [ ] **AR 미리보기** — WebXR API로 실내 공간에 가구 가상 배치
-- [ ] **BTO 시뮬레이터 가격 실시간 표시** — 선택할 때마다 헤더에 현재 금액 표시
-- [ ] **제품 상세 → BTO 연동** — 제품 상세에서 "직접 만들어보기" 클릭 시 해당 레진 색상 pre-select
+- [x] **BTO 시뮬레이터 가격 실시간 표시** — `calcPrice()` + `useCountUp()` 훅으로 완료 (플로팅 배지 표시)
+- [x] **제품 상세 → BTO 연동** — `?resinHint=<hex>#build` URL 파라미터로 가장 가까운 레진 자동 선택
+- [ ] **결제 시스템 연동** — Toss Payments 또는 카카오페이 (CEO 리뷰에서 승인됨)
+- [x] **주문 제작 현황 트래킹** — `/orders/[id]` 타임라인 UI, 주문 카드 클릭 시 이동
+- [x] **커스텀 설계 공유 링크** — BTO 주문 단계에서 공유 버튼, URL 파라미터 인코딩/디코딩
+- [x] **홈 제품 섹션** — `HomeProductsSection` 서버 컴포넌트 (TableHero와 BTOBuilder 사이)
 - [ ] **모바일 반응형 점검** — 전체 페이지 모바일 UX 확인 및 개선
 
 ### 브랜드/디자인

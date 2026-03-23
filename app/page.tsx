@@ -1,25 +1,23 @@
-'use client';
+export const dynamic = 'force-dynamic';
 
-import { useRef } from 'react';
+import { Suspense } from 'react';
 import TableHero from '@/components/TableHero';
 import CraftBridge from '@/components/CraftBridge';
 import BTOBuilder from '@/components/BTOBuilder';
 import Header from '@/components/Header';
+import HomeProductsSection from '@/components/HomeProductsSection';
 
 export default function Home() {
-  const builderRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBuilder = () => {
-    builderRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <main className="bg-black">
       <Header />
-      <TableHero onBuildClick={scrollToBuilder} />
+      <TableHero />
+      <HomeProductsSection />
       <CraftBridge />
-      <div ref={builderRef} id="build">
-        <BTOBuilder />
+      <div id="build">
+        <Suspense>
+          <BTOBuilder />
+        </Suspense>
       </div>
     </main>
   );

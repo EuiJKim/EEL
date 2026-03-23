@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Clock, CheckCircle, Wrench, XCircle, ChevronLeft } from 'lucide-react';
 import { STATUS_CONFIG as STATUS_CONFIG_BASE } from '@/lib/constants';
@@ -82,6 +83,10 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
+              >
+              <Link
+                href={`/orders/${order.id}`}
+                className="block hover:opacity-90 transition-opacity"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -124,6 +129,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                   <span className="text-xs text-zinc-500">예상 금액</span>
                   <span className="text-sm font-bold text-white">{formatKRW(order.totalPrice)}</span>
                 </div>
+              </Link>
               </motion.div>
             );
           })}

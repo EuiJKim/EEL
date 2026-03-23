@@ -14,25 +14,20 @@ export default async function ProductsPage() {
 
   const productIds = products.map((p) => p.id);
 
-  const images = productIds.length
-    ? await prisma.productImage.findMany({
-        where: { productId: { in: productIds } },
-        orderBy: { sortOrder: 'asc' },
-      })
-    : [];
-
-  // Map Prisma camelCase to the snake_case shape expected by ProductsCatalogClient
-  const mappedImages = images.map((img) => ({
-    id: img.id,
-    product_id: img.productId,
-    url: img.url,
-    sort_order: img.sortOrder,
-  }));
+  // Use Supabase directly — Prisma schema declares product_images.id as String
+  // but DB stores it as integer, causing P2032 on findMany. Supabase bypasses this.
+  const { data: mappedImages } = productIds.length
+    ? await supabase
+        .from('product_images')
+        .select('id, product_id, url, sort_order')
+        .in('product_id', productIds)
+        .order('sort_order', { ascending: true })
+    : { data: [] };
 
   return (
     <main className="bg-black">
       <Header />
-      <ProductsCatalogClient products={products} images={mappedImages} />
+      <ProductsCatalogClient products={products} images={mappedImages ?? []} />
     </main>
   );
 }

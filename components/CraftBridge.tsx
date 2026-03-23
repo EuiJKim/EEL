@@ -51,19 +51,6 @@ export default function CraftBridge() {
         }}
       />
 
-      {/* Glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: '600px',
-          height: '400px',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(ellipse, rgba(180,120,60,0.06) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-        }}
-      />
 
       <div className="relative max-w-5xl mx-auto">
 

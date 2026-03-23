@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, Layers, Ruler, Palette } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { SpecIcon } from '@/components/SpecIcon';
 
 interface Product {
   id: string;
@@ -48,16 +49,6 @@ export default function ProductDetailClient({
 
   return (
     <main className="min-h-screen bg-black text-zinc-100 px-6 py-16">
-      {/* Background glow */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse at 30% 40%, ${product.glow}, transparent 60%)`,
-          }}
-        />
-      </div>
-
       <div className="relative max-w-5xl mx-auto">
         {/* Back */}
         <motion.div
@@ -78,12 +69,6 @@ export default function ProductDetailClient({
           {/* Gallery */}
           <div className="w-full lg:w-auto flex flex-col items-center gap-5 shrink-0">
             <div className="relative w-full max-w-[340px] sm:max-w-[460px] aspect-square rounded-2xl overflow-hidden border border-white/8 bg-zinc-900/60 backdrop-blur-sm shadow-2xl mx-auto">
-              <div
-                className="absolute inset-0 z-0"
-                style={{
-                  background: `radial-gradient(circle at 50% 80%, ${product.glow}, transparent 70%)`,
-                }}
-              />
               <AnimatePresence mode="wait">
                 {images[activePhoto] && (
                   <motion.div
@@ -144,7 +129,7 @@ export default function ProductDetailClient({
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500"
+              className="font-display-kr text-3xl sm:text-4xl font-semibold tracking-tight mb-4 text-white"
             >
               {product.name}
             </motion.h1>
@@ -168,9 +153,7 @@ export default function ProductDetailClient({
                 {specs.map((spec) => (
                   <div key={spec.id} className="flex items-center justify-between text-sm">
                     <span className="flex items-center gap-2 text-zinc-500">
-                      {spec.label === 'Material' && <Layers size={13} />}
-                      {spec.label === 'Size' && <Ruler size={13} />}
-                      {!['Material', 'Size'].includes(spec.label) && <Palette size={13} />}
+                      <SpecIcon label={spec.label} />
                       {spec.label}
                     </span>
                     <span className="font-mono text-xs text-zinc-300">{spec.value}</span>
@@ -187,8 +170,8 @@ export default function ProductDetailClient({
               className="flex flex-col sm:flex-row gap-3"
             >
               <Link
-                href="/#build"
-                className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-white hover:bg-zinc-100 transition-colors"
+                href={`/?resinHint=${encodeURIComponent(product.accent)}#build`}
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-[#C8922A] hover:bg-[#b8821e] transition-colors"
               >
                 직접 만들어보기
               </Link>

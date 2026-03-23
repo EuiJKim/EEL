@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import ProductDetailClient from './ProductDetailClient';
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -9,36 +10,28 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   if (!product) notFound();
 
-  const [images, specs] = await Promise.all([
-    prisma.productImage.findMany({
-      where: { productId: id },
-      orderBy: { sortOrder: 'asc' },
-    }),
-    prisma.productSpec.findMany({
-      where: { productId: id },
-      orderBy: { sortOrder: 'asc' },
-    }),
+  // Use Supabase directly for images/specs — Prisma schema declares product_images.id
+  // as String but DB stores it as integer, causing P2032. Supabase bypasses this.
+  const supabase = await createClient();
+
+  const [{ data: mappedImages }, { data: mappedSpecs }] = await Promise.all([
+    supabase
+      .from('product_images')
+      .select('id, url, sort_order')
+      .eq('product_id', id)
+      .order('sort_order', { ascending: true }),
+    supabase
+      .from('product_specs')
+      .select('id, label, value, sort_order')
+      .eq('product_id', id)
+      .order('sort_order', { ascending: true }),
   ]);
-
-  // Map Prisma camelCase to snake_case shape expected by ProductDetailClient
-  const mappedImages = images.map((img) => ({
-    id: img.id,
-    url: img.url,
-    sort_order: img.sortOrder,
-  }));
-
-  const mappedSpecs = specs.map((s) => ({
-    id: s.id,
-    label: s.label,
-    value: s.value,
-    sort_order: s.sortOrder,
-  }));
 
   return (
     <ProductDetailClient
       product={product}
-      images={mappedImages}
-      specs={mappedSpecs}
+      images={mappedImages ?? []}
+      specs={mappedSpecs ?? []}
     />
   );
 }

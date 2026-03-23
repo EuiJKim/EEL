@@ -61,7 +61,7 @@ export default function ProductsCatalogClient({
           className="mb-12"
         >
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-500 mb-3">Collection</p>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">
+          <h1 className="font-display-kr text-4xl sm:text-5xl font-semibold tracking-tight text-white">
             제품 목록
           </h1>
         </motion.div>
@@ -83,17 +83,14 @@ export default function ProductsCatalogClient({
               >
                 <Link href={`/products/${product.id}`} className="group block">
                   {/* Image area */}
-                  <div
-                    className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/8 mb-4"
-                    style={{ background: `radial-gradient(ellipse at 50% 80%, ${product.glow}, rgba(20,20,20,1) 70%)` }}
-                  >
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/8 mb-4 bg-zinc-900/60">
                     {firstImage && (
                       <Image
                         src={firstImage.url}
                         alt={product.name}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       />
                     )}
                   </div>

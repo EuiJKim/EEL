@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Check, ChevronRight, ChevronLeft, ShoppingBag, X, CheckCircle, Loader2,
-  Maximize2,
+  Maximize2, Link2, Copy,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { formatKRW } from '@/lib/utils';
@@ -73,6 +73,31 @@ function calcPrice(sel: Partial<Selection>, data: BTOData): number {
   const wood = data.woods.find((w) => w.id === sel.wood)?.priceAddition ?? 0;
   const leg  = data.legs.find((l)  => l.id === sel.leg)?.priceAddition  ?? 0;
   return base + wood + leg;
+}
+
+// Squared Euclidean RGB distance between two hex colors (no sqrt needed for comparison)
+function hexDist(a: string, b: string): number {
+  const parse = (h: string) => {
+    const hex = h.replace('#', '').padEnd(6, '0');
+    return [
+      parseInt(hex.slice(0, 2), 16),
+      parseInt(hex.slice(2, 4), 16),
+      parseInt(hex.slice(4, 6), 16),
+    ];
+  };
+  const [r1, g1, b1] = parse(a);
+  const [r2, g2, b2] = parse(b);
+  return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2;
+}
+
+// Build a shareable BTO config URL
+function buildShareUrl(sel: Partial<Selection>): string {
+  const params = new URLSearchParams();
+  if (sel.size)  params.set('size',  sel.size);
+  if (sel.resin) params.set('resin', sel.resin);
+  if (sel.wood)  params.set('wood',  sel.wood);
+  if (sel.leg)   params.set('leg',   sel.leg);
+  return `${window.location.origin}/?${params.toString()}#build`;
 }
 
 // =========================================
@@ -148,9 +173,10 @@ function SwatchStep({ value, onChange, options }: {
 }
 
 function OrderStep({
-  sel, data, onSubmit, submitting, error,
+  sel, data, onSubmit, submitting, error, onShare, copied,
 }: {
   sel: Partial<Selection>; data: BTOData; onSubmit: () => void; submitting: boolean; error: boolean;
+  onShare: () => void; copied: boolean;
 }) {
   const size  = data.sizes.find((s) => s.id === sel.size);
   const resin = data.resins.find((r) => r.id === sel.resin);
@@ -188,15 +214,26 @@ function OrderStep({
         <p className="text-xs text-red-400 text-center">주문 접수에 실패했습니다. 다시 시도해주세요.</p>
       )}
 
-      <motion.button
-        onClick={onSubmit}
-        disabled={submitting}
-        whileTap={{ scale: submitting ? 1 : 0.97 }}
-        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-white text-black font-bold text-sm hover:bg-zinc-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-      >
-        {submitting ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
-        {submitting ? '접수 중...' : '주문 문의하기'}
-      </motion.button>
+      <div className="flex gap-3">
+        <motion.button
+          onClick={onShare}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/8 transition-colors text-sm text-zinc-300 shrink-0"
+          title="이 설계 공유하기"
+        >
+          {copied ? <Copy size={15} className="text-emerald-400" /> : <Link2 size={15} />}
+          {copied ? '복사됨!' : '공유'}
+        </motion.button>
+        <motion.button
+          onClick={onSubmit}
+          disabled={submitting}
+          whileTap={{ scale: submitting ? 1 : 0.97 }}
+          className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#C8922A] text-black font-bold text-sm hover:bg-[#b8821e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {submitting ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
+          {submitting ? '접수 중...' : '주문 문의하기'}
+        </motion.button>
+      </div>
     </div>
   );
 }
@@ -205,7 +242,7 @@ function OrderStep({
 // 5. SUCCESS MODAL
 // =========================================
 
-function SuccessModal({ onClose }: { onClose: () => void }) {
+function SuccessModal({ onClose, orderId }: { onClose: () => void; orderId: string | null }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -239,17 +276,27 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
           <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mb-5">
             <CheckCircle size={28} className="text-emerald-400" />
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">주문이 접수됐습니다</h3>
+          <h3 className="text-xl font-bold text-white mb-2">장인의 손에 전달되었습니다</h3>
           <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-            빠른 시일 내에 확인 후 연락드리겠습니다.<br />
-            주문 내역은 마이페이지에서 확인하실 수 있어요.
+            세상에 하나뿐인 테이블이 시작되었어요.<br />
+            주문 확정 후 6~10주, 정성껏 제작합니다.
           </p>
-          <button
-            onClick={onClose}
-            className="w-full py-3 rounded-xl bg-white text-black font-semibold text-sm hover:bg-zinc-100 transition-colors"
-          >
-            확인
-          </button>
+          <div className="flex flex-col gap-2 w-full">
+            {orderId && (
+              <a
+                href={`/orders/${orderId}`}
+                className="w-full py-3 rounded-xl bg-[#C8922A] text-black font-semibold text-sm hover:bg-[#b8821e] transition-colors text-center"
+              >
+                주문 현황 보기 →
+              </a>
+            )}
+            <button
+              onClick={onClose}
+              className={`w-full py-3 rounded-xl text-sm font-semibold transition-colors ${orderId ? 'bg-white/8 text-zinc-300 hover:bg-white/12 border border-white/10' : 'bg-[#C8922A] text-black hover:bg-[#b8821e]'}`}
+            >
+              {orderId ? '계속 둘러보기' : '확인'}
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -261,35 +308,65 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
 // =========================================
 
 export default function BTOBuilder() {
-  const router = useRouter();
+  const router        = useRouter();
+  const searchParams  = useSearchParams();
   const [step, setStep]               = useState(0);
   const [sel, setSel]                 = useState<Partial<Selection>>({});
   const [data, setData]               = useState<BTOData>({ sizes: [], resins: [], woods: [], legs: [] });
   const [submitting, setSubmitting]   = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [orderId, setOrderId]         = useState<string | null>(null);
   const [submitError, setSubmitError] = useState(false);
+  const [copied, setCopied]           = useState(false);
 
-  // Fetch BTO options + restore saved selection
+  // Fetch BTO options + restore saved selection (URL params override localStorage)
   useEffect(() => {
     fetch('/api/bto-options')
       .then((r) => r.json())
       .then((fetched: BTOData) => {
         setData(fetched);
+
+        // 1. Restore from localStorage
+        const fromStorage: Partial<Selection> = {};
         try {
           const saved = localStorage.getItem(LS_KEY);
           if (saved) {
             const parsed: Partial<Selection> = JSON.parse(saved);
-            const valid: Partial<Selection>  = {};
-            if (fetched.sizes.find((s) => s.id === parsed.size))   valid.size  = parsed.size;
-            if (fetched.resins.find((r) => r.id === parsed.resin)) valid.resin = parsed.resin;
-            if (fetched.woods.find((w) => w.id === parsed.wood))   valid.wood  = parsed.wood;
-            if (fetched.legs.find((l)  => l.id === parsed.leg))    valid.leg   = parsed.leg;
-            if (Object.keys(valid).length) setSel(valid);
+            if (fetched.sizes.find((s)  => s.id === parsed.size))   fromStorage.size  = parsed.size;
+            if (fetched.resins.find((r) => r.id === parsed.resin))  fromStorage.resin = parsed.resin;
+            if (fetched.woods.find((w)  => w.id === parsed.wood))   fromStorage.wood  = parsed.wood;
+            if (fetched.legs.find((l)   => l.id === parsed.leg))    fromStorage.leg   = parsed.leg;
           }
         } catch { /* ignore */ }
+
+        // 2. URL params override localStorage (exact IDs)
+        const fromUrl: Partial<Selection> = {};
+        const urlSize  = searchParams.get('size');
+        const urlResin = searchParams.get('resin');
+        const urlWood  = searchParams.get('wood');
+        const urlLeg   = searchParams.get('leg');
+        if (urlSize  && fetched.sizes.find((s)  => s.id === urlSize))   fromUrl.size  = urlSize;
+        if (urlResin && fetched.resins.find((r) => r.id === urlResin))  fromUrl.resin = urlResin;
+        if (urlWood  && fetched.woods.find((w)  => w.id === urlWood))   fromUrl.wood  = urlWood;
+        if (urlLeg   && fetched.legs.find((l)   => l.id === urlLeg))    fromUrl.leg   = urlLeg;
+
+        // 3. Resin hint: match closest hex if no exact resin param given
+        const resinHint = searchParams.get('resinHint');
+        if (resinHint && !fromUrl.resin && fetched.resins.length) {
+          let best = fetched.resins[0].id;
+          let bestDist = Infinity;
+          for (const r of fetched.resins) {
+            const d = hexDist(resinHint, r.hex);
+            if (d < bestDist) { bestDist = d; best = r.id; }
+          }
+          fromUrl.resin = best;
+        }
+
+        const merged = { ...fromStorage, ...fromUrl };
+        if (Object.keys(merged).length) setSel(merged);
       })
       .catch(() => {});
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persist selections to localStorage
   useEffect(() => {
@@ -328,6 +405,24 @@ export default function BTOBuilder() {
   const livePrice    = calcPrice(sel, data);
   const displayPrice = useCountUp(livePrice);
 
+  function handleShare() {
+    const url = buildShareUrl(sel);
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      // Fallback: select text (older browsers)
+      const el = document.createElement('textarea');
+      el.value = url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
   async function handleSubmit() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -346,6 +441,7 @@ export default function BTOBuilder() {
     setSubmitting(false);
 
     if (res.ok && result.id) {
+      setOrderId(result.id);
       setShowSuccess(true);
       const size  = data.sizes.find((s) => s.id === sel.size);
       const resin = data.resins.find((r) => r.id === sel.resin);
@@ -382,13 +478,13 @@ export default function BTOBuilder() {
     <ResinStep  key="resin" value={sel.resin ?? ''} onChange={(v) => update('resin', v)} resins={data.resins} />,
     <SwatchStep key="wood"  value={sel.wood  ?? ''} onChange={(v) => update('wood',  v)} options={data.woods} />,
     <SwatchStep key="leg"   value={sel.leg   ?? ''} onChange={(v) => update('leg',   v)} options={data.legs} />,
-    <OrderStep  key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} />,
+    <OrderStep  key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} onShare={handleShare} copied={copied} />,
   ];
 
   return (
     <>
       <AnimatePresence>
-        {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} />}
+        {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} orderId={orderId} />}
       </AnimatePresence>
 
       <section className="relative w-full bg-black text-zinc-100 px-4 sm:px-6 py-16 sm:py-20">
@@ -402,7 +498,7 @@ export default function BTOBuilder() {
             className="text-center mb-12"
           >
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-600 mb-3">Build to Order</p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">
+            <h2 className="font-display-kr text-3xl md:text-4xl font-semibold tracking-tight text-white">
               나만의 테이블을 만들어보세요
             </h2>
           </motion.div>

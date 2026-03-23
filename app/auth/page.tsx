@@ -14,41 +14,7 @@ async function signInWithGoogle() {
 
 export default function AuthPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: "#171717" }}>
-      {/* Ambient background orbs */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: "600px",
-          height: "600px",
-          top: "-100px",
-          left: "-150px",
-          background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: "500px",
-          height: "500px",
-          bottom: "-80px",
-          right: "-100px",
-          background: "radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: "300px",
-          height: "300px",
-          top: "40%",
-          left: "60%",
-          background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)",
-          filter: "blur(30px)",
-        }}
-      />
+    <main className="relative min-h-screen flex items-center justify-center bg-[#0a0a0a]">
 
       {/* Liquid Glass Card */}
       <div

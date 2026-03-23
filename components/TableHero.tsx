@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers, Ruler, Palette, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { SpecIcon } from '@/components/SpecIcon';
 import { createClient } from '@/lib/supabase/client';
 
 const MotionImage = motion(Image);
@@ -33,33 +34,25 @@ interface ProductData {
 // =========================================
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 8 },
   visible: (i: number) => ({
-    opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { type: 'spring' as const, stiffness: 100, damping: 20, delay: i * 0.08 },
+    opacity: 1, y: 0,
+    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: i * 0.06 },
   }),
-  exit: { opacity: 0, y: -12, filter: 'blur(6px)', transition: { duration: 0.18 } },
+  exit: { opacity: 0, y: -6, transition: { duration: 0.15 } },
 };
 
 const imageVariant = {
-  initial: { opacity: 0, scale: 1.08, filter: 'blur(12px)' },
-  animate: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
-  exit:    { opacity: 0, scale: 0.94, filter: 'blur(8px)', transition: { duration: 0.25 } },
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+  exit:    { opacity: 0, transition: { duration: 0.2 } },
 };
 
 // =========================================
 // 3. SUB-COMPONENTS
 // =========================================
 
-const Background = ({ product }: { product: ProductData }) => (
-  <div className="fixed inset-0 pointer-events-none">
-    <motion.div
-      animate={{ background: `radial-gradient(ellipse at 30% 50%, ${product.colors.glow}, transparent 60%)` }}
-      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      className="absolute inset-0"
-    />
-  </div>
-);
+const Background = () => null;
 
 const ProductGallery = ({
   product,
@@ -72,11 +65,6 @@ const ProductGallery = ({
 }) => (
   <div className="flex flex-col items-center gap-5 shrink-0 w-full sm:w-auto">
     <div className="relative w-full max-w-[340px] sm:max-w-[460px] aspect-square rounded-2xl overflow-hidden border border-white/8 bg-zinc-900/60 backdrop-blur-sm shadow-2xl mx-auto">
-      <motion.div
-        animate={{ background: `radial-gradient(circle at 50% 80%, ${product.colors.glow}, transparent 70%)` }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 z-0"
-      />
       <AnimatePresence mode="wait">
         <MotionImage
           key={`${product.id}-${activePhoto}`}
@@ -121,7 +109,7 @@ const ProductGallery = ({
   </div>
 );
 
-const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () => void }) => (
+const ProductInfo = ({ product }: { product: ProductData }) => (
   <AnimatePresence mode="wait">
     <motion.div key={product.id} className="flex flex-col items-start max-w-sm w-full sm:w-auto">
       <motion.p custom={0} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
@@ -131,7 +119,7 @@ const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () =
         {product.subtitle}
       </motion.p>
       <motion.h1 custom={1} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-        className="text-4xl md:text-5xl font-bold tracking-tight mb-3 text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500"
+        className="font-display-kr text-4xl md:text-5xl font-semibold tracking-tight mb-3 text-white"
       >
         {product.name}
       </motion.h1>
@@ -146,9 +134,7 @@ const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () =
         {product.specs.map((spec) => (
           <div key={spec.label} className="flex items-center justify-between text-sm">
             <span className="flex items-center gap-2 text-zinc-500">
-              {spec.label === 'Material' && <Layers size={13} />}
-              {spec.label === 'Size' && <Ruler size={13} />}
-              {(spec.label === 'Resin Depth' || spec.label === 'Leg Type' || spec.label === 'Finish') && <Palette size={13} />}
+              <SpecIcon label={spec.label} />
               {spec.label}
             </span>
             <span className="font-mono text-xs text-zinc-300">{spec.value}</span>
@@ -156,15 +142,15 @@ const ProductInfo = ({ product, onBuild }: { product: ProductData; onBuild: () =
         ))}
       </motion.div>
       <div className="flex items-center gap-3 flex-wrap">
-        <motion.button
-          custom={4} variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-          onClick={onBuild}
-          whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-white hover:bg-zinc-100 transition-all"
-        >
-          직접 만들어보기
-          <ChevronRight size={15} />
-        </motion.button>
+        <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible" exit="exit">
+          <Link
+            href={`/?resinHint=${encodeURIComponent(product.colors.accent)}#build`}
+            className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-[#C8922A] hover:bg-[#b8821e] transition-colors"
+          >
+            직접 만들어보기
+            <ChevronRight size={15} />
+          </Link>
+        </motion.div>
         <motion.div custom={5} variants={fadeUp} initial="hidden" animate="visible" exit="exit">
           <Link
             href={`/products/${product.id}`}
@@ -233,7 +219,7 @@ const NumberSwitcher = ({
 // 4. MAIN
 // =========================================
 
-export default function TableHero({ onBuildClick }: { onBuildClick: () => void }) {
+export default function TableHero() {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [activePhoto, setActivePhoto] = useState(0);
@@ -296,7 +282,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
 
   return (
     <section className="relative min-h-screen w-full bg-black text-zinc-100 flex flex-col selection:bg-zinc-800">
-      <Background product={product} />
+      <Background />
       <main className="relative z-10 w-full px-6 pt-24 pb-8 max-w-7xl mx-auto flex-1 flex items-center justify-center">
         <motion.div
           layout
@@ -304,7 +290,7 @@ export default function TableHero({ onBuildClick }: { onBuildClick: () => void }
           className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 lg:gap-32 w-full"
         >
           <ProductGallery product={product} activePhoto={activePhoto} onPhotoChange={setActivePhoto} />
-          <ProductInfo product={product} onBuild={onBuildClick} />
+          <ProductInfo product={product} />
         </motion.div>
       </main>
       <NumberSwitcher products={products} activeId={activeId} onSelect={handleSelect} />

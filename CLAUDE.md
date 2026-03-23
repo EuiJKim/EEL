@@ -10,6 +10,7 @@
 - **ORM**: Prisma 5.22
 - **이메일**: Resend
 - **3D**: Three.js (WebGL 레진 미리보기)
+- **테스트**: Vitest (`__tests__/`)
 - **패키지 매니저**: bun
 - **배포**: Vercel → https://eel-smoky.vercel.app
 
@@ -18,6 +19,7 @@
 ```bash
 bun run dev          # 개발 서버 (http://localhost:3000)
 bun run build        # 프로덕션 빌드
+bun run test         # 단위 테스트 (Vitest)
 bun run lint         # ESLint
 bun run prisma:gen   # Prisma 클라이언트 재생성
 ```
@@ -45,8 +47,9 @@ components/
   TableHero.tsx       # 제품 쇼케이스 + 동적 배경
   CraftBridge.tsx     # 제조 과정 4단계 + 통계
   BTOBuilder.tsx      # 5단계 커스텀 주문 빌더
-  TablePreview3D.tsx  # Three.js 3D 레진 미리보기
-  EarbudHero.tsx      # 미사용 — 삭제 검토 필요
+  TablePreview3D.tsx  # Three.js 3D 레진 미리보기 (WebGL 폴백 포함)
+  SpecIcon.tsx        # 스펙 레이블 → 아이콘 공통 컴포넌트
+  HomeProductsSection.tsx  # 홈 제품 그리드 (SSR)
 lib/
   utils.ts        # formatKRW, formatDate
   prisma.ts       # Prisma 클라이언트 싱글턴
