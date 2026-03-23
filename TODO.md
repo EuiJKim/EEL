@@ -59,7 +59,7 @@
 - [x] **Spec 아이콘 로직 중복** — `components/SpecIcon.tsx`로 추출 완료
 - [ ] **Prisma 스키마 타입 불일치** — `product_images.id`가 DB에서 integer이지만 스키마에는 `String @id @default(uuid())`로 선언됨. 현재는 Supabase 직접 쿼리로 우회 중이나, 누군가 Prisma로 image 쿼리 추가 시 P2032 에러 발생. 스키마를 `Int @id @default(autoincrement())`로 수정 필요
 - [ ] **테스트 없음** — Vitest 세팅 후 최소 단위 테스트 작성: `calcPrice()`, URL 파라미터 인코드/디코드 round-trip, `SpecIcon` label 분기, 결제 webhook 서명 검증
-- [ ] **DESIGN.md 생성** — 코드베이스에서 확인되는 디자인 토큰(`bg-black`, `border-white/6`, 에메랄드 상태 색상, 간격 스케일 등)을 문서화. 새 컴포넌트 추가 시 참조 가능한 지침서. `/design-consultation` 스킬로 생성 가능
+- [x] **DESIGN.md 생성** — Dark Precision 디자인 시스템 문서화 완료 (2026-03-23). Noto Serif KR / DM Sans / amber #C8922A CTA 원칙 포함
 
 ---
 
@@ -77,6 +77,8 @@
 - [ ] **모바일 반응형 점검** — 전체 페이지 모바일 UX 확인 및 개선
 
 ### 브랜드/디자인
+- [ ] **product.accent 명도 접근성 감사** — 각 제품의 `accent` 색상이 `#0a0a0a` 배경에서 WCAG 4.5:1 이상의 명도 대비를 갖추는지 확인. 카탈로그 확장 전 진행 권장 (FINDING-004 from /design-review 2026-03-23)
+- [ ] **LCP 이미지 로딩** — TableHero 첫 번째 제품 이미지에 `loading="eager"` 명시 확인 (현재 `priority` 전달은 되나 브라우저 경고 발생)
 - [ ] **OG 이미지 설정** — SNS 공유 시 미리보기 이미지 (`/public/og.jpg`)
 - [ ] **파비콘** — EEL 브랜드 파비콘 적용
 - [ ] **제품 이미지 업로드** — Supabase Storage에 실제 제품 사진 등록
