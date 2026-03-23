@@ -58,7 +58,7 @@ export default function Header() {
       {/* Left: Brand */}
       <Link
         href="/"
-        className="text-sm font-bold tracking-[0.15em] uppercase text-zinc-300 hover:text-white transition-colors"
+        className="inline-flex items-center min-h-[44px] px-1 text-sm font-bold tracking-[0.15em] uppercase text-zinc-300 hover:text-white transition-colors"
       >
         EEL
       </Link>
@@ -67,7 +67,7 @@ export default function Header() {
       <nav className="hidden sm:flex items-center gap-1">
         <Link
           href="/products"
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+          className={`inline-flex items-center px-4 py-3 rounded-full text-sm font-medium transition-colors ${
             pathname === '/products' || pathname.startsWith('/products/')
               ? 'text-white bg-white/10'
               : 'text-zinc-400 hover:text-zinc-200'
@@ -77,7 +77,7 @@ export default function Header() {
         </Link>
         <Link
           href="/#build"
-          className="px-4 py-1.5 rounded-full text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
+          className="inline-flex items-center px-4 py-3 rounded-full text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
         >
           주문하기
         </Link>
@@ -160,7 +160,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             onClick={() => router.push('/auth')}
             style={{
-              padding: '6px 14px',
+              padding: '10px 14px',
               borderRadius: '40px',
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.1)',

@@ -59,7 +59,7 @@ export default function ProductDetailClient({
         >
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+            className="inline-flex items-center gap-1.5 min-h-[44px] text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
           >
             <ChevronLeft size={16} /> 제품 목록
           </Link>
