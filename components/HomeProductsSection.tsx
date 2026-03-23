@@ -79,7 +79,7 @@ export default async function HomeProductsSection() {
           </div>
           <Link
             href="/products"
-            className="hidden sm:flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-200 transition-colors group"
+            className="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] text-sm text-zinc-500 hover:text-zinc-200 transition-colors group"
           >
             전체 보기
             <ArrowRight
@@ -148,7 +148,7 @@ export default async function HomeProductsSection() {
         <div className="sm:hidden mt-8 text-center">
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
+            className="inline-flex items-center gap-1.5 min-h-[44px] text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
           >
             전체 보기
             <ArrowRight size={14} />
