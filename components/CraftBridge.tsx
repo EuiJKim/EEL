@@ -70,14 +70,7 @@ export default function CraftBridge() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl md:text-5xl font-bold tracking-tight mb-6"
-            style={{
-              color: 'transparent',
-              backgroundImage: 'linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.4) 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              lineHeight: 1.15,
-            }}
+            className="font-display-kr text-3xl md:text-5xl font-semibold tracking-tight mb-6 text-white leading-[1.15]"
           >
             모든 테이블은<br />당신을 위해 처음부터 만들어집니다
           </motion.h2>
