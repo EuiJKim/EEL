@@ -669,14 +669,14 @@ export default function BTOBuilder() {
                 <div className="flex items-center justify-between mt-8">
                   <button
                     onClick={() => setStep((s) => Math.max(0, s - 1))}
-                    className={`flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors ${step === 0 ? 'invisible' : ''}`}
+                    className={`inline-flex items-center gap-1.5 min-h-[44px] px-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors ${step === 0 ? 'invisible' : ''}`}
                   >
                     <ChevronLeft size={15} /> 이전
                   </button>
                   <motion.button
                     onClick={() => canNext && setStep((s) => s + 1)}
                     whileTap={{ scale: 0.97 }}
-                    className={`flex items-center gap-1.5 px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                    className={`inline-flex items-center gap-1.5 min-h-[44px] px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
                       canNext ? 'bg-white/10 text-white hover:bg-white/15 border border-white/15' : 'bg-zinc-900 text-zinc-600 border border-white/5 cursor-not-allowed'
                     }`}
                   >
