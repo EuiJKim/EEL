@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import { SpecIcon } from '@/components/SpecIcon';
+import Header from '@/components/Header';
 
 interface Product {
   id: string;
@@ -48,7 +49,9 @@ export default function ProductDetailClient({
   const [activePhoto, setActivePhoto] = useState(0);
 
   return (
-    <main className="bg-black text-zinc-100 px-6 py-16 pb-24">
+    <main className="bg-black text-zinc-100">
+      <Header />
+      <div className="px-6 py-16 pb-24">
       <div className="relative max-w-5xl mx-auto">
         {/* Back */}
         <motion.div
@@ -184,6 +187,7 @@ export default function ProductDetailClient({
             </motion.div>
           </div>
         </div>
+      </div>
       </div>
     </main>
   );
