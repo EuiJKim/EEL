@@ -79,6 +79,7 @@ const ProductGallery = ({
           exit="exit"
           draggable={false}
           priority={activePhoto === 0}
+          loading={activePhoto === 0 ? 'eager' : 'lazy'}
         />
       </AnimatePresence>
       <div className="absolute bottom-3 right-3 z-20 text-[11px] font-mono text-white/40 bg-black/40 px-2 py-1 rounded-full backdrop-blur-sm">
