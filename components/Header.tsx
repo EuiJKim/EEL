@@ -42,13 +42,13 @@ export default function Header() {
     router.refresh();
   }
 
-  const navLink = 'text-[11px] tracking-[0.25em] uppercase text-zinc-500 hover:text-white transition-colors duration-200';
-  const activeLink = 'text-[11px] tracking-[0.25em] uppercase text-white';
+  const navLink = 'text-[11px] tracking-[0.25em] uppercase text-zinc-500 hover:text-white transition-colors duration-200 min-h-[44px] flex items-center';
+  const activeLink = 'text-[11px] tracking-[0.25em] uppercase text-white min-h-[44px] flex items-center';
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 py-6">
       {/* Left: Brand */}
-      <Link href="/" className="text-[11px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors">
+      <Link href="/" className="text-[11px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors min-h-[44px] flex items-center">
         EEL
       </Link>
 
