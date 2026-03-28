@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -23,16 +22,6 @@ interface ProductImage {
   sort_order: number;
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(8px)' },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { type: 'spring' as const, stiffness: 100, damping: 20, delay: i * 0.08 },
-  }),
-};
-
 export default function ProductsCatalogClient({
   products,
   images,
@@ -42,32 +31,24 @@ export default function ProductsCatalogClient({
 }) {
   return (
     <div className="relative min-h-screen bg-black text-zinc-100">
-      {/* Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 0%, rgba(60,60,60,0.3), transparent 60%)',
-          }}
-        />
-      </div>
-
-      <div className="relative max-w-5xl mx-auto px-6 pt-28 pb-20">
+      <div className="relative max-w-5xl mx-auto px-6 pt-28 pb-24">
         {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12"
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-500 mb-3">Collection</p>
-          <h1 className="font-display-kr text-4xl sm:text-5xl font-semibold tracking-tight text-white">
-            제품 목록
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-600 mb-3">
+            Collection
+          </p>
+          <h1 className="font-display-kr text-[1.75rem] font-semibold tracking-tight text-white">
+            Works
           </h1>
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product, i) => {
             const firstImage = images
               .filter((img) => img.product_id === product.id)
@@ -76,14 +57,17 @@ export default function ProductsCatalogClient({
             return (
               <motion.div
                 key={product.id}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: i * 0.06,
+                }}
               >
                 <Link href={`/products/${product.id}`} className="group block">
-                  {/* Image area */}
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/8 mb-4 bg-zinc-900/60">
+                  {/* Image */}
+                  <div className="relative aspect-[4/3] rounded-[14px] overflow-hidden border border-white/[0.07] mb-4 bg-zinc-900">
                     {firstImage && (
                       <Image
                         src={firstImage.url}
@@ -97,24 +81,17 @@ export default function ProductsCatalogClient({
                     )}
                   </div>
 
-                  {/* Card body */}
-                  <div className="px-1">
+                  {/* Label + Name */}
+                  <div className="px-0.5">
                     <p
-                      className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1"
+                      className="text-[10px] font-bold uppercase tracking-[0.2em] mb-1.5"
                       style={{ color: product.accent }}
                     >
                       {product.subtitle}
                     </p>
-                    <h2 className="text-lg font-semibold text-white mb-1.5 group-hover:text-zinc-200 transition-colors">
+                    <h2 className="text-[1rem] font-semibold text-white group-hover:text-zinc-300 transition-colors duration-150">
                       {product.name}
                     </h2>
-                    <p className="text-sm text-zinc-500 line-clamp-2 mb-3 leading-relaxed">
-                      {product.description}
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-sm text-zinc-400 group-hover:text-white transition-colors">
-                      자세히 보기
-                      <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
                   </div>
                 </Link>
               </motion.div>
