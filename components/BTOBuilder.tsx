@@ -498,7 +498,7 @@ export default function BTOBuilder() {
             className="text-center mb-12"
           >
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-600 mb-3">Build to Order</p>
-            <h2 className="font-display-kr text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            <h2 className="font-display-kr text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance">
               나만의 테이블을 만들어보세요
             </h2>
           </motion.div>
