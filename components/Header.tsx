@@ -18,6 +18,13 @@ export default function Header() {
   const pathname = usePathname();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     async function fetchUser() {
@@ -46,7 +53,7 @@ export default function Header() {
   const activeLink = 'text-[11px] tracking-[0.25em] uppercase text-white min-h-[44px] flex items-center';
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 py-6">
+    <header className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 py-6 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/[0.06]' : ''}`}>
       {/* Left: Brand */}
       <Link href="/" className="text-[11px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors min-h-[44px] flex items-center">
         EEL
