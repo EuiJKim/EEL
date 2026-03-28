@@ -78,7 +78,8 @@
 
 ### 브랜드/디자인
 - [ ] **product.accent 명도 접근성 감사** — 각 제품의 `accent` 색상이 `#0a0a0a` 배경에서 WCAG 4.5:1 이상의 명도 대비를 갖추는지 확인. 카탈로그 확장 전 진행 권장 (FINDING-004)
-- [ ] **제품 상세 페이지 가격 표시** — `products/[id]` 페이지에 시작 가격("120만원~") 추가. BTO 최소 사이즈 기준 또는 products 테이블에 `starting_price` 컬럼 추가. 전환율 직접 영향 (FINDING-006 from /design-review 2026-03-24)
+- [ ] **제품 상세 페이지 가격 표시** — `products/[id]` 페이지에 시작 가격("120만원~") 추가. BTO 최소 사이즈 기준 또는 products 테이블에 `starting_price` 컬럼 추가. 전환율 직접 영향 (FINDING-R003 from /design-review 2026-03-28, re-opened from FINDING-006 2026-03-24) — **High priority: 신뢰/전환 직결**
+- [ ] **Three.js PCFSoftShadowMap 경고 제거** — `TablePreview3D.tsx`에서 `renderer.shadowMap.type = THREE.PCFShadowMap`으로 변경하거나 Three.js 버전 업그레이드. 유저에게 보이지 않으나 콘솔 노이즈 (FINDING-002, deferred)
 - [x] **LCP 이미지 로딩** — `loading="eager"` 추가 완료 (2026-03-24, commit 52de3f4)
 - [ ] **OG 이미지 설정** — SNS 공유 시 미리보기 이미지 (`/public/og.jpg`)
 - [ ] **파비콘** — EEL 브랜드 파비콘 적용
