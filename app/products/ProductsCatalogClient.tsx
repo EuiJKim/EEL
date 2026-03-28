@@ -92,6 +92,7 @@ export default function ProductsCatalogClient({
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         priority={i === 0}
+                        loading={i === 0 ? 'eager' : undefined}
                       />
                     )}
                   </div>
