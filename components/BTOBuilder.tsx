@@ -613,7 +613,7 @@ export default function BTOBuilder() {
                         onClick={() => jumpable && setStep(i)}
                         className={`flex flex-col items-center gap-1 focus:outline-none ${jumpable ? 'cursor-pointer' : 'cursor-default'}`}
                       >
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                        <div className={`w-11 h-11 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
                           i < step  ? 'bg-white text-black'
                           : i === step ? 'bg-white/15 text-white border border-white/30'
                           : 'bg-zinc-900 text-zinc-600 border border-white/8'
