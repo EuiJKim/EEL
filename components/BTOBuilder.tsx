@@ -498,7 +498,7 @@ export default function BTOBuilder() {
             className="text-center mb-12"
           >
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-600 mb-3">Build to Order</p>
-            <h2 className="font-display-en text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance italic">
+            <h2 className="font-display-en text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance">
               Build Your Table
             </h2>
           </motion.div>
