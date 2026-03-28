@@ -13,7 +13,7 @@ export default function Home() {
           src="/products/cabinet-black/1.jpg"
           alt="Noir Cabinet"
           fill
-          className="object-cover"
+          className="object-contain"
           priority
           loading="eager"
         />
