@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import Header from '@/components/Header';
 import ProductsCatalogClient from './ProductsCatalogClient';
 
+export const revalidate = 60; // ISR: revalidate every 60s — reduces 2.5s SSR TTFB to ~0ms on cache hit
+
 export default async function ProductsPage() {
   const supabase = await createClient();
   // Auth session kept alive via Supabase server client
