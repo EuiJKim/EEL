@@ -35,7 +35,7 @@ interface Selection {
   size: string; resin: string; wood: string; leg: string;
 }
 
-const STEPS = ['사이즈', '레진 색상', '우드 종류', '다리 스타일', '주문'];
+const STEPS = ['Size', 'Resin', 'Wood', 'Leg', 'Review'];
 
 // =========================================
 // 2. COUNT-UP HOOK
@@ -185,10 +185,10 @@ function OrderStep({
   const total = calcPrice(sel, data);
 
   const rows = [
-    { label: '사이즈',    value: size  ? `${size.label} (${size.size})` : '-' },
-    { label: '레진 색상', value: resin?.label ?? '-' },
-    { label: '우드 종류', value: wood?.label  ?? '-' },
-    { label: '다리 스타일', value: leg?.label ?? '-' },
+    { label: 'Size',  value: size  ? `${size.label} (${size.size})` : '-' },
+    { label: 'Resin', value: resin?.label ?? '-' },
+    { label: 'Wood',  value: wood?.label  ?? '-' },
+    { label: 'Leg',   value: leg?.label   ?? '-' },
   ];
 
   return (
@@ -201,17 +201,17 @@ function OrderStep({
           </div>
         ))}
         <div className="border-t border-white/8 pt-3 flex items-center justify-between">
-          <span className="text-zinc-400 font-semibold">예상 금액</span>
+          <span className="text-zinc-400 font-semibold">Total</span>
           <span className="text-white text-lg font-bold">{formatKRW(total)}</span>
         </div>
       </div>
 
       <p className="text-[11px] text-zinc-600 leading-relaxed">
-        * 모든 제품은 수작업 제작되며 주문 확정 후 6~10주 소요됩니다. 최종 가격은 상담 후 확정됩니다.
+        * Handmade to order — 6–10 weeks from confirmation. Final price agreed after consultation.
       </p>
 
       {error && (
-        <p className="text-xs text-red-400 text-center">주문 접수에 실패했습니다. 다시 시도해주세요.</p>
+        <p className="text-xs text-red-400 text-center">Submission failed. Please try again.</p>
       )}
 
       <div className="flex gap-3">
@@ -219,10 +219,10 @@ function OrderStep({
           onClick={onShare}
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/8 transition-colors text-sm text-zinc-300 shrink-0"
-          title="이 설계 공유하기"
+          title="Share this configuration"
         >
           {copied ? <Copy size={15} className="text-emerald-400" /> : <Link2 size={15} />}
-          {copied ? '복사됨!' : '공유'}
+          {copied ? 'Copied!' : 'Share'}
         </motion.button>
         <motion.button
           onClick={onSubmit}
@@ -231,7 +231,7 @@ function OrderStep({
           className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#C8922A] text-black font-bold text-sm hover:bg-[#b8821e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {submitting ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
-          {submitting ? '접수 중...' : '주문 문의하기'}
+          {submitting ? 'Processing...' : 'Request Order'}
         </motion.button>
       </div>
     </div>
@@ -276,10 +276,10 @@ function SuccessModal({ onClose, orderId }: { onClose: () => void; orderId: stri
           <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mb-5">
             <CheckCircle size={28} className="text-emerald-400" />
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">장인의 손에 전달되었습니다</h3>
+          <h3 className="text-xl font-bold text-white mb-2">Order Received</h3>
           <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-            세상에 하나뿐인 테이블이 시작되었어요.<br />
-            주문 확정 후 6~10주, 정성껏 제작합니다.
+            Your one-of-a-kind table has begun.<br />
+            6–10 weeks from confirmation, made by hand.
           </p>
           <div className="flex flex-col gap-2 w-full">
             {orderId && (
@@ -287,14 +287,14 @@ function SuccessModal({ onClose, orderId }: { onClose: () => void; orderId: stri
                 href={`/orders/${orderId}`}
                 className="w-full py-3 rounded-xl bg-[#C8922A] text-black font-semibold text-sm hover:bg-[#b8821e] transition-colors text-center"
               >
-                주문 현황 보기 →
+                Track Order →
               </a>
             )}
             <button
               onClick={onClose}
               className={`w-full py-3 rounded-xl text-sm font-semibold transition-colors ${orderId ? 'bg-white/8 text-zinc-300 hover:bg-white/12 border border-white/10' : 'bg-[#C8922A] text-black hover:bg-[#b8821e]'}`}
             >
-              {orderId ? '계속 둘러보기' : '확인'}
+              {orderId ? 'Continue' : 'Done'}
             </button>
           </div>
         </div>
@@ -498,8 +498,8 @@ export default function BTOBuilder() {
             className="text-center mb-12"
           >
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-600 mb-3">Build to Order</p>
-            <h2 className="font-display-kr text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance">
-              나만의 테이블을 만들어보세요
+            <h2 className="font-display-en text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance italic">
+              Build Your Table
             </h2>
           </motion.div>
 
@@ -533,8 +533,8 @@ export default function BTOBuilder() {
                 {/* Drag hint */}
                 {!sel.resin && !sel.wood && !sel.leg && (
                   <div className="absolute inset-0 flex flex-col items-end justify-end p-3 pointer-events-none gap-1">
-                    <p className="text-[10px] text-zinc-600 tracking-wide">드래그로 회전 가능</p>
-                    <p className="text-[10px] text-zinc-700 tracking-wide">옵션을 선택하면 실시간으로 반영됩니다</p>
+                    <p className="text-[10px] text-zinc-600 tracking-wide">Drag to rotate</p>
+                    <p className="text-[10px] text-zinc-700 tracking-wide">Options update in real time</p>
                   </div>
                 )}
 
@@ -641,7 +641,7 @@ export default function BTOBuilder() {
                     className="flex justify-end mb-4"
                   >
                     <div className="flex items-center gap-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5">
-                      <span className="text-[10px] text-zinc-600 uppercase tracking-widest">예상 금액</span>
+                      <span className="text-[10px] text-zinc-600 uppercase tracking-widest">Est.</span>
                       <span className="text-sm font-bold text-white tabular-nums">{formatKRW(displayPrice)}</span>
                     </div>
                   </motion.div>
@@ -653,9 +653,9 @@ export default function BTOBuilder() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={step}
-                    initial={{ opacity: 0, x: 20, filter: 'blur(6px)' }}
-                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: -20, filter: 'blur(6px)' }}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -12 }}
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <p className="text-sm font-semibold text-zinc-400 mb-4 uppercase tracking-widest">{STEPS[step]}</p>
@@ -671,7 +671,7 @@ export default function BTOBuilder() {
                     onClick={() => setStep((s) => Math.max(0, s - 1))}
                     className={`inline-flex items-center gap-1.5 min-h-[44px] px-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors ${step === 0 ? 'invisible' : ''}`}
                   >
-                    <ChevronLeft size={15} /> 이전
+                    <ChevronLeft size={15} /> Back
                   </button>
                   <motion.button
                     onClick={() => canNext && setStep((s) => s + 1)}
@@ -680,7 +680,7 @@ export default function BTOBuilder() {
                       canNext ? 'bg-white/10 text-white hover:bg-white/15 border border-white/15' : 'bg-zinc-900 text-zinc-600 border border-white/5 cursor-not-allowed'
                     }`}
                   >
-                    {step === 3 ? '주문 요약 보기' : '다음'}
+                    {step === 3 ? 'Review' : 'Next'}
                     <ChevronRight size={15} />
                   </motion.button>
                 </div>
@@ -688,7 +688,7 @@ export default function BTOBuilder() {
 
               {/* Keyboard hint */}
               <p className="text-center text-[10px] text-zinc-700 mt-4 hidden md:block">
-                ← → 키로 이동 가능
+                ← → to navigate
               </p>
             </div>
           </div>
