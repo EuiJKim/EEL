@@ -97,7 +97,7 @@ function buildShareUrl(sel: Partial<Selection>): string {
   if (sel.resin) params.set('resin', sel.resin);
   if (sel.wood)  params.set('wood',  sel.wood);
   if (sel.leg)   params.set('leg',   sel.leg);
-  return `${window.location.origin}/?${params.toString()}#build`;
+  return `${window.location.origin}/order?${params.toString()}`;
 }
 
 // =========================================
@@ -367,17 +367,6 @@ export default function BTOBuilder() {
       })
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Scroll to #build after mount (Suspense delays element availability)
-  useEffect(() => {
-    if (window.location.hash === '#build') {
-      const el = document.getElementById('build');
-      if (el) {
-        // Small delay to ensure layout is settled after Suspense
-        requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth' }));
-      }
-    }
-  }, []);
 
   // Persist selections to localStorage
   useEffect(() => {

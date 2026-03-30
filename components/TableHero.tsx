@@ -145,7 +145,7 @@ const ProductInfo = ({ product }: { product: ProductData }) => (
       <div className="flex items-center gap-3 flex-wrap">
         <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible" exit="exit">
           <Link
-            href={`/?resinHint=${encodeURIComponent(product.colors.accent)}#build`}
+            href={`/order?resinHint=${encodeURIComponent(product.colors.accent)}`}
             className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-[#C8922A] hover:bg-[#b8821e] transition-colors"
           >
             직접 만들어보기

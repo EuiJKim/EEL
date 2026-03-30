@@ -173,7 +173,7 @@ export default function ProductDetailClient({
               className="flex flex-col sm:flex-row gap-3"
             >
               <Link
-                href={`/?resinHint=${encodeURIComponent(product.accent)}#build`}
+                href={`/order?resinHint=${encodeURIComponent(product.accent)}`}
                 className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-black bg-[#C8922A] hover:bg-[#b8821e] transition-colors"
               >
                 직접 만들어보기
