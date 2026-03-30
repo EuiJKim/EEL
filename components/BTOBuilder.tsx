@@ -368,6 +368,17 @@ export default function BTOBuilder() {
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Scroll to #build after mount (Suspense delays element availability)
+  useEffect(() => {
+    if (window.location.hash === '#build') {
+      const el = document.getElementById('build');
+      if (el) {
+        // Small delay to ensure layout is settled after Suspense
+        requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth' }));
+      }
+    }
+  }, []);
+
   // Persist selections to localStorage
   useEffect(() => {
     try { localStorage.setItem(LS_KEY, JSON.stringify(sel)); } catch { /* ignore */ }

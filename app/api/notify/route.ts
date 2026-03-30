@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const FROM_EMAIL = process.env.FROM_EMAIL ?? 'EEL Studio <onboarding@resend.dev>';
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     // Send to admin
     await resend.emails.send({
-      from: 'EEL Studio <onboarding@resend.dev>',
+      from: FROM_EMAIL,
       to: adminEmail,
       subject: `[EEL] 새 주문 접수 — ${userName ?? userEmail}`,
       html: `
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     // Send to user
     if (userEmail) {
       await resend.emails.send({
-        from: 'EEL Studio <onboarding@resend.dev>',
+        from: FROM_EMAIL,
         to: userEmail,
         subject: '[EEL] 주문이 접수됐습니다',
         html: `
