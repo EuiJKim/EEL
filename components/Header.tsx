@@ -77,7 +77,7 @@ export default function Header() {
             Works
           </Link>
           <Link
-            href="/#build"
+            href="/order"
             className={navLink}
           >
             Order
@@ -175,7 +175,7 @@ export default function Header() {
                 Works
               </Link>
               <Link
-                href="/#build"
+                href="/order"
                 className="text-sm tracking-[0.3em] uppercase text-zinc-400 hover:text-white transition-colors"
               >
                 Order

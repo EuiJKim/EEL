@@ -27,7 +27,7 @@ export default function Footer() {
               <Link href="/products" className="text-sm text-zinc-500 hover:text-white transition-colors">
                 Works
               </Link>
-              <Link href="/#build" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              <Link href="/order" className="text-sm text-zinc-500 hover:text-white transition-colors">
                 Order
               </Link>
             </div>
