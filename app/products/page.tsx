@@ -5,24 +5,17 @@ import ProductsCatalogClient from './ProductsCatalogClient';
 
 export default async function ProductsPage() {
   const supabase = await createClient();
-  // Auth session kept alive via Supabase server client
-  await supabase.auth.getUser();
 
-  const products = await prisma.product.findMany({
-    orderBy: { index: 'asc' },
-  });
+  // Fetch products and images in parallel
+  const [products, { data: allImages }] = await Promise.all([
+    prisma.product.findMany({ orderBy: { index: 'asc' } }),
+    supabase
+      .from('product_images')
+      .select('id, product_id, url, sort_order')
+      .order('sort_order', { ascending: true }),
+  ]);
 
-  const productIds = products.map((p) => p.id);
-
-  // Use Supabase directly — Prisma schema declares product_images.id as String
-  // but DB stores it as integer, causing P2032 on findMany. Supabase bypasses this.
-  const { data: mappedImages } = productIds.length
-    ? await supabase
-        .from('product_images')
-        .select('id, product_id, url, sort_order')
-        .in('product_id', productIds)
-        .order('sort_order', { ascending: true })
-    : { data: [] };
+  const mappedImages = allImages;
 
   return (
     <main className="bg-black">
