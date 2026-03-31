@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import Header from '@/components/Header';
 
 export default function Home() {
@@ -29,16 +28,6 @@ export default function Home() {
           <h1 className="text-sm tracking-[0.2em] uppercase text-white font-light">
             Noir Cabinet
           </h1>
-        </div>
-
-        {/* Bottom-right: CTA */}
-        <div className="absolute bottom-10 right-10">
-          <Link
-            href="/order"
-            className="text-[11px] tracking-[0.3em] uppercase text-zinc-400 hover:text-white transition-colors border-b border-zinc-700 hover:border-white pb-0.5"
-          >
-            Order
-          </Link>
         </div>
       </section>
     </main>
