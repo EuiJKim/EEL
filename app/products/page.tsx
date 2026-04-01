@@ -1,12 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
-import Header from '@/components/Header';
+import Sidebar from '@/components/Sidebar';
 import ProductsCatalogClient from './ProductsCatalogClient';
 
 export default async function ProductsPage() {
   const supabase = await createClient();
 
-  // Fetch products and images in parallel
   const [products, { data: allImages }] = await Promise.all([
     prisma.product.findMany({ orderBy: { index: 'asc' } }),
     supabase
@@ -15,12 +14,12 @@ export default async function ProductsPage() {
       .order('sort_order', { ascending: true }),
   ]);
 
-  const mappedImages = allImages;
-
   return (
-    <main className="bg-black">
-      <Header />
-      <ProductsCatalogClient products={products} images={mappedImages ?? []} />
+    <main className="bg-[#0a0a0a] min-h-screen">
+      <Sidebar />
+      <div className="lg:ml-[15%] lg:min-w-0">
+        <ProductsCatalogClient products={products} images={allImages ?? []} />
+      </div>
     </main>
   );
 }

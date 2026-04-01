@@ -62,27 +62,41 @@ export default function Header() {
 
   return (
     <>
-      <header className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-5 sm:px-8 py-5 sm:py-6 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/[0.06]' : ''}`}>
-        {/* Left: Brand */}
-        <Link href="/" className="text-[11px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors min-h-[44px] flex items-center">
-          EEL
-        </Link>
+      <header className={`fixed top-0 inset-x-0 z-50 flex items-start justify-between px-5 sm:px-8 py-5 sm:py-6 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/[0.06]' : ''}`}>
+        {/* Left: Brand + sub-nav on home */}
+        <div className="flex flex-col">
+          <Link href="/" className="text-[15px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors h-[44px] flex items-center">
+            EEL
+          </Link>
+          {pathname === '/' && (
+            <nav className="hidden sm:flex flex-col gap-1.5 -mt-1">
+              <Link href="/products" className="text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-white transition-colors">
+                Works
+              </Link>
+              <Link href="/order" className="text-[10px] tracking-[0.2em] uppercase text-zinc-500 hover:text-white transition-colors">
+                Order
+              </Link>
+            </nav>
+          )}
+        </div>
 
-        {/* Center: Desktop Nav */}
-        <nav className="hidden sm:flex items-center gap-10">
-          <Link
-            href="/products"
-            className={pathname === '/products' || pathname.startsWith('/products/') ? activeLink : navLink}
-          >
-            Works
-          </Link>
-          <Link
-            href="/order"
-            className={navLink}
-          >
-            Order
-          </Link>
-        </nav>
+        {/* Center: Desktop Nav (other pages) */}
+        {pathname !== '/' && (
+          <nav className="hidden sm:flex items-center gap-10">
+            <Link
+              href="/products"
+              className={pathname === '/products' || pathname.startsWith('/products/') ? activeLink : navLink}
+            >
+              Works
+            </Link>
+            <Link
+              href="/order"
+              className={navLink}
+            >
+              Order
+            </Link>
+          </nav>
+        )}
 
         {/* Right: Auth (desktop) + Hamburger (mobile) */}
         <div className="flex items-center gap-3">
@@ -138,7 +152,7 @@ export default function Header() {
                 <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <Link
                     href="/auth"
-                    className="text-[11px] tracking-[0.25em] uppercase text-zinc-500 hover:text-white transition-colors min-h-[44px] flex items-center"
+                    className="text-[11px] tracking-[0.25em] uppercase text-white hover:text-zinc-300 transition-colors min-h-[44px] flex items-center"
                   >
                     Login
                   </Link>
