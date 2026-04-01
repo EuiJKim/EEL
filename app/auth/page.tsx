@@ -1,18 +1,22 @@
 "use client";
 
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-async function signInWithGoogle() {
-  const supabase = createClient();
-  await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
-    },
-  });
-}
+function AuthContent() {
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get('returnTo') || '/';
 
-export default function AuthPage() {
+  async function signInWithGoogle() {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?returnTo=${encodeURIComponent(returnTo)}`,
+      },
+    });
+  }
   return (
     <main className="relative min-h-screen flex items-center justify-center bg-[#0a0a0a]">
 
@@ -151,5 +155,13 @@ export default function AuthPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthContent />
+    </Suspense>
   );
 }

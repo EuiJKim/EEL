@@ -453,7 +453,7 @@ export default function BTOBuilder() {
   async function handleSubmit() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push('/auth'); return; }
+    if (!user) { router.push('/auth?returnTo=/order'); return; }
 
     setSubmitting(true);
     setSubmitError(false);
