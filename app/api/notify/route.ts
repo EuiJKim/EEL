@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
           <td style="padding:12px 0 0;color:#888;font-weight:600;">예상 금액</td>
           <td style="padding:12px 0 0;color:#fff;font-weight:700;">${summary.totalPrice}</td>
         </tr>
+        <tr><td style="padding:8px 0;color:#888;">연락처</td><td style="padding:8px 0;color:#fff;">${summary.phone ?? '-'}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">요청사항</td><td style="padding:8px 0;color:#fff;">${summary.note ?? '-'}</td></tr>
       </table>
     `;
 

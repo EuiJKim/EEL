@@ -36,6 +36,8 @@ export default async function AdminPage() {
       status: o.status,
       total_price: o.totalPrice,
       user_id: o.userId,
+      phone: o.phone ?? null,
+      note: o.note ?? null,
       size: o.size ? { label: o.size.label, size: o.size.size } : null,
       resin: o.resin ? { label: o.resin.label, hex: o.resin.hex } : null,
       wood: o.wood ? { label: o.wood.label } : null,

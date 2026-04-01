@@ -11,6 +11,8 @@ export interface AdminOrder {
   status: string;
   total_price: number;
   user_id: string;
+  phone: string | null;
+  note: string | null;
   size: { label: string; size: string } | null;
   resin: { label: string; hex: string } | null;
   wood: { label: string } | null;
@@ -99,6 +101,12 @@ export default function AdminOrderList({ initialOrders }: { initialOrders: Admin
                   </p>
                   {order.profile?.email && (
                     <p className="text-xs text-zinc-600">{order.profile.email}</p>
+                  )}
+                  {order.phone && (
+                    <p className="text-xs text-emerald-400 mt-0.5">📞 {order.phone}</p>
+                  )}
+                  {order.note && (
+                    <p className="text-xs text-zinc-500 mt-0.5">💬 {order.note}</p>
                   )}
                 </div>
 

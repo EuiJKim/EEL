@@ -10,10 +10,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { sizeId, resinId, woodId, legId, totalPrice } = await req.json();
+  const { sizeId, resinId, woodId, legId, totalPrice, phone, note } = await req.json();
 
   const order = await prisma.order.create({
-    data: { userId: user.id, sizeId, resinId, woodId, legId, totalPrice },
+    data: { userId: user.id, sizeId, resinId, woodId, legId, totalPrice, phone, note },
   });
 
   const profile = await prisma.profile.findUnique({ where: { id: user.id } });

@@ -174,9 +174,11 @@ function SwatchStep({ value, onChange, options }: {
 
 function OrderStep({
   sel, data, onSubmit, submitting, error, onShare, copied,
+  phone, onPhoneChange, note, onNoteChange,
 }: {
   sel: Partial<Selection>; data: BTOData; onSubmit: () => void; submitting: boolean; error: boolean;
   onShare: () => void; copied: boolean;
+  phone: string; onPhoneChange: (v: string) => void; note: string; onNoteChange: (v: string) => void;
 }) {
   const size  = data.sizes.find((s) => s.id === sel.size);
   const resin = data.resins.find((r) => r.id === sel.resin);
@@ -206,8 +208,31 @@ function OrderStep({
         </div>
       </div>
 
+      <div className="space-y-3">
+        <div>
+          <label className="block text-xs text-zinc-400 mb-1.5">연락처 (필수)</label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => onPhoneChange(e.target.value)}
+            placeholder="010-0000-0000"
+            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900/50 border border-white/8 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-white/20 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-zinc-400 mb-1.5">요청사항 (선택)</label>
+          <textarea
+            value={note}
+            onChange={(e) => onNoteChange(e.target.value)}
+            placeholder="원하시는 디자인이나 참고 이미지 등을 적어주세요"
+            rows={2}
+            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900/50 border border-white/8 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-white/20 transition-colors resize-none"
+          />
+        </div>
+      </div>
+
       <p className="text-[11px] text-zinc-600 leading-relaxed">
-        * Handmade to order — 6–10 weeks from confirmation. Final price agreed after consultation.
+        * 주문 접수 후 상담을 통해 최종 가격과 제작 일정을 안내드립니다.
       </p>
 
       {error && (
@@ -226,8 +251,8 @@ function OrderStep({
         </motion.button>
         <motion.button
           onClick={onSubmit}
-          disabled={submitting}
-          whileTap={{ scale: submitting ? 1 : 0.97 }}
+          disabled={submitting || !phone.trim()}
+          whileTap={{ scale: (submitting || !phone.trim()) ? 1 : 0.97 }}
           className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#C8922A] text-black font-bold text-sm hover:bg-[#b8821e] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {submitting ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
@@ -318,6 +343,8 @@ export default function BTOBuilder() {
   const [orderId, setOrderId]         = useState<string | null>(null);
   const [submitError, setSubmitError] = useState(false);
   const [copied, setCopied]           = useState(false);
+  const [phone, setPhone]             = useState('');
+  const [note, setNote]               = useState('');
 
   // Fetch BTO options + restore saved selection (URL params override localStorage)
   useEffect(() => {
@@ -435,7 +462,7 @@ export default function BTOBuilder() {
     const res    = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sizeId: sel.size, resinId: sel.resin, woodId: sel.wood, legId: sel.leg, totalPrice: total }),
+      body: JSON.stringify({ sizeId: sel.size, resinId: sel.resin, woodId: sel.wood, legId: sel.leg, totalPrice: total, phone: phone || null, note: note || null }),
     });
     const result = await res.json();
     setSubmitting(false);
@@ -460,6 +487,8 @@ export default function BTOBuilder() {
             wood:       wood?.label  ?? '-',
             leg:        leg?.label   ?? '-',
             totalPrice: total.toLocaleString('ko-KR') + '원',
+            phone:      phone || '-',
+            note:       note || '-',
           },
         }),
       }).catch(() => {});
@@ -478,7 +507,7 @@ export default function BTOBuilder() {
     <ResinStep  key="resin" value={sel.resin ?? ''} onChange={(v) => update('resin', v)} resins={data.resins} />,
     <SwatchStep key="wood"  value={sel.wood  ?? ''} onChange={(v) => update('wood',  v)} options={data.woods} />,
     <SwatchStep key="leg"   value={sel.leg   ?? ''} onChange={(v) => update('leg',   v)} options={data.legs} />,
-    <OrderStep  key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} onShare={handleShare} copied={copied} />,
+    <OrderStep  key="order" sel={sel} data={data} onSubmit={handleSubmit} submitting={submitting} error={submitError} onShare={handleShare} copied={copied} phone={phone} onPhoneChange={setPhone} note={note} onNoteChange={setNote} />,
   ];
 
   return (

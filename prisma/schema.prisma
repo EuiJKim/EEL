@@ -17,6 +17,8 @@ model Order {
   legId      String   @map("leg_id")
   totalPrice Int      @map("total_price")
   status     String   @default("pending")
+  phone      String?
+  note       String?
   createdAt  DateTime @default(now()) @map("created_at")
 
   size  SizeOption  @relation(fields: [sizeId], references: [id])
