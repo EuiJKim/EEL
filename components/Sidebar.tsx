@@ -46,7 +46,7 @@ export default function Sidebar() {
   }
 
   const navCls = (href: string) =>
-    `text-[10px] tracking-[0.2em] uppercase transition-colors duration-200 ${
+    `text-[9px] tracking-[0.2em] uppercase transition-colors duration-200 ${
       pathname === href || pathname.startsWith(href + '/') ? 'text-white' : 'text-zinc-500 hover:text-white'
     }`;
 
@@ -56,10 +56,10 @@ export default function Sidebar() {
       <aside className="hidden lg:flex fixed top-0 left-0 h-screen w-[15%] min-w-[160px] max-w-[220px] flex-col justify-between px-6 py-8 z-50 bg-[#0a0a0a]">
         {/* Top: brand + nav */}
         <div className="flex flex-col gap-5">
-          <Link href="/" className="text-[13px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors">
+          <Link href="/" className="text-[11px] font-bold tracking-[0.35em] uppercase text-white hover:text-zinc-300 transition-colors">
             EEL
           </Link>
-          <nav className="flex flex-col gap-2.5">
+          <nav className="flex flex-col gap-2">
             <Link href="/products" className={navCls('/products')}>Works</Link>
             <Link href="/order" className={navCls('/order')}>Order</Link>
           </nav>
@@ -92,7 +92,7 @@ export default function Sidebar() {
               </button>
             </>
           ) : (
-            <Link href="/auth" className="text-[10px] tracking-[0.2em] uppercase text-white hover:text-zinc-300 transition-colors">
+            <Link href="/auth" className="text-[9px] tracking-[0.2em] uppercase text-white hover:text-zinc-300 transition-colors">
               Login
             </Link>
           )}
