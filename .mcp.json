@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "blender": {
+      "command": "python",
+      "args": ["-m", "blender_mcp.server"]
+    },
     "supabase": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp?project_ref=emqwqcqehrxsenyerima",

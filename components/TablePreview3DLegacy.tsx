@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 // ─── Resin material property lookup ──────────────────────────────
 interface ResinProps {
@@ -27,6 +25,53 @@ const SIZE_SCALE: Record<string, number> = {
   's': 0.72, 'm': 1.0, 'l': 1.28, 'xl': 1.56,
 };
 
+// ─── Organic lily-pad top geometry ────────────────────────────────
+// Diameter 73-78 cm → radius ~0.76 in scene units (1 unit ≈ 50 cm)
+function makeOrganicTopGeometry(): THREE.BufferGeometry {
+  const baseR = 0.76;
+  const pts: THREE.Vector2[] = [];
+  const n = 200;
+
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    // Gentle undulation — subtle enough to look refined, not chaotic
+    const r = baseR
+      + baseR * 0.038 * Math.sin(a * 5 + 1.10)
+      + baseR * 0.018 * Math.sin(a * 8 + 2.35)
+      + baseR * 0.008 * Math.sin(a * 13 + 0.55);
+    pts.push(new THREE.Vector2(r * Math.cos(a), r * Math.sin(a)));
+  }
+
+  const shape = new THREE.Shape(pts);
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.055,         // ~2.7 cm — slim resin slab
+    bevelEnabled: true,
+    bevelThickness: 0.010,
+    bevelSize: 0.008,
+    bevelSegments: 5,
+  });
+  // ExtrudeGeometry extrudes along Z; rotate so top face points up (+Y)
+  geo.rotateX(-Math.PI / 2);
+  return geo;
+}
+
+// ─── Tulip/trumpet pedestal geometry ─────────────────────────────
+// LatheGeometry: [radius, y] profile swept around Y-axis
+// Heights normalized: full table height ~72 cm → ~1.44 units
+function makePedestalGeometry(): THREE.BufferGeometry {
+  const pts = [
+    new THREE.Vector2(0.395, 0.000),  // base outer rim
+    new THREE.Vector2(0.400, 0.014),  // base lip
+    new THREE.Vector2(0.375, 0.032),  // base top edge
+    new THREE.Vector2(0.150, 0.095),  // sweeping curve inward
+    new THREE.Vector2(0.068, 0.220),  // stem begins
+    new THREE.Vector2(0.042, 0.460),  // slim stem
+    new THREE.Vector2(0.046, 0.610),  // slight flare upward
+    new THREE.Vector2(0.062, 0.710),  // top — connects to table underside
+  ];
+  return new THREE.LatheGeometry(pts, 72);
+}
+
 // ─── Radial silk texture (mimics real resin fiber pattern) ────────
 function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
   const size = 512;
@@ -36,15 +81,18 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d')!;
   const cx = size / 2, cy = size / 2, r = size / 2;
 
+  // Base color
   ctx.fillStyle = hexColor;
   ctx.fillRect(0, 0, size, size);
 
+  // Subtle inner glow layer (color lighter at center)
   const innerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.55);
   innerGlow.addColorStop(0, 'rgba(255,255,255,0.22)');
   innerGlow.addColorStop(1, 'rgba(255,255,255,0.00)');
   ctx.fillStyle = innerGlow;
   ctx.fillRect(0, 0, size, size);
 
+  // Radial silk lines — deterministic pseudo-random using LCG
   let seed = 9301;
   const lcg = () => {
     seed = (seed * 49297 + 233280) % 233280;
@@ -59,6 +107,8 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
     const len = r * (0.20 + lcg() * 0.80);
     const alpha = 0.018 + lcg() * 0.13;
     const lw = 0.15 + lcg() * 1.3;
+
+    // Slight curve: draw as bezier toward outside
     const midR = len * 0.55;
     const midOffset = (lcg() - 0.5) * 0.06;
     const mAngle = a + midOffset;
@@ -76,6 +126,7 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
     ctx.stroke();
   }
 
+  // Bright starburst center
   const star = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.25);
   star.addColorStop(0, 'rgba(255,255,255,0.45)');
   star.addColorStop(0.5, 'rgba(255,255,255,0.10)');
@@ -83,6 +134,7 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
   ctx.fillStyle = star;
   ctx.fillRect(0, 0, size, size);
 
+  // Edge vignette
   const vig = ctx.createRadialGradient(cx, cy, r * 0.45, cx, cy, r);
   vig.addColorStop(0, 'rgba(0,0,0,0.00)');
   vig.addColorStop(1, 'rgba(0,0,0,0.22)');
@@ -135,39 +187,14 @@ function createEnvMap(renderer: THREE.WebGLRenderer): THREE.Texture {
   return envMap;
 }
 
-// ─── GLB Loader (singleton) ──────────────────────────────────────
-let glbPromise: Promise<THREE.Group> | null = null;
-function loadTableGLB(): Promise<THREE.Group> {
-  if (glbPromise) return glbPromise;
-  glbPromise = new Promise((resolve, reject) => {
-    const loader = new GLTFLoader();
-    const draco = new DRACOLoader();
-    draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
-    loader.setDRACOLoader(draco);
-    loader.load(
-      '/models/table.glb',
-      (gltf) => {
-        draco.dispose();
-        resolve(gltf.scene);
-      },
-      undefined,
-      (err) => {
-        glbPromise = null;
-        reject(err);
-      },
-    );
-  });
-  return glbPromise;
-}
-
 // ─── Component ────────────────────────────────────────────────────
 interface Props {
   resinHex: string;
-  woodColor: string;
+  woodColor: string;  // kept for API compat
   legColor: string;
   sizeId?: string;
   resinId?: string;
-  woodId?: string;
+  woodId?: string;    // kept for API compat
 }
 
 function supportsWebGL(): boolean {
@@ -220,6 +247,7 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
     const scene = new THREE.Scene();
     scene.background = null;
 
+    // Camera: slightly above and to the side to show organic top beautifully
     const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
     camera.position.set(2.0, 1.95, 2.5);
     camera.lookAt(0, 0.50, 0);
@@ -261,6 +289,7 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
     rim.position.set(0, 3, -4);
     scene.add(rim);
 
+    // Under-table bounce (slight warm from below)
     const bounce = new THREE.PointLight(0xffeedd, 0.25, 5);
     bounce.position.set(0, -0.2, 0);
     scene.add(bounce);
@@ -295,6 +324,7 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
       envMapIntensity: 1.1,
     });
 
+    // Stainless steel pedestal — default is polished silver
     const legMat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(legColor || '#c0c8d0'),
       roughness: 0.16,
@@ -305,49 +335,31 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
 
     // ── Table group ──────────────────────────────────────────────────
     const tableGroup = new THREE.Group();
+
+    // Organic resin top — positioned so pedestal top aligns at its bottom
+    const topGeo = makeOrganicTopGeometry();
+    const topMesh = new THREE.Mesh(topGeo, resinMat);
+    topMesh.position.y = 0.710;  // pedestal top = 0.710, slab sits flush
+    topMesh.castShadow = true;
+    topMesh.receiveShadow = true;
+    tableGroup.add(topMesh);
+
+    // Tulip pedestal body
+    const pedestalGeo = makePedestalGeometry();
+    const pedestalMesh = new THREE.Mesh(pedestalGeo, legMat);
+    pedestalMesh.castShadow = true;
+    pedestalMesh.receiveShadow = true;
+    tableGroup.add(pedestalMesh);
+
+    // Base disc cap (closes the bottom of the pedestal visually)
+    const baseCap = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.395, 0.395, 0.014, 72),
+      legMat,
+    );
+    baseCap.position.y = 0.007;
+    tableGroup.add(baseCap);
+
     scene.add(tableGroup);
-
-    // Load GLB model and apply materials
-    loadTableGLB().then((glbScene) => {
-      const cloned = glbScene.clone(true);
-
-      cloned.traverse((child) => {
-        if (!(child instanceof THREE.Mesh)) return;
-
-        if (child.name === 'ResinTop') {
-          child.material = resinMat;
-          child.castShadow = true;
-          child.receiveShadow = true;
-        } else if (child.name === 'Pedestal' || child.name === 'BaseCap') {
-          child.material = legMat;
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-
-      tableGroup.add(cloned);
-    }).catch(() => {
-      // Fallback: use procedural geometry if GLB fails to load
-      const topGeo = makeOrganicTopGeometryFallback();
-      const topMesh = new THREE.Mesh(topGeo, resinMat);
-      topMesh.position.y = 0.710;
-      topMesh.castShadow = true;
-      topMesh.receiveShadow = true;
-      tableGroup.add(topMesh);
-
-      const pedestalGeo = makePedestalGeometryFallback();
-      const pedestalMesh = new THREE.Mesh(pedestalGeo, legMat);
-      pedestalMesh.castShadow = true;
-      pedestalMesh.receiveShadow = true;
-      tableGroup.add(pedestalMesh);
-
-      const baseCap = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.395, 0.395, 0.014, 72),
-        legMat,
-      );
-      baseCap.position.y = 0.007;
-      tableGroup.add(baseCap);
-    });
 
     // ── Animation ────────────────────────────────────────────────────
     function animate() {
@@ -369,7 +381,9 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
       autoT: 0, isDragging: false, rotY: 0, rotX: 0,
     };
 
+    // Mark canvas ready after first frame renders
     requestAnimationFrame(() => setCanvasReady(true));
+
     animate();
 
     const ro = new ResizeObserver(() => {
@@ -499,6 +513,7 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
 
   return (
     <div className="relative w-full h-full" style={{ minHeight: 220 }}>
+      {/* Shimmer shown while canvas initialises */}
       {!canvasReady && (
         <div
           className="absolute inset-0 animate-pulse rounded-lg"
@@ -515,40 +530,4 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
       />
     </div>
   );
-}
-
-// ─── Fallback procedural geometry (used if GLB fails to load) ────
-function makeOrganicTopGeometryFallback(): THREE.BufferGeometry {
-  const baseR = 0.76;
-  const pts: THREE.Vector2[] = [];
-  const n = 200;
-  for (let i = 0; i < n; i++) {
-    const a = (i / n) * Math.PI * 2;
-    const r = baseR
-      + baseR * 0.038 * Math.sin(a * 5 + 1.10)
-      + baseR * 0.018 * Math.sin(a * 8 + 2.35)
-      + baseR * 0.008 * Math.sin(a * 13 + 0.55);
-    pts.push(new THREE.Vector2(r * Math.cos(a), r * Math.sin(a)));
-  }
-  const shape = new THREE.Shape(pts);
-  const geo = new THREE.ExtrudeGeometry(shape, {
-    depth: 0.055, bevelEnabled: true,
-    bevelThickness: 0.010, bevelSize: 0.008, bevelSegments: 5,
-  });
-  geo.rotateX(-Math.PI / 2);
-  return geo;
-}
-
-function makePedestalGeometryFallback(): THREE.BufferGeometry {
-  const pts = [
-    new THREE.Vector2(0.395, 0.000),
-    new THREE.Vector2(0.400, 0.014),
-    new THREE.Vector2(0.375, 0.032),
-    new THREE.Vector2(0.150, 0.095),
-    new THREE.Vector2(0.068, 0.220),
-    new THREE.Vector2(0.042, 0.460),
-    new THREE.Vector2(0.046, 0.610),
-    new THREE.Vector2(0.062, 0.710),
-  ];
-  return new THREE.LatheGeometry(pts, 72);
 }
