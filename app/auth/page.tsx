@@ -4,9 +4,15 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
+function sanitizeReturnTo(raw: string | null): string {
+  if (!raw) return '/';
+  if (!raw.startsWith('/') || raw.startsWith('//')) return '/';
+  return raw;
+}
+
 function AuthContent() {
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo') || '/';
+  const returnTo = sanitizeReturnTo(searchParams.get('returnTo'));
 
   async function signInWithGoogle() {
     const supabase = createClient();
