@@ -135,12 +135,12 @@ export default function CommissionClient() {
             <Step n="01" />
             <Title>Color</Title>
             <Desc>레진 컬러를 선택해주세요</Desc>
-            <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-8 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-[480px]">
+            <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-9 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-[340px]">
               {COLORS.map((c) => (
                 <button
                   key={c.hex}
                   onClick={() => { setSelectedColor(c.hex); setColorName(c.name); setPreviewColor(c.hex); }}
-                  className="aspect-square rounded cursor-pointer transition-transform duration-200 hover:scale-[1.08] max-w-[48px]"
+                  className="aspect-square rounded cursor-pointer transition-transform duration-200 hover:scale-[1.08] max-w-[34px]"
                   style={{
                     background: c.hex,
                     boxShadow: selectedColor === c.hex ? '0 0 0 3px #fff, 0 0 0 5px #0e0e0e' : 'none',
