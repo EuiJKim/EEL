@@ -108,7 +108,7 @@ export default function Home() {
       <section className="fixed inset-0 w-full h-screen overflow-hidden">
         {/* Background image with zoom animation */}
         <img
-          src="/hero-resin.jpg"
+          src="/hero-bg.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-center"
           style={{ animation: 'heroZoom 2.4s cubic-bezier(0.4,0,0.2,1) forwards' }}
