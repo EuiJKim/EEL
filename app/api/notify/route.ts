@@ -1,28 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { z } from 'zod';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = process.env.FROM_EMAIL ?? 'EEL Studio <onboarding@resend.dev>';
 
+/** Escape HTML special characters to prevent injection in email templates */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Sanitize and escape a value for HTML output */
+function safe(value: unknown): string {
+  if (value == null) return '-';
+  return escapeHtml(String(value));
+}
+
+const notifySchema = z.object({
+  orderId: z.string().min(1),
+  userEmail: z.string().email().optional(),
+  userName: z.string().optional(),
+  summary: z.object({
+    size: z.string(),
+    resin: z.string(),
+    wood: z.string(),
+    leg: z.string(),
+    totalPrice: z.string(),
+    phone: z.string().optional(),
+    note: z.string().max(1000).optional(),
+  }),
+});
+
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, userEmail, userName, summary } = await req.json();
+    const parsed = notifySchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    }
+
+    const { orderId, userEmail, userName, summary } = parsed.data;
 
     const adminEmail = process.env.ADMIN_EMAIL!;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? '';
 
     const orderSummaryHtml = `
       <table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px;">
-        <tr><td style="padding:8px 0;color:#888;">사이즈</td><td style="padding:8px 0;color:#fff;">${summary.size}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">레진 색상</td><td style="padding:8px 0;color:#fff;">${summary.resin}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">우드 종류</td><td style="padding:8px 0;color:#fff;">${summary.wood}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">다리 스타일</td><td style="padding:8px 0;color:#fff;">${summary.leg}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">사이즈</td><td style="padding:8px 0;color:#fff;">${safe(summary.size)}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">레진 색상</td><td style="padding:8px 0;color:#fff;">${safe(summary.resin)}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">우드 종류</td><td style="padding:8px 0;color:#fff;">${safe(summary.wood)}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">다리 스타일</td><td style="padding:8px 0;color:#fff;">${safe(summary.leg)}</td></tr>
         <tr style="border-top:1px solid #333;">
           <td style="padding:12px 0 0;color:#888;font-weight:600;">예상 금액</td>
-          <td style="padding:12px 0 0;color:#fff;font-weight:700;">${summary.totalPrice}</td>
+          <td style="padding:12px 0 0;color:#fff;font-weight:700;">${safe(summary.totalPrice)}</td>
         </tr>
-        <tr><td style="padding:8px 0;color:#888;">연락처</td><td style="padding:8px 0;color:#fff;">${summary.phone ?? '-'}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">요청사항</td><td style="padding:8px 0;color:#fff;">${summary.note ?? '-'}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">연락처</td><td style="padding:8px 0;color:#fff;">${safe(summary.phone)}</td></tr>
+        <tr><td style="padding:8px 0;color:#888;">요청사항</td><td style="padding:8px 0;color:#fff;">${safe(summary.note)}</td></tr>
       </table>
     `;
 
@@ -32,12 +69,12 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: adminEmail,
-      subject: `[EEL] 새 주문 접수 — ${userName ?? userEmail}`,
+      subject: `[EEL] 새 주문 접수 — ${safe(userName ?? userEmail)}`,
       html: `
         <div style="${baseStyle}">
           <h2 style="margin:0 0 8px;font-size:20px;color:#fff;">새 주문이 접수됐습니다</h2>
-          <p style="margin:0 0 24px;color:#888;font-size:13px;">주문번호: ${orderId}</p>
-          <p style="margin:0 0 4px;color:#888;font-size:13px;">주문자: ${userName ?? '-'} (${userEmail})</p>
+          <p style="margin:0 0 24px;color:#888;font-size:13px;">주문번호: ${safe(orderId)}</p>
+          <p style="margin:0 0 4px;color:#888;font-size:13px;">주문자: ${safe(userName ?? '-')} (${safe(userEmail)})</p>
           ${orderSummaryHtml}
           <a href="${siteUrl}/admin" style="display:inline-block;margin-top:28px;padding:12px 24px;background:#fff;color:#000;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
             관리자 페이지에서 확인하기
