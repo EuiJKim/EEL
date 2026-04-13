@@ -1,9 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
-import Sidebar from '@/components/Sidebar';
-import ProductsCatalogClient from './ProductsCatalogClient';
+import WorksPageClient from './WorksPageClient';
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+  const cat = category || 'furniture';
+
   const supabase = await createClient();
 
   const [products, { data: allImages }] = await Promise.all([
@@ -14,12 +20,17 @@ export default async function ProductsPage() {
       .order('sort_order', { ascending: true }),
   ]);
 
+  const { data: allSpecs } = await supabase
+    .from('product_specs')
+    .select('id, product_id, label, value, sort_order')
+    .order('sort_order', { ascending: true });
+
   return (
-    <main className="bg-[#0a0a0a] min-h-screen">
-      <Sidebar />
-      <div className="lg:ml-[15%] lg:min-w-0">
-        <ProductsCatalogClient products={products} images={allImages ?? []} />
-      </div>
-    </main>
+    <WorksPageClient
+      category={cat}
+      products={products}
+      images={allImages ?? []}
+      specs={allSpecs ?? []}
+    />
   );
 }

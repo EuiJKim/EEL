@@ -1,29 +1,24 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces, Noto_Serif_KR } from "next/font/google";
+import { Gravitas_One, Staatliches } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const gravitasOne = Gravitas_One({
+  variable: "--font-gravitas",
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const staatliches = Staatliches({
+  variable: "--font-staatliches",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const notoSerifKR = Noto_Serif_KR({
-  variable: "--font-noto-serif-kr",
-  subsets: ["latin"],
-  weight: ["300", "400", "600"],
+  weight: "400",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "EEL",
-  description: "프리미엄 순수 레진 아트퍼니처 — 당신만을 위해 처음부터 만들어집니다",
+  title: "EEL — Furniture & Object Maker",
+  description: "A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand",
 };
 
 export default function RootLayout({
@@ -33,7 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${dmSans.variable} ${fraunces.variable} ${notoSerifKR.variable} antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Telex&display=swap" rel="stylesheet" />
+      </head>
+      <body className={`${gravitasOne.variable} ${staatliches.variable} antialiased`}>
         {children}
       </body>
     </html>
