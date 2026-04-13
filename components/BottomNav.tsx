@@ -42,7 +42,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
       <div className="flex items-center gap-5 flex-1" />
 
       {/* Center */}
-      <div className="flex items-center gap-9 absolute left-1/2 -translate-x-1/2">
+      <div className="flex items-center gap-4 sm:gap-9 absolute left-1/2 -translate-x-1/2">
         {/* Works dropdown */}
         <div
           className="relative"
@@ -50,7 +50,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
           onMouseLeave={handleMouseLeave}
         >
           <button
-            className="font-[var(--font-ui)] text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
+            className="font-[var(--font-ui)] text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
             style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
           >
             Works
@@ -64,21 +64,21 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
           >
             <Link
               href="/products?category=furniture"
-              className="text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Furniture
             </Link>
             <Link
               href="/products?category=object"
-              className="text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Object
             </Link>
             <Link
               href="/products?category=painting"
-              className="text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Painting
@@ -88,7 +88,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
 
         <Link
           href="/order"
-          className="text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
+          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
           style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
         >
           Commission
@@ -96,7 +96,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
 
         <button
           onClick={onContactClick}
-          className="text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
+          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50"
           style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
         >
           Contact
@@ -104,9 +104,9 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
       </div>
 
       {/* Right */}
-      <div className="flex items-center justify-end flex-1">
+      <div className="hidden sm:flex items-center justify-end flex-1">
         <span
-          className="text-xl tracking-[0.04em] uppercase text-white"
+          className="text-base sm:text-xl tracking-[0.04em] uppercase text-white"
           style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
         >
           &copy; EEL
