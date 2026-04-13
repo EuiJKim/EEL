@@ -72,32 +72,34 @@ a {
 /* ── Mobile responsive ── */
 @media (max-width: 600px) {
   .hero-text-wrap {
-    left: 24px !important;
-    top: 28% !important;
-    max-width: calc(100% - 48px) !important;
+    left: 20px !important;
+    top: 70px !important;
+    max-width: calc(100% - 40px) !important;
   }
 
   .hero-text-wrap .hero-logo {
-    font-size: 52px !important;
+    font-size: 36px !important;
   }
 
   .hero-text-wrap .hero-body {
-    font-size: 15px !important;
+    font-size: 12px !important;
     white-space: normal !important;
+    line-height: 1.7 !important;
   }
 
   .hero-text-wrap .hero-divider {
     width: 100vw !important;
-    left: -24px !important;
+    left: -20px !important;
   }
 
   .hero-footer-info {
-    right: 20px !important;
+    right: 16px !important;
     bottom: 80px !important;
   }
 
   .hero-footer-info p {
-    font-size: 9px !important;
+    font-size: 8px !important;
+    text-shadow: 0 0 8px rgba(255,255,255,0.3) !important;
   }
 
   .scroll-hint-arrow {
