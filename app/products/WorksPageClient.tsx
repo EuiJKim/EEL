@@ -135,30 +135,82 @@ export default function WorksPageClient({
             </p>
           </div>
         ) : (
-          /* Furniture grid */
-          <div className="grid grid-cols-2 md:grid-cols-3 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
-            {products.map((product) => {
-              const thumb = getProductImages(product.id)[0];
-              if (!thumb) return null;
-              return (
-                <button
-                  key={product.id}
-                  onClick={() => setSelectedProduct(product)}
-                  className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
-                >
-                  <Image
-                    src={thumb.url}
-                    alt={product.name}
-                    width={600}
-                    height={720}
-                    className="w-full object-cover block"
-                    style={{ aspectRatio: '1 / 1.2' }}
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                  />
-                </button>
-              );
-            })}
-          </div>
+          <>
+            {/* Desktop: 3-column grid (md+) */}
+            <div className="hidden md:grid grid-cols-3 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+              {products.map((product) => {
+                const thumb = getProductImages(product.id)[0];
+                if (!thumb) return null;
+                return (
+                  <button
+                    key={product.id}
+                    onClick={() => setSelectedProduct(product)}
+                    className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
+                  >
+                    <Image
+                      src={thumb.url}
+                      alt={product.name}
+                      width={600}
+                      height={720}
+                      className="w-full object-cover block"
+                      style={{ aspectRatio: '1 / 1.2' }}
+                      sizes="33vw"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile: list with small thumbnails on right */}
+            <div className="md:hidden flex flex-col">
+              {products.map((product) => {
+                const thumb = getProductImages(product.id)[0];
+                const productSpecs = getProductSpecs(product.id);
+                const size = getSizeFromSpecs(productSpecs);
+                const price = getPriceFromSpecs(productSpecs);
+                if (!thumb) return null;
+                return (
+                  <button
+                    key={product.id}
+                    onClick={() => setSelectedProduct(product)}
+                    className="flex items-center border-none bg-transparent cursor-pointer border-b border-[#333] px-4 py-3 text-left gap-4"
+                    style={{ borderBottom: '1px solid #333' }}
+                  >
+                    {/* Left: info */}
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-[var(--text)] text-sm font-bold truncate"
+                        style={{ fontFamily: "'Telex', sans-serif" }}
+                      >
+                        {product.name}
+                      </p>
+                      {size && (
+                        <p className="text-[#888] text-[10px] mt-1 truncate" style={{ fontFamily: "'Telex', sans-serif" }}>
+                          {size}
+                        </p>
+                      )}
+                      {price && (
+                        <p className="text-[var(--text)] text-xs mt-0.5" style={{ fontFamily: "'Telex', sans-serif" }}>
+                          {price}
+                        </p>
+                      )}
+                    </div>
+                    {/* Right: small thumbnail */}
+                    <div className="w-20 h-20 shrink-0 rounded overflow-hidden">
+                      <Image
+                        src={thumb.url}
+                        alt={product.name}
+                        width={160}
+                        height={160}
+                        className="w-full h-full object-cover"
+                        sizes="80px"
+                      />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 
