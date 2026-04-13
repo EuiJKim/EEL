@@ -7,19 +7,18 @@ import ContactModal from '@/components/ContactModal';
 
 export default function Home() {
   /* ── Intro ── */
-  const [introPhase, setIntroPhase] = useState<'logo' | 'shrink' | 'done'>('logo');
+  const [introVisible, setIntroVisible] = useState(true);
 
   useEffect(() => {
     if (sessionStorage.getItem('eel-intro-done')) {
-      setIntroPhase('done');
+      setIntroVisible(false);
       return;
     }
-    const t1 = setTimeout(() => setIntroPhase('shrink'), 1000);
-    const t2 = setTimeout(() => {
-      setIntroPhase('done');
+    const t = setTimeout(() => {
+      setIntroVisible(false);
       sessionStorage.setItem('eel-intro-done', '1');
-    }, 2200);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    }, 800);
+    return () => clearTimeout(t);
   }, []);
 
   /* ── Nav visibility (scroll up → show) ── */
@@ -56,32 +55,14 @@ export default function Home() {
 
   return (
     <main className="bg-[var(--bg)]" style={{ minHeight: 'calc(100vh + 200px)' }}>
-      {/* ── Intro overlay (keep original animation) ── */}
+      {/* ── Intro overlay — black screen fades out ── */}
       <AnimatePresence>
-        {introPhase !== 'done' && (
+        {introVisible && (
           <motion.div
-            className="fixed inset-0 z-[999] bg-black flex items-center justify-center"
+            className="fixed inset-0 z-[999] bg-black"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <motion.span
-              className="uppercase text-white select-none"
-              style={{ fontFamily: "var(--font-gravitas, 'Gravitas One'), serif", letterSpacing: '0.02em' }}
-              initial={{ fontSize: '72px', opacity: 0 }}
-              animate={
-                introPhase === 'logo'
-                  ? { fontSize: '72px', opacity: 1 }
-                  : { fontSize: '15px', opacity: 0, y: -200 }
-              }
-              transition={
-                introPhase === 'logo'
-                  ? { duration: 0.6, ease: 'easeOut' }
-                  : { duration: 0.8, ease: [0.4, 0, 0.2, 1] }
-              }
-            >
-              EEL
-            </motion.span>
-          </motion.div>
+            transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
+          />
         )}
       </AnimatePresence>
 
