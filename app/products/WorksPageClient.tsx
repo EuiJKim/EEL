@@ -135,82 +135,29 @@ export default function WorksPageClient({
             </p>
           </div>
         ) : (
-          <>
-            {/* Desktop: 3-column grid (md+) */}
-            <div className="hidden md:grid grid-cols-3 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
-              {products.map((product) => {
-                const thumb = getProductImages(product.id)[0];
-                if (!thumb) return null;
-                return (
-                  <button
-                    key={product.id}
-                    onClick={() => setSelectedProduct(product)}
-                    className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
-                  >
-                    <Image
-                      src={thumb.url}
-                      alt={product.name}
-                      width={600}
-                      height={720}
-                      className="w-full object-cover block"
-                      style={{ aspectRatio: '1 / 1.2' }}
-                      sizes="33vw"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Mobile: list with small thumbnails on right */}
-            <div className="md:hidden flex flex-col">
-              {products.map((product) => {
-                const thumb = getProductImages(product.id)[0];
-                const productSpecs = getProductSpecs(product.id);
-                const size = getSizeFromSpecs(productSpecs);
-                const price = getPriceFromSpecs(productSpecs);
-                if (!thumb) return null;
-                return (
-                  <button
-                    key={product.id}
-                    onClick={() => setSelectedProduct(product)}
-                    className="flex items-center border-none bg-transparent cursor-pointer border-b border-[#333] px-4 py-3 text-left gap-4"
-                    style={{ borderBottom: '1px solid #333' }}
-                  >
-                    {/* Left: info */}
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="text-[var(--text)] text-sm font-bold truncate"
-                        style={{ fontFamily: "'Telex', sans-serif" }}
-                      >
-                        {product.name}
-                      </p>
-                      {size && (
-                        <p className="text-[#888] text-[10px] mt-1 truncate" style={{ fontFamily: "'Telex', sans-serif" }}>
-                          {size}
-                        </p>
-                      )}
-                      {price && (
-                        <p className="text-[var(--text)] text-xs mt-0.5" style={{ fontFamily: "'Telex', sans-serif" }}>
-                          {price}
-                        </p>
-                      )}
-                    </div>
-                    {/* Right: small thumbnail */}
-                    <div className="w-20 h-20 shrink-0 rounded overflow-hidden">
-                      <Image
-                        src={thumb.url}
-                        alt={product.name}
-                        width={160}
-                        height={160}
-                        className="w-full h-full object-cover"
-                        sizes="80px"
-                      />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </>
+          <div className="grid grid-cols-2 md:grid-cols-3 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+            {products.map((product) => {
+              const thumb = getProductImages(product.id)[0];
+              if (!thumb) return null;
+              return (
+                <button
+                  key={product.id}
+                  onClick={() => setSelectedProduct(product)}
+                  className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
+                >
+                  <Image
+                    src={thumb.url}
+                    alt={product.name}
+                    width={600}
+                    height={720}
+                    className="w-full object-cover block"
+                    style={{ aspectRatio: '1 / 1.2' }}
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                  />
+                </button>
+              );
+            })}
+          </div>
         )}
       </div>
 
@@ -236,15 +183,15 @@ export default function WorksPageClient({
               </svg>
             </button>
 
-            {/* Desktop layout: left info (fixed) + right photos (scroll) */}
-            <div className="hidden md:flex h-full">
+            {/* All screens: left info + right scrollable photos */}
+            <div className="flex h-full">
               {/* Left: product info */}
-              <div className="w-2/3 h-full flex flex-col items-center justify-center gap-3 pointer-events-none px-10 text-center">
+              <div className="w-1/2 md:w-2/3 h-full flex flex-col items-center justify-center gap-2 md:gap-3 pointer-events-none px-4 md:px-10 text-center">
                 <p
                   className="text-white tracking-[0.02em]"
                   style={{
                     fontFamily: "'Telex', sans-serif",
-                    fontSize: 'clamp(16px, 2.4vw, 32px)',
+                    fontSize: 'clamp(14px, 2.4vw, 32px)',
                     fontWeight: 900,
                     letterSpacing: '0.02em',
                   }}
@@ -253,10 +200,10 @@ export default function WorksPageClient({
                 </p>
                 {getSizeFromSpecs(getProductSpecs(selectedProduct.id)) && (
                   <p
-                    className="text-[#888] whitespace-nowrap"
+                    className="text-[#888]"
                     style={{
                       fontFamily: "'Telex', sans-serif",
-                      fontSize: 'clamp(10px, 1vw, 13px)',
+                      fontSize: 'clamp(9px, 1vw, 13px)',
                       letterSpacing: '0.06em',
                       marginTop: 4,
                     }}
@@ -266,10 +213,10 @@ export default function WorksPageClient({
                 )}
                 {getPriceFromSpecs(getProductSpecs(selectedProduct.id)) && (
                   <p
-                    className="text-[var(--text)] whitespace-nowrap"
+                    className="text-[var(--text)]"
                     style={{
                       fontFamily: "'Telex', sans-serif",
-                      fontSize: 'clamp(12px, 1.1vw, 15px)',
+                      fontSize: 'clamp(10px, 1.1vw, 15px)',
                       letterSpacing: '0.04em',
                       marginTop: 2,
                     }}
@@ -280,7 +227,7 @@ export default function WorksPageClient({
               </div>
 
               {/* Right: scrollable photos */}
-              <div className="w-1/3 h-full overflow-y-auto flex flex-col">
+              <div className="w-1/2 md:w-1/3 h-full overflow-y-auto flex flex-col">
                 {getProductImages(selectedProduct.id).map((img) => (
                   <button
                     key={img.id}
@@ -293,47 +240,7 @@ export default function WorksPageClient({
                       width={800}
                       height={1000}
                       className="w-full h-auto block"
-                      sizes="33vw"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile layout: info on top, photos below */}
-            <div className="md:hidden overflow-y-auto h-full">
-              <div className="pt-20 pb-6 px-6 text-left">
-                <p
-                  className="text-white text-xl font-bold"
-                  style={{ fontFamily: "'Telex', sans-serif" }}
-                >
-                  {selectedProduct.name}
-                </p>
-                {getSizeFromSpecs(getProductSpecs(selectedProduct.id)) && (
-                  <p className="text-[#888] text-xs mt-2" style={{ fontFamily: "'Telex', sans-serif" }}>
-                    {getSizeFromSpecs(getProductSpecs(selectedProduct.id))}
-                  </p>
-                )}
-                {getPriceFromSpecs(getProductSpecs(selectedProduct.id)) && (
-                  <p className="text-[var(--text)] text-sm mt-1" style={{ fontFamily: "'Telex', sans-serif" }}>
-                    {getPriceFromSpecs(getProductSpecs(selectedProduct.id))}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col">
-                {getProductImages(selectedProduct.id).map((img) => (
-                  <button
-                    key={img.id}
-                    onClick={() => setZoomedImage(img.url)}
-                    className="w-full block border-none bg-transparent p-0 m-0 cursor-zoom-in"
-                  >
-                    <Image
-                      src={img.url}
-                      alt={selectedProduct.name}
-                      width={800}
-                      height={1000}
-                      className="w-full h-auto block"
-                      sizes="100vw"
+                      sizes="(max-width: 768px) 50vw, 33vw"
                     />
                   </button>
                 ))}
