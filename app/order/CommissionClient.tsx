@@ -179,7 +179,7 @@ export default function CommissionClient() {
             <Step n="01" />
             <Title>Color</Title>
             <Desc>레진 컬러를 선택해주세요</Desc>
-            <div className="grid grid-cols-5 sm:grid-cols-7 lg:grid-cols-9 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-[340px]">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-[280px] sm:max-w-[320px]">
               {COLORS.map((c) => (
                 <button
                   key={c.hex}
