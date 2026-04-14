@@ -57,9 +57,11 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
       />
 
     <nav
-      className="fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 z-[100] bg-black text-white transition-transform duration-400"
+      className="fixed left-0 right-0 flex items-center justify-between px-6 z-[100] bg-black text-white transition-transform duration-400"
       style={{
         height: 'var(--nav-h, 64px)',
+        bottom: isMobile ? 'auto' : 0,
+        top: isMobile ? 'calc(var(--fixed-vh, 100vh) - var(--nav-h, 64px))' : 'auto',
         transform: (visible || isMobile) ? 'translateY(0)' : 'translateY(100%)',
         transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
       }}

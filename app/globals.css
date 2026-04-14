@@ -99,7 +99,9 @@ a {
 
   .hero-footer-info {
     right: 16px !important;
-    bottom: 80px !important;
+    bottom: auto !important;
+    top: calc(var(--fixed-vh, 100vh) - 80px) !important;
+    transform: translateY(-100%) !important;
   }
 
   .hero-footer-info p {
