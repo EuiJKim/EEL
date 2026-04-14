@@ -99,7 +99,7 @@ export default function Home() {
         <div
           className="hero-text-wrap absolute z-10 flex flex-col gap-3 max-w-[720px]"
           style={{
-            top: '80px',
+            top: '108px',
             left: '32px',
             fontFamily: "'Telex', sans-serif",
             color: '#000',
@@ -110,7 +110,7 @@ export default function Home() {
             className="hero-logo leading-[1.4] tracking-[0.02em]"
             style={{
               fontFamily: "var(--font-gravitas, 'Gravitas One'), serif",
-              fontSize: 'clamp(36px, 5vw, 56px)',
+              fontSize: 'clamp(40px, 5.6vw, 64px)',
               fontWeight: 900,
               WebkitTextStroke: '1px #000',
             }}
@@ -132,13 +132,13 @@ export default function Home() {
           {/* Description */}
           <p
             className="hero-body font-bold opacity-90 whitespace-nowrap"
-            style={{ fontSize: 'clamp(11px, 1.3vw, 17px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+            style={{ fontSize: 'clamp(12px, 1.45vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
           >
             A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand
           </p>
           <p
             className="hero-body font-bold opacity-90 mt-2"
-            style={{ fontSize: 'clamp(13px, 1.4vw, 17px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+            style={{ fontSize: 'clamp(14px, 1.55vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
           >
             We work at the edge of material and form —<br />
             where function meets something harder to name

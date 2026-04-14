@@ -65,6 +65,50 @@ export default function CommissionClient() {
   const [customColorOpen, setCustomColorOpen] = useState(false);
   const [previewColor, setPreviewColor] = useState('#EDE4D0');
 
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '', note: '' });
+
+  const handleOpenConfirm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setFormData({
+      name: (form.elements.namedItem('name') as HTMLInputElement).value,
+      phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      note: (form.elements.namedItem('note') as HTMLTextAreaElement).value,
+    });
+    setConfirmOpen(true);
+  };
+
+  const handleSend = async () => {
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const res = await fetch('/api/commission-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          color: colorName,
+          shape: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? selectedShape,
+          size: selectedSize ?? '—',
+          height: selectedHeight ?? '—',
+          legs: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—',
+        }),
+      });
+      if (!res.ok) throw new Error();
+      setConfirmOpen(false);
+      setSubmitted(true);
+    } catch {
+      setSubmitError('전송에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const sectionsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!sectionsRef.current) return;
@@ -220,7 +264,7 @@ export default function CommissionClient() {
             <Desc>테이블 상판 지름 또는 폭을 선택해주세요</Desc>
             <div className="flex gap-2 sm:gap-3 lg:gap-4">
               {(['S', 'M', 'L'] as const).map((letter) => {
-                const range = letter === 'S' ? '30–45cm' : letter === 'M' ? '50–65cm' : '70–90cm';
+                const range = letter === 'S' ? '40 - 50 cm' : letter === 'M' ? '50 - 65 cm' : '70–90cm';
                 return (
                   <button
                     key={letter}
@@ -312,15 +356,21 @@ export default function CommissionClient() {
               ))}
             </div>
 
-            <form className="flex flex-col gap-4 sm:gap-5" onSubmit={(e) => e.preventDefault()}>
-              <input type="text" placeholder="이름" required className="comm-input" />
-              <input type="tel" placeholder="전화번호" required className="comm-input" />
-              <input type="email" placeholder="이메일" required className="comm-input" />
-              <textarea placeholder="추가 요청사항" rows={4} className="comm-input resize-none" />
-              <button type="submit" className="self-start bg-white text-black border-none py-3 sm:py-4 px-6 sm:px-10 text-xs sm:text-sm tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity mt-2" style={{ fontFamily: "'Telex', sans-serif" }}>
-                문의 보내기
-              </button>
-            </form>
+            {submitted ? (
+              <p className="text-white/60 text-sm tracking-[0.04em]" style={{ fontFamily: "'Telex', sans-serif" }}>
+                문의가 접수됐습니다. 빠른 시일 내에 연락드리겠습니다.
+              </p>
+            ) : (
+              <form className="flex flex-col gap-4 sm:gap-5" onSubmit={handleOpenConfirm}>
+                <input name="name" type="text" placeholder="이름" required className="comm-input" />
+                <input name="phone" type="tel" placeholder="전화번호" required className="comm-input" />
+                <input name="email" type="email" placeholder="이메일" required className="comm-input" />
+                <textarea name="note" placeholder="추가 요청사항" rows={4} className="comm-input resize-none" />
+                <button type="submit" className="self-start bg-white text-black border-none py-3 sm:py-4 px-6 sm:px-10 text-xs sm:text-sm tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity mt-2" style={{ fontFamily: "'Telex', sans-serif" }}>
+                  문의 보내기
+                </button>
+              </form>
+            )}
           </section>
         </div>
 
@@ -347,6 +397,85 @@ export default function CommissionClient() {
           </div>
         </div>
       </div>
+
+      {/* ── Confirm Overlay ── */}
+      {confirmOpen && (
+        <div className="fixed inset-0 z-[600] flex items-center justify-center bg-black/70">
+          <div className="bg-[#111] border border-[#2a2a2a] w-full max-w-md mx-4 rounded-sm p-8 flex flex-col gap-5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-white tracking-[0.18em] uppercase" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", fontSize: '22px' }}>
+                Order Review
+              </h3>
+              <button
+                onClick={() => { setConfirmOpen(false); setSubmitError(''); }}
+                className="text-[#666] hover:text-white transition-colors bg-transparent border-none cursor-pointer p-0"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Options */}
+            <div className="border-t border-[#222] pt-4 flex flex-col gap-2">
+              {[
+                { label: 'Color', value: colorName },
+                { label: 'Shape', value: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? selectedShape },
+                { label: 'Size', value: selectedSize ?? '—' },
+                { label: 'Height', value: selectedHeight ?? '—' },
+                { label: 'Legs', value: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—' },
+              ].map((row) => (
+                <div key={row.label} className="flex justify-between text-sm gap-4">
+                  <span className="text-[#555] tracking-[0.06em] shrink-0">{row.label}</span>
+                  <span className="text-[#e8e8e8] text-right">{row.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-[#222] pt-4 flex flex-col gap-2">
+              {[
+                { label: 'Name', value: formData.name },
+                { label: 'Phone', value: formData.phone },
+                { label: 'Email', value: formData.email },
+              ].map((row) => (
+                <div key={row.label} className="flex justify-between text-sm gap-4">
+                  <span className="text-[#555] tracking-[0.06em] shrink-0">{row.label}</span>
+                  <span className="text-[#e8e8e8] text-right break-all">{row.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-[#222] pt-4">
+              <p className="text-[#555] tracking-[0.06em] text-sm mb-2">Note</p>
+              <p className="text-[#e8e8e8] text-sm leading-relaxed whitespace-pre-wrap break-words min-h-[48px]">
+                {formData.note || '—'}
+              </p>
+            </div>
+
+            {submitError && <p className="text-red-400 text-xs">{submitError}</p>}
+
+            <div className="flex gap-3 mt-1">
+              <button
+                onClick={handleSend}
+                disabled={submitting}
+                className="flex-1 bg-white text-black border-none py-3 text-xs tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity disabled:opacity-40"
+                style={{ fontFamily: "'Telex', sans-serif" }}
+              >
+                {submitting ? '전송 중...' : '전송하기'}
+              </button>
+              <button
+                onClick={() => { setConfirmOpen(false); setSubmitError(''); }}
+                disabled={submitting}
+                className="flex-1 bg-transparent text-white border border-[#444] py-3 text-xs tracking-[0.08em] cursor-pointer hover:border-white transition-colors disabled:opacity-40"
+                style={{ fontFamily: "'Telex', sans-serif" }}
+              >
+                수정하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }

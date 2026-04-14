@@ -46,6 +46,11 @@ function getPriceFromSpecs(specs: ProductSpec[]): string | null {
   return priceSpec?.value ?? null;
 }
 
+function getStatusFromSpecs(specs: ProductSpec[]): string | null {
+  const statusSpec = specs.find((s) => s.label.toLowerCase() === 'status');
+  return statusSpec?.value ?? null;
+}
+
 /* ════════════════════════════════
    MAIN COMPONENT
    ════════════════════════════════ */
@@ -61,14 +66,21 @@ export default function WorksPageClient({
   specs: ProductSpec[];
 }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [zoomedImages, setZoomedImages] = useState<string[] | null>(null);
 
-  const isEmpty = category !== 'furniture';
+  const isObject = category === 'object';
+  const isPainting = category === 'painting';
+  const isEmpty = false;
 
   const getProductImages = (productId: string) =>
     images
       .filter((img) => img.product_id === productId)
       .sort((a, b) => a.sort_order - b.sort_order);
+
+  const getDetailImages = (productId: string) => {
+    const all = getProductImages(productId);
+    return all.length > 1 ? all.slice(1) : all;
+  };
 
   const getProductSpecs = (productId: string) =>
     specs
@@ -76,7 +88,12 @@ export default function WorksPageClient({
       .sort((a, b) => a.sort_order - b.sort_order);
 
   return (
-    <div className="fixed inset-0 bg-[var(--bg)] z-[300]">
+    <motion.div
+      className="fixed inset-0 bg-[var(--bg)] z-[300]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+    >
       {/* ── Top bar ── */}
       <div className="sticky top-0 left-0 right-0 h-[68px] bg-black flex items-center justify-center z-10 shrink-0">
         <Link
@@ -103,6 +120,9 @@ export default function WorksPageClient({
         </button>
       </div>
 
+      {/* ── Divider ── */}
+      <div className="w-full bg-white/15" style={{ height: '0.5px' }} />
+
       {/* ── Category tabs ── */}
       <div className="flex items-center justify-center gap-8 py-4 bg-black border-b border-[#222]">
         {['furniture', 'object', 'painting'].map((cat) => (
@@ -121,42 +141,86 @@ export default function WorksPageClient({
 
       {/* ── Content ── */}
       <div className="overflow-y-auto" style={{ height: 'calc(100vh - 68px - 52px)' }}>
-        {isEmpty ? (
-          /* Empty state for Object / Painting */
-          <div className="flex flex-col items-center justify-center h-full gap-4">
-            <p
-              className="text-[28px] text-white/20 tracking-[0.06em]"
-              style={{ fontFamily: "var(--font-gravitas, 'Gravitas One'), serif" }}
-            >
-              Coming Soon
-            </p>
-            <p className="text-sm text-white/30" style={{ fontFamily: "'Telex', sans-serif" }}>
-              새로운 작품이 준비 중입니다
-            </p>
+        {isPainting ? (
+          /* Painting: 4-column grid, fixed aspect ratio, click to zoom */
+          <div className="grid grid-cols-4 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+            {products
+              .filter((p) => p.id.startsWith('painting-'))
+              .map((product) => {
+                const thumb = getProductImages(product.id)[0];
+                if (!thumb) return null;
+                return (
+                  <button
+                    key={product.id}
+                    onClick={() => setZoomedImages(getProductImages(product.id).map(img => img.url))}
+                    className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
+                  >
+                    <Image
+                      src={thumb.url}
+                      alt=""
+                      width={600}
+                      height={600}
+                      className="w-full object-cover block"
+                      style={{ aspectRatio: '1 / 1' }}
+                      sizes="25vw"
+                    />
+                  </button>
+                );
+              })}
+          </div>
+        ) : isObject ? (
+          /* Object: 5-column grid, smaller images */
+          <div className="grid grid-cols-5 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+            {products
+              .filter((p) => p.id.startsWith('object-'))
+              .map((product) => {
+                const thumb = getProductImages(product.id)[0];
+                if (!thumb) return null;
+                return (
+                  <button
+                    key={product.id}
+                    onClick={() => setZoomedImages(getProductImages(product.id).map(img => img.url))}
+                    className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
+                  >
+                    <Image
+                      src={thumb.url}
+                      alt={product.name}
+                      width={400}
+                      height={400}
+                      className="w-full object-cover block"
+                      style={{ aspectRatio: '1 / 1.15' }}
+                      sizes="20vw"
+                    />
+                  </button>
+                );
+              })}
           </div>
         ) : (
+          /* Furniture: 2~3 column grid */
           <div className="grid grid-cols-2 md:grid-cols-3 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
-            {products.map((product) => {
-              const thumb = getProductImages(product.id)[0];
-              if (!thumb) return null;
-              return (
-                <button
-                  key={product.id}
-                  onClick={() => setSelectedProduct(product)}
-                  className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
-                >
-                  <Image
-                    src={thumb.url}
-                    alt={product.name}
-                    width={600}
-                    height={720}
-                    className="w-full object-cover block"
-                    style={{ aspectRatio: '1 / 1.2' }}
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                  />
-                </button>
-              );
-            })}
+            {products
+              .filter((p) => !p.id.startsWith('object-') && !p.id.startsWith('painting-'))
+              .map((product) => {
+                const thumb = getProductImages(product.id)[0];
+                if (!thumb) return null;
+                return (
+                  <button
+                    key={product.id}
+                    onClick={() => setSelectedProduct(product)}
+                    className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
+                  >
+                    <Image
+                      src={thumb.url}
+                      alt={product.name}
+                      width={600}
+                      height={720}
+                      className="w-full object-cover block"
+                      style={{ aspectRatio: '1 / 1.2' }}
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+                  </button>
+                );
+              })}
           </div>
         )}
       </div>
@@ -206,6 +270,7 @@ export default function WorksPageClient({
                       fontSize: 'clamp(9px, 1vw, 13px)',
                       letterSpacing: '0.06em',
                       marginTop: 4,
+                      whiteSpace: 'pre',
                     }}
                   >
                     {getSizeFromSpecs(getProductSpecs(selectedProduct.id))}
@@ -224,14 +289,27 @@ export default function WorksPageClient({
                     {getPriceFromSpecs(getProductSpecs(selectedProduct.id))}
                   </p>
                 )}
+                {getStatusFromSpecs(getProductSpecs(selectedProduct.id)) && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif",
+                      fontSize: 'clamp(9px, 0.95vw, 12px)',
+                      letterSpacing: '0.18em',
+                      marginTop: 4,
+                      color: '#e53e3e',
+                    }}
+                  >
+                    {getStatusFromSpecs(getProductSpecs(selectedProduct.id))}
+                  </p>
+                )}
               </div>
 
               {/* Right: scrollable photos */}
               <div className="w-1/2 md:w-1/3 h-full overflow-y-auto flex flex-col">
-                {getProductImages(selectedProduct.id).map((img) => (
+                {getDetailImages(selectedProduct.id).map((img) => (
                   <button
                     key={img.id}
-                    onClick={() => setZoomedImage(img.url)}
+                    onClick={() => setZoomedImages([img.url])}
                     className="w-full block border-none bg-transparent p-0 m-0 cursor-zoom-in"
                   >
                     <Image
@@ -254,26 +332,46 @@ export default function WorksPageClient({
           Zoom Overlay
          ══════════════════════════════════ */}
       <AnimatePresence>
-        {zoomedImage && (
+        {zoomedImages && (
           <motion.div
             className="fixed inset-0 z-[500] bg-black/90 flex items-center justify-center cursor-zoom-out"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            onClick={() => setZoomedImage(null)}
+            onClick={() => setZoomedImages(null)}
           >
-            <Image
-              src={zoomedImage}
-              alt="Zoomed"
-              width={1600}
-              height={1200}
-              className="max-w-[90vw] max-h-[90vh] object-contain"
-              sizes="90vw"
-            />
+            <button
+              onClick={(e) => { e.stopPropagation(); setZoomedImages(null); }}
+              className="absolute top-5 right-6 bg-transparent border-none text-white cursor-pointer z-10 p-0 hover:opacity-50 transition-opacity"
+              aria-label="닫기"
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="flex items-center justify-center gap-4" onClick={(e) => e.stopPropagation()}>
+              {zoomedImages.map((url, i) => (
+                <Image
+                  key={i}
+                  src={url}
+                  alt="Zoomed"
+                  width={1200}
+                  height={1200}
+                  className="object-contain"
+                  style={{
+                    maxHeight: '90vh',
+                    maxWidth: zoomedImages.length > 1 ? '45vw' : '90vw',
+                    width: 'auto',
+                  }}
+                  sizes={zoomedImages.length > 1 ? '45vw' : '90vw'}
+                />
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

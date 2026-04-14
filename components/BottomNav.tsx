@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface BottomNavProps {
   visible: boolean;
@@ -9,8 +10,17 @@ interface BottomNavProps {
 }
 
 export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
+  const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
   const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleWorksNav = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setDropdownOpen(false);
+    setTransitioning(true);
+    setTimeout(() => router.push(href), 350);
+  };
 
   const handleMouseEnter = () => {
     if (hideTimeout.current) clearTimeout(hideTimeout.current);
@@ -28,6 +38,16 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
   }, []);
 
   return (
+    <>
+      {/* Transition overlay */}
+      <div
+        className="fixed inset-0 bg-black pointer-events-none z-[999]"
+        style={{
+          opacity: transitioning ? 1 : 0,
+          transition: transitioning ? 'opacity 0.35s ease' : 'none',
+        }}
+      />
+
     <nav
       className="fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 z-[100] bg-black text-white transition-transform duration-400"
       style={{
@@ -62,27 +82,30 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
               pointerEvents: dropdownOpen ? 'auto' : 'none',
             }}
           >
-            <Link
+            <a
               href="/products?category=furniture"
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              onClick={handleWorksNav('/products?category=furniture')}
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Furniture
-            </Link>
-            <Link
+            </a>
+            <a
               href="/products?category=object"
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              onClick={handleWorksNav('/products?category=object')}
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Object
-            </Link>
-            <Link
+            </a>
+            <a
               href="/products?category=painting"
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1"
+              onClick={handleWorksNav('/products?category=painting')}
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-1 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Painting
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -113,5 +136,6 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
         </span>
       </div>
     </nav>
+    </>
   );
 }
