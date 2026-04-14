@@ -196,7 +196,7 @@ export default function Home() {
           </p>
         ))}
         <p className="text-[9px] text-black tracking-[0.04em] leading-[1.5] opacity-65 mt-1.5" style={{ WebkitTextStroke: '0.2px #000' }}>
-          1F 508, Hoedong-gil, SEOUL, KOREA
+          1F 508, Hoedong-gil, KOREA
         </p>
         {[
           'BIZ LICENSE 305-46-07793',
