@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gravitas_One, Staatliches } from "next/font/google";
+import { Gravitas_One, Staatliches, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const gravitasOne = Gravitas_One({
@@ -13,6 +13,13 @@ const staatliches = Staatliches({
   variable: "--font-staatliches",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -33,7 +40,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Telex&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${gravitasOne.variable} ${staatliches.variable} antialiased`}>
+      <body className={`${gravitasOne.variable} ${staatliches.variable} ${dmSans.variable} antialiased`}>
         {children}
       </body>
     </html>

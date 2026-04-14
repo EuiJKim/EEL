@@ -38,7 +38,7 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
 
         <div className="flex flex-col gap-4">
           {/* Instagram */}
-          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", fontSize: 18, letterSpacing: '0.08em', WebkitTextStroke: '0.4px #e8e8e8' }}>
+          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-dm-sans, 'DM Sans'), sans-serif", fontSize: 14, letterSpacing: '0.02em' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-85">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
               <circle cx="12" cy="12" r="4"/>
@@ -48,7 +48,7 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
           </div>
 
           {/* Email */}
-          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", fontSize: 18, letterSpacing: '0.08em', WebkitTextStroke: '0.4px #e8e8e8' }}>
+          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-dm-sans, 'DM Sans'), sans-serif", fontSize: 14, letterSpacing: '0.02em' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-85">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
               <polyline points="2,4 12,13 22,4"/>
@@ -57,7 +57,7 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
           </div>
 
           {/* Location */}
-          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", fontSize: 18, letterSpacing: '0.08em', WebkitTextStroke: '0.4px #e8e8e8' }}>
+          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-dm-sans, 'DM Sans'), sans-serif", fontSize: 14, letterSpacing: '0.02em' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-85">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
               <circle cx="12" cy="9" r="2.5"/>
@@ -66,7 +66,7 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
           </div>
 
           {/* Phone */}
-          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", fontSize: 18, letterSpacing: '0.08em', WebkitTextStroke: '0.4px #e8e8e8' }}>
+          <div className="flex items-center gap-4 text-[#e8e8e8]" style={{ fontFamily: "var(--font-dm-sans, 'DM Sans'), sans-serif", fontSize: 14, letterSpacing: '0.02em' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-85">
               <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
             </svg>
