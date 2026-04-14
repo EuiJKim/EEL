@@ -38,9 +38,6 @@ export default function Home() {
       if (delta < -6) {
         setNavVisible(true);
         setScrollHintHidden(true);
-      } else if (delta > 6) {
-        setNavVisible(false);
-        setScrollHintHidden(false);
       }
       lastScrollY.current = y;
     };
