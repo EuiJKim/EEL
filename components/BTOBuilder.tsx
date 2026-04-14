@@ -516,7 +516,7 @@ export default function BTOBuilder() {
         {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} orderId={orderId} />}
       </AnimatePresence>
 
-      <section className="relative w-full bg-black text-zinc-100 px-4 sm:px-6 py-16 sm:py-20">
+      <section className="relative w-full bg-[#0a0a0a] text-zinc-100 px-4 sm:px-6 pt-20 sm:pt-16 pb-16 sm:pb-20">
         <div className="max-w-5xl mx-auto">
 
           {/* Header */}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 // ─── Resin material property lookup ──────────────────────────────
 interface ResinProps {
@@ -27,40 +28,74 @@ const SIZE_SCALE: Record<string, number> = {
   's': 0.72, 'm': 1.0, 'l': 1.28, 'xl': 1.56,
 };
 
-// ─── Radial silk texture (mimics real resin fiber pattern) ────────
+// ─── Phase 2: Enhanced radial silk texture ──────────────────────
+// 512→1024, multi-layer fiber system, depth variation
 function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
-  const size = 512;
+  const size = 1024;                           // ★ 512→1024 해상도 2배
   const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d')!;
   const cx = size / 2, cy = size / 2, r = size / 2;
 
-  ctx.fillStyle = hexColor;
-  ctx.fillRect(0, 0, size, size);
-
-  const innerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.55);
-  innerGlow.addColorStop(0, 'rgba(255,255,255,0.22)');
-  innerGlow.addColorStop(1, 'rgba(255,255,255,0.00)');
-  ctx.fillStyle = innerGlow;
-  ctx.fillRect(0, 0, size, size);
-
+  // Deterministic PRNG
   let seed = 9301;
   const lcg = () => {
     seed = (seed * 49297 + 233280) % 233280;
     return seed / 233280;
   };
 
-  const lineCount = 320;
-  for (let i = 0; i < lineCount; i++) {
-    const baseAngle = (i / lineCount) * Math.PI * 2;
-    const jitter = (lcg() - 0.5) * 0.04;
+  // ── Layer 0: Base color fill ────────────────────────────────────
+  ctx.fillStyle = hexColor;
+  ctx.fillRect(0, 0, size, size);
+
+  // ── Layer 1: Subtle color variation (warm/cool shifts) ──────────
+  // Parse hex to RGB for blending
+  const hexToRgb = (hex: string) => {
+    const h = hex.replace('#', '');
+    return {
+      r: parseInt(h.substring(0, 2), 16),
+      g: parseInt(h.substring(2, 4), 16),
+      b: parseInt(h.substring(4, 6), 16),
+    };
+  };
+  const baseRgb = hexToRgb(hexColor);
+
+  // Random splotches of slightly different hues (simulates pigment mixing)
+  for (let i = 0; i < 8; i++) {
+    const sx = lcg() * size;
+    const sy = lcg() * size;
+    const sr = r * (0.25 + lcg() * 0.45);
+    const shift = (lcg() - 0.5) * 30;
+    const splotch = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
+    const nr = Math.min(255, Math.max(0, baseRgb.r + shift));
+    const ng = Math.min(255, Math.max(0, baseRgb.g + shift * 0.7));
+    const nb = Math.min(255, Math.max(0, baseRgb.b + shift * 0.4));
+    splotch.addColorStop(0, `rgba(${nr|0},${ng|0},${nb|0},0.12)`);
+    splotch.addColorStop(1, `rgba(${nr|0},${ng|0},${nb|0},0.00)`);
+    ctx.fillStyle = splotch;
+    ctx.fillRect(0, 0, size, size);
+  }
+
+  // ── Layer 2: Inner glow (brighter center) ───────────────────────
+  const innerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.55);
+  innerGlow.addColorStop(0, 'rgba(255,255,255,0.25)');
+  innerGlow.addColorStop(0.5, 'rgba(255,255,255,0.08)');
+  innerGlow.addColorStop(1, 'rgba(255,255,255,0.00)');
+  ctx.fillStyle = innerGlow;
+  ctx.fillRect(0, 0, size, size);
+
+  // ── Layer 3: Deep fibers (thick, low opacity — background texture) ─
+  const deepFiberCount = 180;                  // ★ NEW: 깊은 층 섬유
+  for (let i = 0; i < deepFiberCount; i++) {
+    const baseAngle = (i / deepFiberCount) * Math.PI * 2;
+    const jitter = (lcg() - 0.5) * 0.08;
     const a = baseAngle + jitter;
-    const len = r * (0.20 + lcg() * 0.80);
-    const alpha = 0.018 + lcg() * 0.13;
-    const lw = 0.15 + lcg() * 1.3;
-    const midR = len * 0.55;
-    const midOffset = (lcg() - 0.5) * 0.06;
+    const len = r * (0.30 + lcg() * 0.70);
+    const alpha = 0.01 + lcg() * 0.04;        // 매우 은은
+    const lw = 2.0 + lcg() * 4.0;             // 두꺼운 선
+    const midR = len * (0.40 + lcg() * 0.30);
+    const midOffset = (lcg() - 0.5) * 0.10;
     const mAngle = a + midOffset;
 
     ctx.beginPath();
@@ -76,16 +111,72 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
     ctx.stroke();
   }
 
-  const star = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.25);
-  star.addColorStop(0, 'rgba(255,255,255,0.45)');
-  star.addColorStop(0.5, 'rgba(255,255,255,0.10)');
+  // ── Layer 4: Mid fibers (original-like, medium detail) ──────────
+  const midFiberCount = 400;                   // ★ 320→400 증가
+  for (let i = 0; i < midFiberCount; i++) {
+    const baseAngle = (i / midFiberCount) * Math.PI * 2;
+    const jitter = (lcg() - 0.5) * 0.05;
+    const a = baseAngle + jitter;
+    const len = r * (0.15 + lcg() * 0.85);
+    const alpha = 0.015 + lcg() * 0.12;
+    const lw = 0.3 + lcg() * 1.5;
+    const midR = len * 0.55;
+    const midOffset = (lcg() - 0.5) * 0.07;
+    const mAngle = a + midOffset;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.quadraticCurveTo(
+      cx + Math.cos(mAngle) * midR,
+      cy + Math.sin(mAngle) * midR,
+      cx + Math.cos(a) * len,
+      cy + Math.sin(a) * len,
+    );
+    ctx.strokeStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
+    ctx.lineWidth = lw;
+    ctx.stroke();
+  }
+
+  // ── Layer 5: Fine fibers (thin, sharp — surface detail) ─────────
+  const fineFiberCount = 250;                  // ★ NEW: 표면 미세 섬유
+  for (let i = 0; i < fineFiberCount; i++) {
+    const baseAngle = (i / fineFiberCount) * Math.PI * 2;
+    const jitter = (lcg() - 0.5) * 0.03;
+    const a = baseAngle + jitter;
+    const len = r * (0.10 + lcg() * 0.60);
+    const alpha = 0.03 + lcg() * 0.18;        // 좀 더 선명
+    const lw = 0.1 + lcg() * 0.4;             // 매우 가는 선
+    const midR = len * 0.50;
+    const midOffset = (lcg() - 0.5) * 0.04;
+    const mAngle = a + midOffset;
+
+    ctx.beginPath();
+    ctx.moveTo(cx + (lcg() - 0.5) * 6, cy + (lcg() - 0.5) * 6);
+    ctx.quadraticCurveTo(
+      cx + Math.cos(mAngle) * midR,
+      cy + Math.sin(mAngle) * midR,
+      cx + Math.cos(a) * len,
+      cy + Math.sin(a) * len,
+    );
+    ctx.strokeStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
+    ctx.lineWidth = lw;
+    ctx.stroke();
+  }
+
+  // ── Layer 6: Star highlight (center bright spot) ────────────────
+  const star = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 0.22);
+  star.addColorStop(0, 'rgba(255,255,255,0.50)');
+  star.addColorStop(0.3, 'rgba(255,255,255,0.18)');
+  star.addColorStop(0.7, 'rgba(255,255,255,0.05)');
   star.addColorStop(1, 'rgba(255,255,255,0.00)');
   ctx.fillStyle = star;
   ctx.fillRect(0, 0, size, size);
 
-  const vig = ctx.createRadialGradient(cx, cy, r * 0.45, cx, cy, r);
+  // ── Layer 7: Edge vignette (darker edges) ───────────────────────
+  const vig = ctx.createRadialGradient(cx, cy, r * 0.40, cx, cy, r);
   vig.addColorStop(0, 'rgba(0,0,0,0.00)');
-  vig.addColorStop(1, 'rgba(0,0,0,0.22)');
+  vig.addColorStop(0.7, 'rgba(0,0,0,0.10)');
+  vig.addColorStop(1, 'rgba(0,0,0,0.28)');
   ctx.fillStyle = vig;
   ctx.fillRect(0, 0, size, size);
 
@@ -94,8 +185,34 @@ function makeResinSilkTexture(hexColor: string): THREE.CanvasTexture {
   return tex;
 }
 
-// ─── Studio environment map ───────────────────────────────────────
-function createEnvMap(renderer: THREE.WebGLRenderer): THREE.Texture {
+// ─── Real HDRI studio environment map ─────────────────────────────
+// Loads actual studio HDRI for photorealistic reflections and lighting
+let hdriPromise: Promise<THREE.Texture> | null = null;
+function loadHDRI(renderer: THREE.WebGLRenderer): Promise<THREE.Texture> {
+  if (hdriPromise) return hdriPromise;
+  hdriPromise = new Promise((resolve, reject) => {
+    new RGBELoader().load(
+      '/env/studio.hdr',
+      (tex) => {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        pmrem.compileEquirectangularShader();
+        const envMap = pmrem.fromEquirectangular(tex).texture;
+        pmrem.dispose();
+        tex.dispose();
+        resolve(envMap);
+      },
+      undefined,
+      (err) => {
+        hdriPromise = null;
+        reject(err);
+      },
+    );
+  });
+  return hdriPromise;
+}
+
+// Fallback procedural env map (used if HDRI fails to load)
+function createEnvMapFallback(renderer: THREE.WebGLRenderer): THREE.Texture {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 256;
@@ -114,12 +231,6 @@ function createEnvMap(renderer: THREE.WebGLRenderer): THREE.Texture {
   warm.addColorStop(0.4, 'rgba(255,225,160,0.35)');
   warm.addColorStop(1,   'rgba(255,225,160,0)');
   ctx.fillStyle = warm;
-  ctx.fillRect(0, 0, 512, 256);
-
-  const cool = ctx.createRadialGradient(400, 105, 0, 400, 105, 110);
-  cool.addColorStop(0,   'rgba(180,205,255,0.55)');
-  cool.addColorStop(1,   'rgba(180,205,255,0)');
-  ctx.fillStyle = cool;
   ctx.fillRect(0, 0, 512, 256);
 
   const tex = new THREE.CanvasTexture(canvas);
@@ -233,8 +344,24 @@ export default function TablePreview3D({ resinHex, legColor, sizeId, resinId }: 
     renderer.toneMappingExposure = 1.25;
     el.appendChild(renderer.domElement);
 
-    const envMap = createEnvMap(renderer);
+    // Start with fallback env, upgrade to HDRI when loaded
+    let envMap = createEnvMapFallback(renderer);
     scene.environment = envMap;
+
+    // Load real HDRI asynchronously (huge quality upgrade)
+    loadHDRI(renderer).then((hdriEnvMap) => {
+      envMap.dispose();
+      envMap = hdriEnvMap;
+      scene.environment = hdriEnvMap;
+      if (sceneRef.current) {
+        sceneRef.current.envMap = hdriEnvMap;
+        // Update materials to use HDRI
+        sceneRef.current.materials.resin.envMap = hdriEnvMap;
+        sceneRef.current.materials.resin.needsUpdate = true;
+        sceneRef.current.materials.leg.envMap = hdriEnvMap;
+        sceneRef.current.materials.leg.needsUpdate = true;
+      }
+    }).catch(() => { /* keep fallback */ });
 
     // Lights
     const ambient = new THREE.AmbientLight(0xffffff, 0.38);
