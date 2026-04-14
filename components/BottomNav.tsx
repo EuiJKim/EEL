@@ -13,7 +13,15 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const handleWorksNav = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,7 +60,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
       className="fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 z-[100] bg-black text-white transition-transform duration-400"
       style={{
         height: 'var(--nav-h, 64px)',
-        transform: visible ? 'translateY(0)' : 'translateY(100%)',
+        transform: (visible || isMobile) ? 'translateY(0)' : 'translateY(100%)',
         transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
@@ -65,7 +73,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
       <div className="flex items-center gap-4 sm:gap-9 absolute left-1/2 -translate-x-1/2">
         {/* Works dropdown */}
         <div
-          className="relative"
+          className="relative flex items-center"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >

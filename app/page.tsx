@@ -33,6 +33,7 @@ export default function Home() {
 
   useEffect(() => {
     const onScroll = () => {
+      if (window.innerWidth < 768) return;
       const y = window.scrollY;
       const delta = y - lastScrollY.current;
       if (delta < -6) {
@@ -214,7 +215,7 @@ export default function Home() {
 
       {/* ── Scroll hint arrow ── */}
       <div
-        className={`scroll-hint-arrow fixed left-1/2 -translate-x-1/2 z-[90] text-black pointer-events-none transition-opacity duration-400 ${scrollHintHidden ? 'opacity-0' : 'scroll-blink'}`}
+        className={`scroll-hint-arrow fixed left-1/2 -translate-x-1/2 z-[90] text-black pointer-events-none transition-opacity duration-400 hidden md:block ${scrollHintHidden ? 'opacity-0' : 'scroll-blink'}`}
         style={{ bottom: '28px' }}
       >
         <svg width="40" height="40" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
