@@ -26,6 +26,16 @@ export default function Home() {
   const [scrollHintHidden, setScrollHintHidden] = useState(false);
   const lastScrollY = useRef(0);
 
+  // 모바일 vh 고정 — 브라우저 UI 등장 시 배경 축소 방지
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty('--fixed-vh', `${window.innerHeight}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -86,7 +96,7 @@ export default function Home() {
       </button>
 
       {/* ── Hero section (full-screen image + text overlay) ── */}
-      <section className="fixed inset-0 w-full h-screen overflow-hidden">
+      <section className="fixed inset-0 w-full overflow-hidden" style={{ height: 'var(--fixed-vh, 100vh)' }}>
         {/* Background image with zoom animation */}
         <img
           src="/hero-bg.jpg"
@@ -212,12 +222,8 @@ export default function Home() {
 
       {/* ── Scroll hint arrow ── */}
       <div
-        className="scroll-hint-arrow fixed left-1/2 -translate-x-1/2 z-[90] text-black pointer-events-none transition-opacity duration-400"
-        style={{
-          bottom: '28px',
-          animation: scrollHintHidden ? 'none' : 'blink 1.6s ease-in-out infinite',
-          opacity: scrollHintHidden ? 0 : undefined,
-        }}
+        className={`scroll-hint-arrow fixed left-1/2 -translate-x-1/2 z-[90] text-black pointer-events-none transition-opacity duration-400 ${scrollHintHidden ? 'opacity-0' : 'scroll-blink'}`}
+        style={{ bottom: '28px' }}
       >
         <svg width="40" height="40" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
           <polyline points="4,7 10,13 16,7"/>

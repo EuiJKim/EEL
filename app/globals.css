@@ -55,6 +55,11 @@ a {
   50% { opacity: 0; }
 }
 
+.scroll-blink {
+  animation: blink 1.6s ease-in-out infinite;
+  -webkit-animation: blink 1.6s ease-in-out infinite;
+}
+
 /* Intro overlay */
 .intro-overlay {
   position: fixed;
