@@ -176,7 +176,7 @@ export default function CommissionClient() {
               {SHAPE_OPTIONS.map((s) => (
                 <button
                   key={s.value}
-                  onClick={() => setSelectedShape(s.value)}
+                  onClick={() => { setSelectedShape(s.value); if (s.value === 'rectangle' && selectedLegs === '1') setSelectedLegs('4'); }}
                   className="border py-4 sm:py-5 lg:py-7 px-2 sm:px-3 cursor-pointer flex flex-col items-center gap-2 sm:gap-3 transition-all"
                   style={{
                     borderColor: selectedShape === s.value ? '#fff' : '#222',
@@ -267,12 +267,14 @@ export default function CommissionClient() {
             <Title>Legs</Title>
             <Desc>다리 형태를 선택해주세요</Desc>
             <div className="flex gap-2 sm:gap-3 lg:gap-4">
-              {LEG_OPTIONS.map((l) => (
+              {LEG_OPTIONS.map((l) => {
+                const disabled = l.value === '1' && selectedShape === 'rectangle';
+                return (
                 <button
                   key={l.value}
-                  onClick={() => setSelectedLegs(l.value)}
-                  className="flex-1 border py-4 sm:py-5 lg:py-7 px-2 sm:px-3 lg:px-5 cursor-pointer flex flex-col items-center gap-2 sm:gap-3 transition-all"
-                  style={{ borderColor: selectedLegs === l.value ? '#fff' : '#222', background: selectedLegs === l.value ? 'rgba(255,255,255,0.04)' : 'transparent' }}
+                  onClick={() => { if (!disabled) setSelectedLegs(l.value); }}
+                  className={`flex-1 border py-4 sm:py-5 lg:py-7 px-2 sm:px-3 lg:px-5 flex flex-col items-center gap-2 sm:gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                  style={{ borderColor: selectedLegs === l.value && !disabled ? '#fff' : '#222', background: selectedLegs === l.value && !disabled ? 'rgba(255,255,255,0.04)' : 'transparent' }}
                 >
                   <div className="flex flex-col items-center gap-1 h-12 sm:h-14 lg:h-16 justify-end">
                     <div className="w-10 sm:w-[50px] lg:w-[60px] h-2 sm:h-2.5 bg-[#555] rounded-sm" />
@@ -288,8 +290,10 @@ export default function CommissionClient() {
                   </div>
                   <span className="text-white text-xs sm:text-sm lg:text-base" style={{ fontFamily: "var(--font-gravitas, 'Gravitas One'), serif" }}>{l.label}</span>
                   <span className="text-[9px] sm:text-[10px] lg:text-xs text-[#666] text-center tracking-[0.04em]">{l.desc}</span>
+                  {disabled && <span className="text-[9px] text-[#555] mt-1">직사각형은 불가</span>}
                 </button>
-              ))}
+                );
+              })}
             </div>
           </section>
 
