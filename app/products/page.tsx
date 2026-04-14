@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server';
-import { prisma } from '@/lib/prisma';
 import WorksPageClient from './WorksPageClient';
 
 export default async function ProductsPage({
@@ -12,23 +11,26 @@ export default async function ProductsPage({
 
   const supabase = await createClient();
 
-  const [products, { data: allImages }] = await Promise.all([
-    prisma.product.findMany({ orderBy: { index: 'asc' } }),
-    supabase
-      .from('product_images')
-      .select('id, product_id, url, sort_order')
-      .order('sort_order', { ascending: true }),
-  ]);
-
-  const { data: allSpecs } = await supabase
-    .from('product_specs')
-    .select('id, product_id, label, value, sort_order')
-    .order('sort_order', { ascending: true });
+  const [{ data: products }, { data: allImages }, { data: allSpecs }] =
+    await Promise.all([
+      supabase
+        .from('products')
+        .select('id, index, name, subtitle, description, glow, accent, gradient')
+        .order('index', { ascending: true }),
+      supabase
+        .from('product_images')
+        .select('id, product_id, url, sort_order')
+        .order('sort_order', { ascending: true }),
+      supabase
+        .from('product_specs')
+        .select('id, product_id, label, value, sort_order')
+        .order('sort_order', { ascending: true }),
+    ]);
 
   return (
     <WorksPageClient
       category={cat}
-      products={products}
+      products={products ?? []}
       images={allImages ?? []}
       specs={allSpecs ?? []}
     />
