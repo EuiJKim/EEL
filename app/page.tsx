@@ -26,14 +26,9 @@ export default function Home() {
   const [scrollHintHidden, setScrollHintHidden] = useState(false);
   const lastScrollY = useRef(0);
 
-  // 모바일 vh 고정 — 브라우저 UI 등장 시 배경 축소 방지
+  // 모바일 vh 고정 — 최초 1회만 저장, resize 무시
   useEffect(() => {
-    const setVh = () => {
-      document.documentElement.style.setProperty('--fixed-vh', `${window.innerHeight}px`);
-    };
-    setVh();
-    window.addEventListener('resize', setVh);
-    return () => window.removeEventListener('resize', setVh);
+    document.documentElement.style.setProperty('--fixed-vh', `${window.innerHeight}px`);
   }, []);
 
   useEffect(() => {
