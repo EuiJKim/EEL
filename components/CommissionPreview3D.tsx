@@ -11,7 +11,7 @@ interface Props {
   height: 'Dining' | 'Café' | 'Side' | null;
   legs: '4' | '1' | null;
   shape: TableShape;
-  opacity: '투명' | '반투명' | '불투명' | null;
+  opacity?: '투명' | '반투명' | '불투명' | null;
 }
 
 const SIZE_SCALE: Record<string, number> = { S: 0.62, M: 0.75, L: 0.88 };
@@ -84,8 +84,6 @@ const EXTRUDE_SETTINGS: THREE.ExtrudeGeometryOptions = {
   bevelSize: 0.06,
   bevelSegments: 4,
 };
-
-const OPACITY_MAP: Record<string, number> = { '투명': 0.45, '반투명': 0.7, '불투명': 0.93 };
 
 export default function CommissionPreview3D({ resinColor, size, height, legs, shape, opacity }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -239,8 +237,12 @@ export default function CommissionPreview3D({ resinColor, size, height, legs, sh
 
   /* ── Update opacity ── */
   useEffect(() => {
-    if (!sceneRef.current || !opacity) return;
-    sceneRef.current.tableMat.opacity = OPACITY_MAP[opacity] ?? 0.93;
+    if (!sceneRef.current) return;
+    const mat = sceneRef.current.tableMat;
+    if (opacity === '투명') { mat.opacity = 0.25; mat.transmission = 0.95; mat.roughness = 0.04; }
+    else if (opacity === '반투명') { mat.opacity = 0.6; mat.transmission = 0.5; mat.roughness = 0.08; }
+    else { mat.opacity = 0.93; mat.transmission = 0; mat.roughness = 0.12; }
+    mat.needsUpdate = true;
   }, [opacity]);
 
   /* ── Update size ── */

@@ -186,7 +186,7 @@ export default function CommissionClient() {
             <p className={`text-xs sm:text-[13px] tracking-[0.06em] min-h-[20px] mb-6 transition-colors duration-300 ${selectedColor ? 'text-[#e8e8e8]' : 'text-[#888]'}`}>
               {colorName}
             </p>
-            <div className="grid gap-2 mb-3" style={{ gridTemplateColumns: 'repeat(14, 36px)' }}>
+            <div className="grid gap-2 mb-3 [grid-template-columns:repeat(7,1fr)] md:[grid-template-columns:repeat(14,36px)]">
               {COLORS.map((c) => (
                 <button
                   key={c.hex}
@@ -203,7 +203,7 @@ export default function CommissionClient() {
             </div>
 
             {/* Opacity + 커스텀 컬러 같은 줄 */}
-            <div className="flex items-center gap-2" style={{ width: '608px' }}>
+            <div className="flex items-center gap-2 md:w-[608px]">
               {(['투명', '반투명', '불투명'] as const).map((op) => (
                 <button
                   key={op}
