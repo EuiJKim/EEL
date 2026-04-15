@@ -22,12 +22,13 @@
 ### 컴포넌트
 - [x] `BottomNav` — 하단 고정 네비 (Works 드롭다운/Commission/Contact), 스크롤 연동
 - [x] `ContactModal` — Instagram/Email/Location/Phone
-- [x] `CommissionPreview3D` — Three.js procedural 3D 테이블 (ExtrudeGeometry, shape/color/size/height/legs 반응형)
-- [x] `CommissionClient` — 6단계 커스텀 빌더, 25색 팔레트, 4가지 Shape, 직사각형-Pedestal 제약
+- [x] `CommissionPreview3D` — Three.js procedural 3D 테이블 (ExtrudeGeometry, shape/color/size/height/legs/opacity 반응형)
+- [x] `CommissionClient` — 7단계 커스텀 빌더 (Color+Opacity→Shape→Size→Height→Legs→Inquiry), 28색 팔레트 + 커스텀 색상, 투명도 선택, 4가지 Shape, 직사각형-Pedestal 제약
 - [x] `WorksPageClient` — 3열(데스크톱)/2열(모바일) 그리드, 상세 오버레이
 
 ### API
 - [x] `POST /api/notify` — 주문 접수 시 관리자/고객 이메일 발송 (Resend)
+- [x] `POST /api/commission-inquiry` — 커미션 문의 이메일 발송 (Resend, 관리자에게)
 - [x] `PATCH /api/admin/update-order` — 주문 상태 변경 (admin only)
 - [x] `POST /api/orders` — 주문 생성
 - [x] `GET /api/bto-options` — BTO 옵션 목록
@@ -60,7 +61,7 @@
 ## 다음 작업
 
 ### 기능
-- [ ] Commission 문의 폼 실제 이메일 발송 연동
+- [x] Commission 문의 폼 실제 이메일 발송 연동 (`/api/commission-inquiry`)
 - [ ] 결제 시스템 연동 (Toss Payments / 카카오페이)
 - [ ] 모바일 반응형 전면 점검
 - [ ] AR 미리보기 (WebXR)

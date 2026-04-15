@@ -156,8 +156,11 @@
 | 2026-04-13 | 원본 사이트 스타일로 전환 | eeleeleeleel.github.io 기준, Gravitas One + Telex + Staatliches |
 | 2026-04-13 | 배경색 #0a0a0a → #2e3330 | 다크 그린으로 변경 (원본 사이트 매칭) |
 | 2026-04-13 | 네비게이션 사이드바 → 하단 바 | 원본 사이트 구조 매칭, 스크롤 연동 |
-| 2026-04-13 | Commission 6단계 빌더 | Color→Shape→Size→Height→Legs→Inquiry, 원본 + Shape 추가 |
+| 2026-04-13 | Commission 7단계 빌더 | Color(+Opacity)→Shape→Size→Height→Legs→Inquiry, 원본 + Shape + Opacity 추가 |
 | 2026-04-13 | Three.js 직접 생성 3D | GLTF 의존 제거, procedural organic/round/square/rectangle |
 | 2026-04-14 | Rectangle+Pedestal 제약 | 직사각형 선택 시 Pedestal 다리 선택 불가 (자동 4 Legs 전환) |
 | 2026-04-14 | DB pooler URL 전환 | Supabase ap-northeast-2 pooler, products 페이지 Prisma→Supabase 직접 쿼리 |
 | 2026-04-14 | 배포 도메인 | eel-studio.me (Vercel 커스텀 도메인) |
+| 2026-04-15 | Commission 투명도 단계 추가 | Color 선택에 투명/반투명/불투명 옵션 추가, 3D 프리뷰 반영 |
+| 2026-04-15 | 커미션 문의 이메일 연동 | /api/commission-inquiry → Resend로 관리자에게 문의 발송 |
+| 2026-04-15 | 제품 이미지 대량 추가 | Furniture 5종, Object 15종, Painting 8종 (public/products/) |

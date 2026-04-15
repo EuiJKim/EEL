@@ -31,7 +31,7 @@ bun run test       # unit tests (Vitest)
 ```
 app/
   page.tsx                    # Home (fullscreen hero + bottom nav)
-  order/CommissionClient.tsx  # 6-step commission builder + 3D preview
+  order/CommissionClient.tsx  # 7-step commission builder + 3D preview
   products/WorksPageClient.tsx # Works grid + detail overlay
   orders/                     # Order history
   admin/                      # Admin order management

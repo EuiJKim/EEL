@@ -37,7 +37,7 @@ app/
     callback/route.ts                   # OAuth 콜백 처리
   order/
     page.tsx                            # Commission 페이지 (Suspense 래핑)
-    CommissionClient.tsx                # 6단계 커스텀 빌더 (Color→Shape→Size→Height→Legs→Inquiry) + 3D 프리뷰
+    CommissionClient.tsx                # 7단계 커스텀 빌더 (Color(+Opacity)→Shape→Size→Height→Legs→Inquiry) + 3D 프리뷰
     loading.tsx                         # Commission 로딩 스켈레톤
   orders/
     page.tsx                            # 내 주문 내역 (로그인 필요, 서버 컴포넌트)
@@ -59,6 +59,7 @@ app/
       not-found.tsx                     # 404 페이지
   api/
     notify/route.ts                     # POST — 주문 접수 시 관리자/고객 이메일 발송 (Resend)
+    commission-inquiry/route.ts         # POST — 커미션 문의 이메일 발송 (Resend, 관리자에게)
     orders/route.ts                     # POST — 주문 생성 (인증 필요)
     bto-options/route.ts                # GET — BTO 옵션 목록 (sizes, resins, woods, legs)
     admin/update-order/route.ts         # PATCH — 주문 상태 변경 (admin only)
@@ -66,7 +67,7 @@ app/
 components/
   BottomNav.tsx               # 하단 고정 네비 (Works 드롭다운/Commission/Contact), 스크롤 연동
   ContactModal.tsx            # 연락처 모달 (Instagram/Email/Location/Phone)
-  CommissionPreview3D.tsx     # Three.js procedural 3D 테이블 프리뷰 (ExtrudeGeometry, shape/color/size/height/legs 반응형)
+  CommissionPreview3D.tsx     # Three.js procedural 3D 테이블 프리뷰 (ExtrudeGeometry, shape/color/size/height/legs/opacity 반응형)
   Header.tsx                  # 플로팅 헤더 (orders 레이아웃에서 사용)
   Sidebar.tsx                 # 사이드바 (ProductDetailClient에서 사용)
   TablePreview3D.tsx          # Three.js 3D 프리뷰 (GLB 모델 로드 방식)
@@ -129,9 +130,11 @@ DIRECT_URL                     # Prisma용 직접 DB 연결 URL
 - Supabase 서버 클라이언트는 반드시 `lib/supabase/server.ts` 사용 (`cookies()` 기반)
 - 관리자 체크: `user.email === process.env.ADMIN_EMAIL`
 - Resend 발신 주소: `EEL Studio <order@send.eel-studio.me>`
-- `products` 페이지는 Prisma 대신 Supabase 직접 쿼리 사용 (DB pooler 호환)
+- `products` 페이지는 Prisma 대신 Supabase 직접 쿼리 사용 (DB pooler 호환) + 하드코딩 제품/이미지 패치 (public/products/)
 - Commission 빌더는 `/order` 경로 (주의: `/orders`는 내 주문 내역)
-- Commission 6단계: Color→Shape→Size→Height→Legs→Inquiry (하드코딩, DB 불필요)
+- Commission 7단계: Color(+Opacity)→Shape→Size→Height→Legs→Inquiry (하드코딩, DB 불필요)
+- Commission 컬러: 28색 팔레트 + 커스텀 색상 입력 + 투명도(투명/반투명/불투명) 선택
+- Commission 문의: `/api/commission-inquiry`로 관리자 이메일 발송 (Resend)
 - 직사각형(Rectangle) 선택 시 Pedestal 다리 선택 불가
 - 주문 상태 흐름: `pending → confirmed → in_progress → completed` (또는 `cancelled`)
 
