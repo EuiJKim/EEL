@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = process.env.FROM_EMAIL ?? 'EEL Studio <onboarding@resend.dev>';
 
 function escapeHtml(str: string): string {
@@ -22,9 +21,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { name, phone, email, note, color, shape, size, height, legs } = body;
 
-    if (!name || !phone || !email) {
+    if (!name || !phone) {
       return NextResponse.json({ error: '필수 항목 누락' }, { status: 400 });
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const baseStyle = `background:#0d0d0d;color:#e4e4e7;padding:40px;border-radius:16px;font-family:sans-serif;`;
 
