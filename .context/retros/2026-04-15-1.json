@@ -1,0 +1,29 @@
+{
+  "date": "2026-04-15",
+  "window": "7d",
+  "metrics": {
+    "commits": 33,
+    "contributors": 2,
+    "prs_merged": 0,
+    "insertions": 3075,
+    "deletions": 8768,
+    "net_loc": -5693,
+    "test_loc": 0,
+    "test_ratio": 0,
+    "active_days": 3,
+    "sessions": 5,
+    "deep_sessions": 3,
+    "avg_session_minutes": 35,
+    "loc_per_session_hour": 1500,
+    "feat_pct": 0.18,
+    "fix_pct": 0.42,
+    "peak_hour": 17,
+    "ai_assisted_commits": 7
+  },
+  "authors": {
+    "EuiJKim": { "commits": 18, "insertions": 2115, "deletions": 8642, "test_ratio": 0, "top_area": "app/" },
+    "mi": { "commits": 14, "insertions": 660, "deletions": 170, "test_ratio": 0, "top_area": "app/order/" }
+  },
+  "streak_days": 3,
+  "tweetable": "Week of Apr 8: 33 commits (2 contributors), 3k+ LOC added, 8.7k deleted (cleanup), 3 active days | Streak: 3d"
+}
