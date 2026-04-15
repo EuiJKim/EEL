@@ -11,6 +11,7 @@ interface Props {
   height: 'Dining' | 'Café' | 'Side' | null;
   legs: '4' | '1' | null;
   shape: TableShape;
+  opacity: '투명' | '반투명' | '불투명' | null;
 }
 
 const SIZE_SCALE: Record<string, number> = { S: 0.62, M: 0.75, L: 0.88 };
@@ -84,7 +85,9 @@ const EXTRUDE_SETTINGS: THREE.ExtrudeGeometryOptions = {
   bevelSegments: 4,
 };
 
-export default function CommissionPreview3D({ resinColor, size, height, legs, shape }: Props) {
+const OPACITY_MAP: Record<string, number> = { '투명': 0.45, '반투명': 0.7, '불투명': 0.93 };
+
+export default function CommissionPreview3D({ resinColor, size, height, legs, shape, opacity }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     renderer: THREE.WebGLRenderer;
@@ -233,6 +236,12 @@ export default function CommissionPreview3D({ resinColor, size, height, legs, sh
     if (!sceneRef.current) return;
     sceneRef.current.tableMat.color.setStyle(resinColor);
   }, [resinColor]);
+
+  /* ── Update opacity ── */
+  useEffect(() => {
+    if (!sceneRef.current || !opacity) return;
+    sceneRef.current.tableMat.opacity = OPACITY_MAP[opacity] ?? 0.93;
+  }, [opacity]);
 
   /* ── Update size ── */
   useEffect(() => {
