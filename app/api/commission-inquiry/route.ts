@@ -1,7 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { z } from 'zod';
 
 const FROM_EMAIL = process.env.FROM_EMAIL ?? 'EEL Studio <onboarding@resend.dev>';
+
+const inquirySchema = z.object({
+  name:   z.string().min(1).max(50),
+  phone:  z.string().min(1).max(20),
+  email:  z.string().email().optional().or(z.literal('')),
+  note:   z.string().max(1000).optional().default(''),
+  color:  z.string().max(100).optional().default(''),
+  shape:  z.string().max(50).optional().default(''),
+  size:   z.string().max(50).optional().default(''),
+  height: z.string().max(50).optional().default(''),
+  legs:   z.string().max(50).optional().default(''),
+});
 
 function escapeHtml(str: string): string {
   return str
@@ -18,12 +31,12 @@ function safe(v: unknown): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { name, phone, email, note, color, shape, size, height, legs } = body;
-
-    if (!name || !phone) {
+    const parsed = inquirySchema.safeParse(await req.json());
+    if (!parsed.success) {
       return NextResponse.json({ error: '필수 항목 누락' }, { status: 400 });
     }
+
+    const { name, phone, email, note, color, shape, size, height, legs } = parsed.data;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
