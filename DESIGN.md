@@ -22,10 +22,11 @@
 - **Logo/Display:** `Gravitas One` — 브랜드 로고 "EEL", 히어로 타이틀. 묵직한 serif.
 - **Body/Description:** `Telex` — 본문, 설명 텍스트, 스펙, 가격. 깔끔한 sans-serif.
 - **UI/Navigation:** `Staatliches` — 네비게이션, 라벨, 버튼. uppercase + letter-spacing. condensed sans-serif.
+- **Contact Modal:** `DM Sans` — Contact 모달 전용. 부드러운 geometric sans-serif.
 
 ### Loading
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Telex&family=Staatliches&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Telex&family=Staatliches&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
 ```
 
 ### Type Scale
@@ -41,7 +42,7 @@
 | Nav Link | Staatliches | 14px (desktop), 12px (mobile) | 400 | uppercase, tracking 0.08em |
 | Step Number | Staatliches | 22px | 400 | "01", "02" 등 |
 | Footer Info | Telex | 9px | 400 | 영업시간, 주소, 라이선스 |
-| Contact Modal | Staatliches | 18px | 400 | 연락처 정보 |
+| Contact Modal | DM Sans | 14-18px | 400/500 | 연락처 정보 |
 
 ---
 
@@ -138,11 +139,21 @@
 
 ---
 
+## Accessibility & Touch Targets
+- **최소 터치 영역:** 36px (프리미엄 브랜드 밸런스, 44px Apple 가이드라인 참고)
+- **네비 버튼:** 텍스트 크기 유지 + py-2 패딩으로 터치 영역 확보 (~36px)
+- **드롭다운 항목:** py-2 패딩
+- **소셜 아이콘:** 아이콘 24px + 주변 패딩으로 36px+ 터치 영역
+- **모달 닫기 버튼:** 최소 36x36px
+- **폰트 제한:** Gravitas One / Telex / Staatliches / DM Sans(Contact 모달) 4종만 사용 (추가 폰트 금지)
+
+---
+
 ## Key Components
 - **Nav Toggle:** 좌상단 28px 검은 원형 버튼
 - **Cart Icon:** 우상단 30px SVG bag 아이콘
 - **Scroll Hint:** 하단 중앙 40px 화살표, blink 애니메이션
-- **Bottom Nav:** 하단 64px 검은 바, Works(드롭다운)/Commission/Contact
+- **Bottom Nav:** 하단 64px 검은 바, Works(드롭다운)/Commission/Contact, 버튼 터치 영역 36px+
 - **Contact Modal:** 480px, Instagram/Email/주소/전화번호
 - **Works Grid:** gap 없음, aspect-ratio 1:1.2
 - **3D Preview:** Three.js procedural 테이블 (ExtrudeGeometry organic shape)
@@ -164,3 +175,5 @@
 | 2026-04-15 | Commission 투명도 단계 추가 | Color 선택에 투명/반투명/불투명 옵션 추가, 3D 프리뷰 반영 |
 | 2026-04-15 | 커미션 문의 이메일 연동 | /api/commission-inquiry → Resend로 관리자에게 문의 발송 |
 | 2026-04-15 | 제품 이미지 대량 추가 | Furniture 5종, Object 15종, Painting 8종 (public/products/) |
+| 2026-04-15 | 터치 타겟 최소 36px | 네비 버튼 py-2 패딩 추가, 드롭다운 항목 패딩 확대, 디자인 리뷰 기반 |
+| 2026-04-15 | 폰트 4종 확정 | Gravitas One / Telex / Staatliches / DM Sans(Contact 모달), 추가 폰트 금지 |
