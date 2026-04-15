@@ -209,6 +209,10 @@ export default function CommissionClient() {
                 <input type="text" placeholder="원하는 컬러를 설명해주세요" className="comm-input" />
               </div>
             )}
+            <p className="mt-5 text-[#444] leading-relaxed" style={{ fontFamily: "'Telex', sans-serif", fontSize: '11px' }}>
+              레진 소재의 특성상 실제 색상은 선택하신 컬러와 다소 차이가 있을 수 있습니다.<br />
+              Due to the nature of resin materials, the final color may differ slightly from the selected option.
+            </p>
           </section>
 
           {/* 02 Shape */}
