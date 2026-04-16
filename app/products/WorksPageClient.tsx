@@ -134,7 +134,7 @@ export default function WorksPageClient({
             }`}
             style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
           >
-            {cat}
+            {cat === 'object' ? 'objet' : cat}
           </Link>
         ))}
       </div>
