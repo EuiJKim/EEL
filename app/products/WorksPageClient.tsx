@@ -68,7 +68,7 @@ export default function WorksPageClient({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [zoomedImages, setZoomedImages] = useState<string[] | null>(null);
 
-  const isObject = category === 'object';
+  const isObject = category === 'objet';
   const isPainting = category === 'painting';
   const isEmpty = false;
 
@@ -125,7 +125,7 @@ export default function WorksPageClient({
 
       {/* ── Category tabs ── */}
       <div className="flex items-center justify-center gap-8 py-4 bg-black border-b border-[#222]">
-        {['furniture', 'object', 'painting'].map((cat) => (
+        {['furniture', 'objet', 'painting'].map((cat) => (
           <Link
             key={cat}
             href={`/products?category=${cat}`}

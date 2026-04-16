@@ -101,12 +101,12 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
               Furniture
             </a>
             <a
-              href="/products?category=object"
-              onClick={handleWorksNav('/products?category=object')}
+              href="/products?category=objet"
+              onClick={handleWorksNav('/products?category=objet')}
               className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
-              Object
+              Objet
             </a>
             <a
               href="/products?category=painting"
