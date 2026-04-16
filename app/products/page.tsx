@@ -162,7 +162,8 @@ export default async function ProductsPage({
     { id: 9032, product_id: 'cabinet-black', label: 'Price', value: '₩ 1,800,000',                sort_order: 1 },
     { id: 9041, product_id: 'tile-table',  label: 'Size',  value: 'W 92.5 cm  /  D 64.5 cm  /  H 35.3 cm', sort_order: 0 },
     { id: 9042, product_id: 'tile-table',  label: 'Price', value: '₩ 750,000',                              sort_order: 1 },
-    { id: 9051, product_id: 'white-table', label: 'Size',  value: 'W 48 - 54 cm  /  H 41.8 cm',            sort_order: 0 },
+    { id: 9051, product_id: 'white-table', label: 'Size',  value: 'W 48 - 54 cm  /  H 41.8 cm', sort_order: 0 },
+    { id: 9052, product_id: 'white-table', label: 'Price', value: '₩ 350,000',                  sort_order: 1 },
   ];
 
   return (
