@@ -67,6 +67,11 @@ export default function WorksPageClient({
 }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [zoomedImages, setZoomedImages] = useState<string[] | null>(null);
+  const [cartTooltip, setCartTooltip] = useState(false);
+  const handleCartClick = () => {
+    setCartTooltip(true);
+    setTimeout(() => setCartTooltip(false), 1000);
+  };
 
   const isObject = category === 'objet';
   const isPainting = category === 'painting';
@@ -111,13 +116,21 @@ export default function WorksPageClient({
         >
           EEL
         </Link>
-        <button className="absolute top-5 right-6 bg-transparent border-none cursor-pointer text-white flex items-center p-0 hover:opacity-60 transition-opacity" aria-label="장바구니">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <path d="M16 10a4 4 0 01-8 0" />
-          </svg>
-        </button>
+        <div className="absolute top-4 right-6 flex flex-col items-end gap-1">
+          <button onClick={handleCartClick} className="bg-transparent border-none cursor-pointer text-white flex items-center p-0 hover:opacity-60 transition-opacity" aria-label="장바구니">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+          </button>
+          <span
+            className="text-[10px] text-white tracking-[0.04em] transition-opacity duration-200"
+            style={{ opacity: cartTooltip ? 1 : 0, fontFamily: "'Telex', sans-serif" }}
+          >
+            soon….
+          </span>
+        </div>
       </div>
 
       {/* ── Divider ── */}
