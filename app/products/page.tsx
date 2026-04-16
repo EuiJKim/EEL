@@ -67,6 +67,17 @@ export default async function ProductsPage({
     { id: 9943, product_id: 'tile-table', url: '/products/tile-table/3.jpg', sort_order: 2 }, // tiletable2
     { id: 9944, product_id: 'tile-table', url: '/products/tile-table/4.jpg', sort_order: 3 }, // tiletable3
   ];
+  const whiteTableImages = [
+    { id: 9946, product_id: 'white-table', url: '/products/white-table/1.jpg', sort_order: 0 }, // thumbnail — whitetable3
+    { id: 9947, product_id: 'white-table', url: '/products/white-table/2.jpg', sort_order: 1 }, // whitetable1
+    { id: 9948, product_id: 'white-table', url: '/products/white-table/3.jpg', sort_order: 2 }, // whitetable2
+    { id: 9949, product_id: 'white-table', url: '/products/white-table/4.jpg', sort_order: 3 }, // whitetable3
+    { id: 9950, product_id: 'white-table', url: '/products/white-table/5.jpg', sort_order: 4 }, // whitetable4
+    { id: 9951, product_id: 'white-table', url: '/products/white-table/6.jpg', sort_order: 5 }, // whitetable5
+    { id: 9952, product_id: 'white-table', url: '/products/white-table/7.jpg', sort_order: 6 }, // whitetable6
+    { id: 9953, product_id: 'white-table', url: '/products/white-table/8.jpg', sort_order: 7 }, // whitetable7
+    { id: 9954, product_id: 'white-table', url: '/products/white-table/9.jpg', sort_order: 8 }, // whitetable8
+  ];
   const objectImages = [
     { id: 9951, product_id: 'object-1', url: '/products/object-1/1.jpg', sort_order: 0 },
     { id: 9952, product_id: 'object-2', url: '/products/object-2/1.jpg', sort_order: 0 },
@@ -96,11 +107,12 @@ export default async function ProductsPage({
     { id: 9977, product_id: 'painting-7', url: '/products/painting-7/1.jpg', sort_order: 0 },
     { id: 9978, product_id: 'painting-8', url: '/products/painting-8/1.jpg', sort_order: 0 },
   ];
-  const patchedImages = [...otherImages, ...tableFirstImages, ...tableSecondImages, ...acrylicImages, ...cabinetBlackImages, ...tileTableImages, ...objectImages, ...paintingImages];
+  const patchedImages = [...otherImages, ...tableFirstImages, ...tableSecondImages, ...acrylicImages, ...cabinetBlackImages, ...tileTableImages, ...whiteTableImages, ...objectImages, ...paintingImages];
 
   // Hardcoded extra products (not in DB)
   const extraProducts = [
-    { id: 'tile-table', index: 5, name: 'Ceramic Tile Table', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
+    { id: 'tile-table',   index: 5, name: 'Ceramic Tile Table',       subtitle: '', description: '', glow: '', accent: '', gradient: '' },
+    { id: 'white-table',  index: 6, name: 'White Resin Coffee Table', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-1', index: 1, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-2', index: 2, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-3', index: 3, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
@@ -148,8 +160,9 @@ export default async function ProductsPage({
     { id: 9022, product_id: 'acrylic-blue-leg', label: 'Price', value: '₩ 200,000',                sort_order: 1 },
     { id: 9031, product_id: 'cabinet-black', label: 'Size',  value: 'Ø 73 - 77 cm  /  H 72 cm',      sort_order: 0 },
     { id: 9032, product_id: 'cabinet-black', label: 'Price', value: '₩ 1,800,000',                sort_order: 1 },
-    { id: 9041, product_id: 'tile-table', label: 'Size',  value: 'W 92.5 cm  /  D 64.5 cm  /  H 35.3 cm', sort_order: 0 },
-    { id: 9042, product_id: 'tile-table', label: 'Price', value: '₩ 750,000',                    sort_order: 1 },
+    { id: 9041, product_id: 'tile-table',  label: 'Size',  value: 'W 92.5 cm  /  D 64.5 cm  /  H 35.3 cm', sort_order: 0 },
+    { id: 9042, product_id: 'tile-table',  label: 'Price', value: '₩ 750,000',                              sort_order: 1 },
+    { id: 9051, product_id: 'white-table', label: 'Size',  value: 'W 48 - 54 cm  /  H 41.8 cm',            sort_order: 0 },
   ];
 
   return (
