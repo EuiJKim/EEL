@@ -143,7 +143,7 @@ export default function WorksPageClient({
       <div className="overflow-y-auto" style={{ height: 'calc(100vh - 68px - 52px)' }}>
         {isPainting ? (
           /* Painting: 4-column grid, fixed aspect ratio, click to zoom */
-          <div className="grid grid-cols-4 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
             {products
               .filter((p) => p.id.startsWith('painting-'))
               .map((product) => {
@@ -170,7 +170,7 @@ export default function WorksPageClient({
           </div>
         ) : isObject ? (
           /* Object: 5-column grid, smaller images */
-          <div className="grid grid-cols-5 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
+          <div className="grid grid-cols-3 md:grid-cols-5 w-full" style={{ fontSize: 0, lineHeight: 0, gap: 0 }}>
             {products
               .filter((p) => p.id.startsWith('object-'))
               .map((product) => {
