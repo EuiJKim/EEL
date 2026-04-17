@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const baseStyle = `background:#0d0d0d;color:#e4e4e7;padding:40px;border-radius:16px;font-family:sans-serif;`;
 
-    await resend.emails.send({
+    const { error: adminError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: process.env.ADMIN_EMAIL!,
       subject: `[EEL] 커미션 문의 — ${safe(name)}`,
@@ -64,6 +64,41 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     });
+
+    if (adminError) {
+      console.error('[commission-inquiry] admin send failed:', adminError);
+      return NextResponse.json({ error: '전송 실패' }, { status: 500 });
+    }
+
+    if (email) {
+      const { error: customerError } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: '[EEL Studio] 커미션 문의가 접수되었습니다',
+        html: `
+          <div style="${baseStyle}">
+            <h2 style="margin:0 0 8px;font-size:22px;color:#fff;font-weight:300;letter-spacing:2px;">EEL STUDIO</h2>
+            <p style="margin:24px 0 16px;font-size:15px;line-height:1.7;color:#fff;">${safe(name)}님, 커미션 문의를 보내주셔서 감사합니다.</p>
+            <p style="margin:0 0 32px;font-size:14px;line-height:1.7;color:#a1a1aa;">문의 내용을 확인한 후 1–2 영업일 내에 연락드리겠습니다.</p>
+            <div style="padding:20px;background:#1a1a1a;border-radius:8px;">
+              <p style="margin:0 0 12px;font-size:12px;color:#888;letter-spacing:1px;">접수 내역</p>
+              <table style="border-collapse:collapse;width:100%;font-size:13px;">
+                <tr><td style="padding:6px 0;color:#888;width:80px;">컬러</td><td style="padding:6px 0;color:#fff;">${safe(color)}</td></tr>
+                <tr><td style="padding:6px 0;color:#888;">Shape</td><td style="padding:6px 0;color:#fff;">${safe(shape)}</td></tr>
+                <tr><td style="padding:6px 0;color:#888;">Size</td><td style="padding:6px 0;color:#fff;">${safe(size)}</td></tr>
+                <tr><td style="padding:6px 0;color:#888;">Height</td><td style="padding:6px 0;color:#fff;">${safe(height)}</td></tr>
+                <tr><td style="padding:6px 0;color:#888;">Legs</td><td style="padding:6px 0;color:#fff;">${safe(legs)}</td></tr>
+              </table>
+            </div>
+            <p style="margin:32px 0 0;font-size:11px;line-height:1.6;color:#555;">이 메일은 발신전용입니다. 추가 문의는 eel-studio.me 의 Contact을 이용해 주세요.</p>
+          </div>
+        `,
+      });
+
+      if (customerError) {
+        console.error('[commission-inquiry] customer send failed:', customerError);
+      }
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
