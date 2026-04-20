@@ -80,7 +80,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
           onMouseLeave={handleMouseLeave}
         >
           <button
-            className="font-[var(--font-ui)] text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2"
+            className="font-[var(--font-ui)] text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-2"
             style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
           >
             Works
@@ -95,7 +95,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
             <a
               href="/products?category=furniture"
               onClick={handleWorksNav('/products?category=furniture')}
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2 cursor-pointer"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-3 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Furniture
@@ -103,7 +103,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
             <a
               href="/products?category=objet"
               onClick={handleWorksNav('/products?category=objet')}
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2 cursor-pointer"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-3 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Objet
@@ -111,7 +111,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
             <a
               href="/products?category=painting"
               onClick={handleWorksNav('/products?category=painting')}
-              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2 cursor-pointer"
+              className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-3 cursor-pointer"
               style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
             >
               Painting
@@ -121,7 +121,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
 
         <Link
           href="/order"
-          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2"
+          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-2"
           style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
         >
           Commission
@@ -129,7 +129,7 @@ export default function BottomNav({ visible, onContactClick }: BottomNavProps) {
 
         <button
           onClick={onContactClick}
-          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 py-2"
+          className="text-xs sm:text-sm tracking-[0.08em] uppercase text-white transition-opacity duration-200 hover:opacity-50 min-h-[44px] flex items-center px-2"
           style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif", WebkitTextStroke: '0.4px #fff' }}
         >
           Contact

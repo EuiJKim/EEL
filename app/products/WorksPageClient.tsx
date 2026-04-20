@@ -137,12 +137,12 @@ export default function WorksPageClient({
       <div className="w-full bg-white/15" style={{ height: '0.5px' }} />
 
       {/* ── Category tabs ── */}
-      <div className="flex items-center justify-center gap-8 py-4 bg-black border-b border-[#222]">
+      <div className="flex items-center justify-center gap-8 bg-black border-b border-[#222]">
         {['furniture', 'objet', 'painting'].map((cat) => (
           <Link
             key={cat}
             href={`/products?category=${cat}`}
-            className={`text-sm tracking-[0.08em] uppercase transition-opacity duration-200 ${
+            className={`text-sm tracking-[0.08em] uppercase transition-opacity duration-200 min-h-[44px] flex items-center px-3 ${
               category === cat ? 'text-white opacity-100' : 'text-white/50 hover:opacity-80'
             }`}
             style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
