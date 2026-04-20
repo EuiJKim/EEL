@@ -186,19 +186,25 @@ export default function CommissionClient() {
             <p className={`text-xs sm:text-[13px] tracking-[0.06em] min-h-[20px] mb-6 transition-colors duration-300 ${selectedColor ? 'text-[#e8e8e8]' : 'text-[#888]'}`}>
               {colorName}
             </p>
-            <div className="grid gap-2 mb-3 [grid-template-columns:repeat(7,1fr)] md:[grid-template-columns:repeat(14,36px)]">
+            <div className="grid gap-2 mb-3 [grid-template-columns:repeat(7,1fr)] md:[grid-template-columns:repeat(14,44px)]">
               {COLORS.map((c) => (
                 <button
                   key={c.hex}
+                  type="button"
                   onClick={() => { setSelectedColor(c.hex); setColorName(c.name); setPreviewColor(c.hex); }}
-                  className="w-[36px] h-[36px] rounded cursor-pointer transition-transform duration-200 hover:scale-[1.08]"
-                  style={{
-                    background: c.hex,
-                    boxShadow: selectedColor === c.hex ? '0 0 0 3px #fff, 0 0 0 5px #0e0e0e' : 'none',
-                    transform: selectedColor === c.hex ? 'scale(1.08)' : undefined,
-                    border: ['#F0EDE8', '#E8DAEF', '#D5F5E3', '#FAD7A0', '#F5B7B1'].includes(c.hex) ? '1px solid #555' : 'none',
-                  }}
-                />
+                  aria-label={c.name}
+                  className="w-11 h-11 flex items-center justify-center cursor-pointer bg-transparent border-0 p-0"
+                >
+                  <span
+                    className="w-[36px] h-[36px] rounded block transition-transform duration-200 hover:scale-[1.08]"
+                    style={{
+                      background: c.hex,
+                      boxShadow: selectedColor === c.hex ? '0 0 0 3px #fff, 0 0 0 5px #0e0e0e' : 'none',
+                      transform: selectedColor === c.hex ? 'scale(1.08)' : undefined,
+                      border: ['#F0EDE8', '#E8DAEF', '#D5F5E3', '#FAD7A0', '#F5B7B1'].includes(c.hex) ? '1px solid #555' : 'none',
+                    }}
+                  />
+                </button>
               ))}
             </div>
 
