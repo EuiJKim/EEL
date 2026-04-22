@@ -134,7 +134,7 @@ export default function Home() {
               WebkitTextStroke: '1px #000',
             }}
           >
-            EEL
+            STUDIO EEL
           </p>
 
           {/* Divider - full width */}
