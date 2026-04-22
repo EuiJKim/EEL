@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  sizeId     String   @map("size_id")
+  resinId    String   @map("resin_id")
+  woodId     String   @map("wood_id")
+  legId      String   @map("leg_id")
+  totalPrice Int      @map("total_price")
+  status     String   @default("pending")
+  phone      String?
+  note       String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  size  SizeOption  @relation(fields: [sizeId], references: [id])
+  resin ResinOption @relation(fields: [resinId], references: [id])
+  wood  WoodOption  @relation(fields: [woodId], references: [id])
+  leg   LegOption   @relation(fields: [legId], references: [id])
+
+  @@map("orders")
+}
+
+model SizeOption {
+  id          String  @id @default(uuid())
+  label       String
+  size        String
+  description String
+  price       Int
+  sortOrder   Int     @map("sort_order")
+  orders      Order[]
+
+  @@map("size_options")
+}
+
+model ResinOption {
+  id          String  @id @default(uuid())
+  label       String
+  hex         String
+  description String
+  sortOrder   Int     @map("sort_order")
+  orders      Order[]
+
+  @@map("resin_options")
+}
+
+model WoodOption {
+  id            String  @id @default(uuid())
+  label         String
+  description   String
+  color         String
+  priceAddition Int     @map("price_addition")
+  sortOrder     Int     @map("sort_order")
+  orders        Order[]
+
+  @@map("wood_options")
+}
+
+model LegOption {
+  id            String  @id @default(uuid())
+  label         String
+  description   String
+  color         String
+  priceAddition Int     @map("price_addition")
+  sortOrder     Int     @map("sort_order")
+  orders        Order[]
+
+  @@map("leg_options")
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  index       Int
+  name        String
+  subtitle    String
+  description String
+  glow        String
+  accent      String
+  gradient    String
+  images      ProductImage[]
+  specs       ProductSpec[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String  @map("product_id")
+  url       String
+  sortOrder Int     @map("sort_order")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("product_images")
+}
+
+model ProductSpec {
+  id        String  @id @default(uuid())
+  productId String  @map("product_id")
+  label     String
+  value     String
+  sortOrder Int     @map("sort_order")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("product_specs")
+}
+
+model Profile {
+  id       String  @id
+  fullName String? @map("full_name")
+  email    String?
+
+  @@map("profiles")
+}
