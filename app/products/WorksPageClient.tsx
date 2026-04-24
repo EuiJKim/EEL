@@ -322,6 +322,15 @@ export default function WorksPageClient({
                     {getStatusFromSpecs(getProductSpecs(selectedProduct.id))}
                   </p>
                 )}
+                <Link
+                  href="/order"
+                  className="pointer-events-auto inline-block mt-6 px-6 py-3 border border-white/30 text-white/90 text-xs tracking-[0.12em] uppercase hover:bg-white hover:text-black transition-colors duration-300"
+                  style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}
+                >
+                  {getStatusFromSpecs(getProductSpecs(selectedProduct.id))?.toLowerCase().includes('sold')
+                    ? 'Commission a similar piece'
+                    : 'Inquire about this piece'}
+                </Link>
               </div>
 
               {/* Right: scrollable photos */}
