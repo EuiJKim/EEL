@@ -67,7 +67,14 @@ export default function WorksPageClient({
 }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [zoomedImages, setZoomedImages] = useState<string[] | null>(null);
+  const [zoomedIndex, setZoomedIndex] = useState(0);
   const [cartTooltip, setCartTooltip] = useState(false);
+
+  const openZoom = (urls: string[], index: number) => {
+    setZoomedImages(urls);
+    setZoomedIndex(index);
+  };
+  const closeZoom = () => setZoomedImages(null);
   const handleCartClick = () => {
     setCartTooltip(true);
     setTimeout(() => setCartTooltip(false), 1000);
@@ -165,7 +172,7 @@ export default function WorksPageClient({
                 return (
                   <button
                     key={product.id}
-                    onClick={() => setZoomedImages(getProductImages(product.id).map(img => img.url))}
+                    onClick={() => openZoom(getProductImages(product.id).map(img => img.url), 0)}
                     className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
                   >
                     <Image
@@ -192,7 +199,7 @@ export default function WorksPageClient({
                 return (
                   <button
                     key={product.id}
-                    onClick={() => setZoomedImages(getProductImages(product.id).map(img => img.url))}
+                    onClick={() => openZoom(getProductImages(product.id).map(img => img.url), 0)}
                     className="overflow-hidden m-0 p-0 border-none bg-transparent cursor-pointer block"
                   >
                     <Image
@@ -319,22 +326,25 @@ export default function WorksPageClient({
 
               {/* Right: scrollable photos */}
               <div className="w-1/2 md:w-1/3 h-full overflow-y-auto flex flex-col">
-                {getDetailImages(selectedProduct.id).map((img) => (
-                  <button
-                    key={img.id}
-                    onClick={() => setZoomedImages([img.url])}
-                    className="w-full block border-none bg-transparent p-0 m-0 cursor-zoom-in"
-                  >
-                    <Image
-                      src={img.url}
-                      alt={selectedProduct.name}
-                      width={800}
-                      height={1000}
-                      className="w-full h-auto block"
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                    />
-                  </button>
-                ))}
+                {getDetailImages(selectedProduct.id).map((img, i) => {
+                  const allUrls = getDetailImages(selectedProduct.id).map(d => d.url);
+                  return (
+                    <button
+                      key={img.id}
+                      onClick={() => openZoom(allUrls, i)}
+                      className="w-full block border-none bg-transparent p-0 m-0 cursor-zoom-in"
+                    >
+                      <Image
+                        src={img.url}
+                        alt={selectedProduct.name}
+                        width={800}
+                        height={1000}
+                        className="w-full h-auto block"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
@@ -347,15 +357,16 @@ export default function WorksPageClient({
       <AnimatePresence>
         {zoomedImages && (
           <motion.div
-            className="fixed inset-0 z-[500] bg-black/90 flex items-center justify-center cursor-zoom-out"
+            className="fixed inset-0 z-[500] bg-black/90 flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            onClick={() => setZoomedImages(null)}
+            onClick={closeZoom}
           >
+            {/* Close */}
             <button
-              onClick={(e) => { e.stopPropagation(); setZoomedImages(null); }}
+              onClick={(e) => { e.stopPropagation(); closeZoom(); }}
               className="absolute top-5 right-6 bg-transparent border-none text-white cursor-pointer z-10 p-0 hover:opacity-50 transition-opacity"
               aria-label="닫기"
             >
@@ -364,23 +375,49 @@ export default function WorksPageClient({
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
-            <div className="flex items-center justify-center gap-4" onClick={(e) => e.stopPropagation()}>
-              {zoomedImages.map((url, i) => (
-                <Image
-                  key={i}
-                  src={url}
-                  alt="Zoomed"
-                  width={1200}
-                  height={1200}
-                  className="object-contain"
-                  style={{
-                    maxHeight: '90vh',
-                    maxWidth: zoomedImages.length > 1 ? '45vw' : '90vw',
-                    width: 'auto',
-                  }}
-                  sizes={zoomedImages.length > 1 ? '45vw' : '90vw'}
-                />
-              ))}
+
+            {/* Image + arrows */}
+            <div className="relative flex items-center" onClick={(e) => e.stopPropagation()}>
+              {/* Prev arrow */}
+              <div className="w-10 flex justify-center">
+                {zoomedIndex > 0 && (
+                  <button
+                    onClick={() => setZoomedIndex(zoomedIndex - 1)}
+                    className="bg-transparent border-none text-white cursor-pointer p-1 hover:opacity-50 transition-opacity"
+                    aria-label="이전"
+                  >
+                    <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <polyline points="13,4 7,10 13,16" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              <Image
+                key={zoomedIndex}
+                src={zoomedImages[zoomedIndex]}
+                alt="Zoomed"
+                width={1200}
+                height={1200}
+                className="object-contain"
+                style={{ maxHeight: '90vh', maxWidth: 'calc(90vw - 80px)', width: 'auto' }}
+                sizes="90vw"
+              />
+
+              {/* Next arrow */}
+              <div className="w-10 flex justify-center">
+                {zoomedIndex < zoomedImages.length - 1 && (
+                  <button
+                    onClick={() => setZoomedIndex(zoomedIndex + 1)}
+                    className="bg-transparent border-none text-white cursor-pointer p-1 hover:opacity-50 transition-opacity"
+                    aria-label="다음"
+                  >
+                    <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <polyline points="7,4 13,10 7,16" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
