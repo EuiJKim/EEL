@@ -134,7 +134,7 @@ export default async function ProductsPage({
     { id: 'tile-table',        index: 5, name: 'Ceramic Tile Table',       subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'white-table',       index: 6, name: 'White Resin Coffee Table', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'deep-green-table',  index: 7, name: 'Deep Green Resin Table',   subtitle: '', description: '', glow: '', accent: '', gradient: '' },
-    { id: 'black-table',       index: 8, name: 'Black Resin Table',        subtitle: '', description: '', glow: '', accent: '', gradient: '' },
+    { id: 'black-table',       index: 8, name: 'Black Coated Table',       subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-1', index: 1, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-2', index: 2, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-3', index: 3, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
