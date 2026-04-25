@@ -125,7 +125,7 @@ export default function Home() {
           }}
         >
           {/* EEL logo text */}
-          <p
+          <h1
             className="hero-logo leading-[1.4] tracking-[0.02em]"
             style={{
               fontFamily: "var(--font-gravitas, 'Gravitas One'), serif",
@@ -135,7 +135,7 @@ export default function Home() {
             }}
           >
             EEL
-          </p>
+          </h1>
 
           {/* Divider - full width */}
           <hr

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import type { TableShape } from '@/components/CommissionPreview3D';
+import { fireLeadEvent } from './fireLeadEvent';
 
 const CommissionPreview3D = dynamic(() => import('@/components/CommissionPreview3D'), { ssr: false });
 
@@ -106,6 +107,7 @@ export default function CommissionClient() {
       if (!res.ok) throw new Error();
       setConfirmOpen(false);
       setSubmitted(true);
+      fireLeadEvent();
     } catch {
       setSubmitError('전송에 실패했습니다. 다시 시도해 주세요.');
     } finally {

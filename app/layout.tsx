@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Gravitas_One, Staatliches, DM_Sans } from "next/font/google";
 import "./globals.css";
+import MetaPixel from "@/components/MetaPixel";
 
 const gravitasOne = Gravitas_One({
   variable: "--font-gravitas",
@@ -41,6 +42,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Telex&display=swap" rel="stylesheet" />
       </head>
       <body className={`${gravitasOne.variable} ${staatliches.variable} ${dmSans.variable} antialiased`}>
+        <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ''} />
         {children}
       </body>
     </html>
