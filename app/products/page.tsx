@@ -79,6 +79,14 @@ export default async function ProductsPage({
     { id: 9968, product_id: 'deep-green-table', url: '/products/deep-green-table/deepgreen8.jpg', sort_order: 8 },
     { id: 9969, product_id: 'deep-green-table', url: '/products/deep-green-table/deepgreen9.jpg', sort_order: 9 },
   ];
+  const blackTableImages = [
+    { id: 9970, product_id: 'black-table', url: '/products/black-table/blacktable1.jpg', sort_order: 0 }, // thumbnail
+    { id: 9971, product_id: 'black-table', url: '/products/black-table/blacktable1.jpg', sort_order: 1 },
+    { id: 9972, product_id: 'black-table', url: '/products/black-table/blacktable2.jpg', sort_order: 2 },
+    { id: 9973, product_id: 'black-table', url: '/products/black-table/blacktable3.jpg', sort_order: 3 },
+    { id: 9974, product_id: 'black-table', url: '/products/black-table/blacktable4.jpg', sort_order: 4 },
+    { id: 9975, product_id: 'black-table', url: '/products/black-table/blacktable5.jpg', sort_order: 5 },
+  ];
   const whiteTableImages = [
     { id: 9946, product_id: 'white-table', url: '/products/white-table/1.jpg', sort_order: 0 }, // thumbnail — whitetable3
     { id: 9947, product_id: 'white-table', url: '/products/white-table/2.jpg', sort_order: 1 }, // whitetable1
@@ -119,13 +127,14 @@ export default async function ProductsPage({
     { id: 9977, product_id: 'painting-7', url: '/products/painting-7/1.jpg', sort_order: 0 },
     { id: 9978, product_id: 'painting-8', url: '/products/painting-8/1.jpg', sort_order: 0 },
   ];
-  const patchedImages = [...otherImages, ...tableFirstImages, ...tableSecondImages, ...acrylicImages, ...cabinetBlackImages, ...tileTableImages, ...whiteTableImages, ...deepGreenImages, ...objectImages, ...paintingImages];
+  const patchedImages = [...otherImages, ...tableFirstImages, ...tableSecondImages, ...acrylicImages, ...cabinetBlackImages, ...tileTableImages, ...whiteTableImages, ...deepGreenImages, ...blackTableImages, ...objectImages, ...paintingImages];
 
   // Hardcoded extra products (not in DB)
   const extraProducts = [
     { id: 'tile-table',        index: 5, name: 'Ceramic Tile Table',       subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'white-table',       index: 6, name: 'White Resin Coffee Table', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'deep-green-table',  index: 7, name: 'Deep Green Resin Table',   subtitle: '', description: '', glow: '', accent: '', gradient: '' },
+    { id: 'black-table',       index: 8, name: 'Black Resin Table',        subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-1', index: 1, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-2', index: 2, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
     { id: 'object-3', index: 3, name: '', subtitle: '', description: '', glow: '', accent: '', gradient: '' },
@@ -179,6 +188,9 @@ export default async function ProductsPage({
     { id: 9052, product_id: 'white-table',      label: 'Price', value: '₩ 350,000',                    sort_order: 1 },
     { id: 9061, product_id: 'deep-green-table', label: 'Size',  value: 'Ø 38 - 48 cm  /  H 54.5 cm',  sort_order: 0 },
     { id: 9062, product_id: 'deep-green-table', label: 'Price', value: '₩ 410,000',                    sort_order: 1 },
+    { id: 9071, product_id: 'black-table',      label: 'Size',   value: 'W 80 cm  /  D 80 cm  /  H 44 cm', sort_order: 0 },
+    { id: 9072, product_id: 'black-table',      label: 'Price',  value: '₩ 1,220,000',                     sort_order: 1 },
+    { id: 9073, product_id: 'black-table',      label: 'Status', value: 'SOLD OUT',                        sort_order: 2 },
   ];
 
   return (
