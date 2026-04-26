@@ -116,10 +116,11 @@ export default function Home() {
 
         {/* Text overlay */}
         <div
-          className="hero-text-wrap absolute z-10 flex flex-col gap-3 max-w-[720px]"
+          className="hero-text-wrap absolute z-10 flex flex-col gap-3"
           style={{
             top: '108px',
             left: '32px',
+            right: '32px',
             fontFamily: "'Telex', sans-serif",
             color: '#000',
           }}
@@ -149,19 +150,21 @@ export default function Home() {
           />
 
           {/* Description */}
-          <p
-            className="hero-body font-bold opacity-90 whitespace-nowrap"
-            style={{ fontSize: 'clamp(12px, 1.45vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
-          >
-            A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand
-          </p>
-          <p
-            className="hero-body font-bold opacity-90 mt-2"
-            style={{ fontSize: 'clamp(14px, 1.55vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
-          >
-            We work at the edge of material and form —<br />
-            where function meets something harder to name
-          </p>
+          <div className="flex flex-col gap-2">
+            <p
+              className="hero-body font-bold opacity-90"
+              style={{ fontSize: 'clamp(12px, 1.45vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+            >
+              A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand
+            </p>
+            <p
+              className="hero-body font-bold opacity-90"
+              style={{ fontSize: 'clamp(14px, 1.55vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+            >
+              We work at the edge of material and form —<br />
+              where function meets something harder to name
+            </p>
+          </div>
 
           {/* Divider */}
           <hr
@@ -175,14 +178,14 @@ export default function Home() {
           />
 
           {/* Contact icons */}
-          <div className="flex items-center gap-3 mt-1 text-black">
+          <div className="flex items-center gap-3 mt-3 text-black">
             <a
               href="https://instagram.com/eel.eel.eel.eel"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <circle cx="12" cy="12" r="4"/>
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
@@ -192,13 +195,14 @@ export default function Home() {
               href="mailto:eelobjects@gmail.com"
               className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
                 <polyline points="2,4 12,13 22,4"/>
               </svg>
             </a>
           </div>
         </div>
+
       </section>
 
       {/* ── Footer info (fixed bottom-right) ── */}
