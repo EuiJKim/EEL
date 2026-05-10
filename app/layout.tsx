@@ -24,9 +24,34 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://eel-studio.me";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "EEL — Furniture & Object Maker",
   description: "A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand",
+  openGraph: {
+    title: "EEL — Resin Atelier",
+    description: "A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand. Made-to-order, cured over 21 days.",
+    url: SITE_URL,
+    siteName: "EEL",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "EEL — Seoul resin atelier",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EEL — Resin Atelier",
+    description: "A Seoul-based studio crafting resin objects, eccentric by nature, precise by hand.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({

@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .gstack/
+
+# OG image source (large file, processed → og-image.jpg)
+public/og-source.*
