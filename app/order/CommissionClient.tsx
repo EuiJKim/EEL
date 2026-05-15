@@ -231,7 +231,7 @@ export default function CommissionClient() {
       <div className="grid grid-cols-2 gap-3">
         {SHAPE_OPTIONS.map((s) => (
           <button key={s.value}
-            onClick={() => autoNext(() => { setSelectedShape(s.value); if (s.value === 'rectangle' && selectedLegs === '1') setSelectedLegs('4'); })}
+            onClick={() => { setSelectedShape(s.value); if (s.value === 'rectangle' && selectedLegs === '1') setSelectedLegs('4'); }}
             className="border py-6 px-3 cursor-pointer flex flex-col items-center gap-3 transition-all"
             style={{ borderColor: selectedShape === s.value ? '#fff' : '#222', background: selectedShape === s.value ? 'rgba(255,255,255,0.04)' : 'transparent' }}>
             <div className="w-12 h-12 flex items-center justify-center">
@@ -297,7 +297,7 @@ export default function CommissionClient() {
       <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 높이를 선택해주세요</p>
       <div className="flex gap-3">
         {HEIGHT_OPTIONS.map((h) => (
-          <button key={h.label} onClick={() => autoNext(() => setSelectedHeight(h.label))}
+          <button key={h.label} onClick={() => setSelectedHeight(h.label)}
             className="flex-1 border py-8 px-3 cursor-pointer flex items-center justify-center transition-all"
             style={{
               borderColor: selectedHeight === h.label ? '#fff' : '#222',
@@ -319,7 +319,7 @@ export default function CommissionClient() {
           const disabled = l.value === '1' && selectedShape === 'rectangle';
           return (
             <button key={l.value}
-              onClick={() => { if (!disabled) autoNext(() => setSelectedLegs(l.value)); }}
+              onClick={() => { if (!disabled) setSelectedLegs(l.value); }}
               className={`flex-1 border py-8 px-3 flex flex-col items-center gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
               style={{ borderColor: selectedLegs === l.value && !disabled ? '#fff' : '#222', background: selectedLegs === l.value && !disabled ? 'rgba(255,255,255,0.04)' : 'transparent' }}>
               <div className="flex flex-col items-center gap-1 h-14 justify-end">
