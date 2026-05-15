@@ -64,7 +64,7 @@ export default function Home() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <main className="bg-[var(--bg)]" style={{ minHeight: 'calc(100vh + 200px)' }}>
+    <main className="bg-[var(--bg)] select-none" style={{ minHeight: 'calc(100vh + 200px)' }}>
       {/* ── Intro overlay — black screen fades out ── */}
       <AnimatePresence>
         {introVisible && (
@@ -150,16 +150,16 @@ export default function Home() {
           />
 
           {/* Description */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2" style={{ transform: 'scaleX(0.88)', transformOrigin: 'left' }}>
             <p
-              className="hero-body font-bold opacity-90"
-              style={{ fontSize: 'clamp(12px, 1.45vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+              className="hero-body opacity-90"
+              style={{ fontSize: 'clamp(12px, 1.45vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.3px #000', fontFamily: "var(--font-gravitas, 'Gravitas One'), serif" }}
             >
               A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand
             </p>
             <p
-              className="hero-body font-bold opacity-90"
-              style={{ fontSize: 'clamp(14px, 1.55vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.4px #000' }}
+              className="hero-body opacity-90"
+              style={{ fontSize: 'clamp(14px, 1.55vw, 19px)', lineHeight: 1.8, WebkitTextStroke: '0.3px #000', fontFamily: "var(--font-gravitas, 'Gravitas One'), serif" }}
             >
               We work at the edge of material and form —<br />
               where function meets something harder to name
