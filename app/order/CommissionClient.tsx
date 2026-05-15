@@ -174,7 +174,7 @@ export default function CommissionClient() {
         {colorName}
       </p>
 
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div className="flex flex-wrap gap-3 mb-6" style={{ minHeight: '88px' }}>
         {COLOR_CATEGORIES[selectedCategory].colors.map((c) => (
           <button key={c.hex} type="button"
             onClick={() => { setSelectedColor(c.hex); setColorName(c.name); setPreviewColor(c.hex); }}
