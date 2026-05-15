@@ -8,14 +8,18 @@ export type TableShape = 'organic' | 'round' | 'square' | 'rectangle';
 interface Props {
   resinColor: string;
   size: 'S' | 'M' | 'L' | null;
-  height: 'Dining' | 'Café' | 'Side' | null;
+  height: '30–40 cm' | '40–50 cm' | '72–75 cm' | null;
   legs: '4' | '1' | null;
   shape: TableShape;
   opacity?: '투명' | '반투명' | '불투명' | null;
 }
 
 const SIZE_SCALE: Record<string, number> = { S: 0.62, M: 0.75, L: 0.88 };
-const HEIGHT_MAP: Record<string, number> = { Dining: 5.0, Café: 4.2, Side: 3.0 };
+const HEIGHT_MAP: Record<string, number> = {
+  '30–40 cm': 3.0,
+  '40–50 cm': 4.2,
+  '72–75 cm': 5.0,
+};
 
 /* ── Shape builders ── */
 function makeOrganicShape(): THREE.Shape {

@@ -112,7 +112,6 @@ export default function CommissionClient() {
         }),
       });
       if (!res.ok) throw new Error();
-      setConfirmOpen(false);
       setSubmitted(true);
       fireLeadEvent();
     } catch {
