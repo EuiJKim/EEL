@@ -89,6 +89,8 @@ export default function CommissionClient() {
   const [selectedLegs, setSelectedLegs] = useState<'4' | '1' | null>(null);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [previewColor, setPreviewColor] = useState('#EDE4D0');
+  const [customColor, setCustomColor] = useState('');
+  const [customSize, setCustomSize] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -104,9 +106,9 @@ export default function CommissionClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          color: selectedOpacity ? `${colorName} (${selectedOpacity})` : colorName,
+          color: `${selectedOpacity ? `${colorName} (${selectedOpacity})` : colorName}${customColor ? ` / "${customColor}"` : ''}`,
           shape: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? selectedShape,
-          size: selectedSize ?? '—',
+          size: selectedSize ? `${selectedSize}${customSize ? ` / "${customSize}"` : ''}` : customSize || '—',
           height: selectedHeight ?? '—',
           legs: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—',
         }),
@@ -142,9 +144,9 @@ export default function CommissionClient() {
   };
 
   const summaryRows = [
-    { label: 'Color', value: selectedColor ? `${colorName}${selectedOpacity ? ` (${selectedOpacity})` : ''}` : '—' },
+    { label: 'Color', value: selectedColor ? `${colorName}${selectedOpacity ? ` (${selectedOpacity})` : ''}${customColor ? ` / "${customColor}"` : ''}` : customColor ? `"${customColor}"` : '—' },
     { label: 'Shape', value: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? '—' },
-    { label: 'Size', value: selectedSize ?? '—' },
+    { label: 'Size', value: selectedSize ? `${selectedSize}${customSize ? ` / "${customSize}"` : ''}` : customSize ? `"${customSize}"` : '—' },
     { label: 'Height', value: selectedHeight ?? '—' },
     { label: 'Legs', value: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—' },
   ];
@@ -216,7 +218,7 @@ export default function CommissionClient() {
       {/* 커스텀 컬러 */}
       <div className="mb-6">
         <p className="text-sm text-[#aaa] tracking-[0.06em] mb-3">커스텀 컬러</p>
-        <input type="text" placeholder="원하는 컬러를 설명해주세요" className="comm-input" />
+        <input type="text" placeholder="원하는 컬러를 설명해주세요" className="comm-input" value={customColor} onChange={e => setCustomColor(e.target.value)} />
       </div>
 
       <p className="text-[#666] text-xs leading-relaxed">
@@ -283,7 +285,7 @@ export default function CommissionClient() {
       </div>
       <div className="mt-6">
         <p className="text-sm text-[#aaa] tracking-[0.06em] mb-3">원하는 사이즈 직접 입력</p>
-        <input type="text" placeholder="예: 가로 120cm × 세로 60cm" className="comm-input" />
+        <input type="text" placeholder="예: 가로 120cm × 세로 60cm" className="comm-input" value={customSize} onChange={e => setCustomSize(e.target.value)} />
         <p className="mt-3 text-xs text-[#555] leading-relaxed">
           ※ 너무 큰 사이즈는 제작이 제한될 수 있으니 참고해 주세요.
         </p>
