@@ -49,6 +49,16 @@ a {
   to   { transform: scale(1); }
 }
 
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
 /* Scroll hint blink */
 @keyframes blink {
   0%, 100% { opacity: 1; }

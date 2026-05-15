@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     const { error: adminError } = await resend.emails.send({
       from: FROM_EMAIL,
-      to: process.env.ADMIN_EMAIL!,
+      to: [process.env.ADMIN_EMAIL!, 'plumcatmango@gmail.com'],
       subject: `[EEL] 커미션 문의 — ${safe(name)}`,
       html: `
         <div style="${baseStyle}">

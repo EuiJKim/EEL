@@ -130,7 +130,7 @@ export default function Home() {
             className="hero-logo leading-[1.4] tracking-[0.02em]"
             style={{
               fontFamily: "var(--font-gravitas, 'Gravitas One'), serif",
-              fontSize: 'clamp(40px, 5.6vw, 64px)',
+              fontSize: 'clamp(52px, 7.5vw, 88px)',
               fontWeight: 900,
               WebkitTextStroke: '1px #000',
             }}
@@ -177,30 +177,31 @@ export default function Home() {
             }}
           />
 
-          {/* Contact icons */}
-          <div className="flex items-center gap-3 mt-3 text-black">
-            <a
-              href="https://instagram.com/eel.eel.eel.eel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                <circle cx="12" cy="12" r="4"/>
-                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-              </svg>
-            </a>
-            <a
-              href="mailto:eelobjects@gmail.com"
-              className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <polyline points="2,4 12,13 22,4"/>
-              </svg>
-            </a>
-          </div>
+        </div>
+
+        {/* Contact icons — bottom left */}
+        <div className="absolute z-10 bottom-[88px] left-8 flex items-center gap-3 text-black">
+          <a
+            href="https://instagram.com/eel.eel.eel.eel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a
+            href="mailto:eelobjects@gmail.com"
+            className="flex items-center text-black hover:opacity-50 transition-opacity duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <polyline points="2,4 12,13 22,4"/>
+            </svg>
+          </a>
         </div>
 
       </section>
@@ -238,7 +239,7 @@ export default function Home() {
         className={`scroll-hint-arrow fixed left-1/2 -translate-x-1/2 z-[90] text-black pointer-events-none transition-opacity duration-400 hidden md:block ${scrollHintHidden ? 'opacity-0' : 'scroll-blink'}`}
         style={{ bottom: '28px' }}
       >
-        <svg width="40" height="40" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+        <svg width="56" height="56" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
           <polyline points="4,7 10,13 16,7"/>
         </svg>
       </div>
