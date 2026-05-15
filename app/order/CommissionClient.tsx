@@ -443,24 +443,24 @@ export default function CommissionClient() {
           {/* Nav buttons */}
           <div className="shrink-0 border-t border-[#1a1a1a] px-6 sm:px-10 md:px-[8%] lg:px-[10%] py-5 flex items-center justify-between">
             <button onClick={goPrev} disabled={currentStep === 0}
-              className="flex items-center gap-2 text-sm tracking-[0.06em] bg-transparent border-0 cursor-pointer transition-opacity disabled:opacity-20 hover:opacity-60"
-              style={{ color: '#aaa', fontFamily: "'Telex', sans-serif" }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              className="flex items-center gap-3 bg-transparent border-0 cursor-pointer transition-opacity disabled:opacity-20 hover:opacity-60"
+              style={{ color: '#ccc', fontFamily: "'Telex', sans-serif", fontSize: '16px', letterSpacing: '0.06em' }}>
+              <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <polyline points="13,4 7,10 13,16" />
               </svg>
               이전
             </button>
 
-            <span className="text-sm text-[#888] tracking-[0.1em]" style={{ fontFamily: "var(--font-staatliches)" }}>
+            <span className="text-[#888] tracking-[0.1em]" style={{ fontFamily: "var(--font-staatliches)", fontSize: '16px' }}>
               {currentStep + 1} / {TOTAL_STEPS}
             </span>
 
             {currentStep < TOTAL_STEPS - 1 ? (
               <button onClick={goNext}
-                className="flex items-center gap-2 text-sm tracking-[0.06em] bg-transparent border-0 cursor-pointer hover:opacity-60 transition-opacity"
-                style={{ color: '#aaa', fontFamily: "'Telex', sans-serif" }}>
+                className="flex items-center gap-3 bg-transparent border-0 cursor-pointer hover:opacity-60 transition-opacity"
+                style={{ color: '#ccc', fontFamily: "'Telex', sans-serif", fontSize: '16px', letterSpacing: '0.06em' }}>
                 다음
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <polyline points="7,4 13,10 7,16" />
                 </svg>
               </button>
