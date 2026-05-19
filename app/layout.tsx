@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gravitas_One, Staatliches, DM_Sans } from "next/font/google";
+import { Gravitas_One, Staatliches, DM_Sans, Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 
@@ -7,6 +7,22 @@ const gravitasOne = Gravitas_One({
   variable: "--font-gravitas",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
+});
+
+// Inter — body/UI text on /journal.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+// Space Grotesk — display/title + wordmark on /journal.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -66,7 +82,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Telex&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${gravitasOne.variable} ${staatliches.variable} ${dmSans.variable} antialiased`}>
+      <body className={`${gravitasOne.variable} ${staatliches.variable} ${dmSans.variable} ${inter.variable} ${spaceGrotesk.variable} antialiased`}>
         <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ''} />
         {children}
       </body>

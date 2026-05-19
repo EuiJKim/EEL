@@ -1,0 +1,136 @@
+import type { FeedEntry } from '@/types/journal';
+
+/**
+ * Journal entries — reverse chronological feed.
+ * Add new entries to the TOP of the array.
+ *
+ * Each entry can be a fully-fledged piece (with size/price/status) or a
+ * lightweight note (in_progress / material study). Cards click through to
+ * `/journal/[id]` detail pages.
+ */
+export const JOURNAL_ENTRIES: FeedEntry[] = [
+  {
+    id: 'turquoise',
+    date: '2026-05-15',
+    type: 'in_progress',
+    pieceId: 'turquoise',
+    day: { current: 14, total: 21 },
+    title: 'Turquoise Resin Table',
+    image: '/products/table-first/1.jpg',
+    size: 'Ø 74 - 76 cm  /  H 76 cm',
+    price: '₩ 1,500,000',
+    status: 'commission_only',
+    gallery: [
+      '/products/table-first/1.jpg',
+      '/products/table-first/2.jpg',
+      '/products/table-first/3.jpg',
+      '/products/table-first/4.jpg',
+    ],
+  },
+  {
+    id: 'deep-green',
+    date: '2026-04-20',
+    type: 'completed',
+    pieceId: 'deep-green',
+    title: 'Deep Green Resin Table',
+    image: '/products/deep-green-table/deepgreen1.jpg',
+    size: 'Ø 78 cm  /  H 38 cm',
+    price: '₩ 1,800,000',
+    status: 'available',
+    gallery: [
+      '/products/deep-green-table/deepgreen1.jpg',
+      '/products/deep-green-table/deepgreen2.jpg',
+      '/products/deep-green-table/deepgreen3.jpg',
+      '/products/deep-green-table/deepgreen4.jpg',
+      '/products/deep-green-table/deepgreen5.jpg',
+      '/products/deep-green-table/deepgreen6.jpg',
+    ],
+  },
+  {
+    id: 'black-coated',
+    date: '2026-03-28',
+    type: 'archive',
+    pieceId: 'black-coated',
+    title: 'Black Coated Table',
+    image: '/products/black-table/blacktable1.jpg',
+    size: 'W 110  /  D 60  /  H 38 cm',
+    price: '₩ 1,200,000',
+    status: 'sold_out',
+    gallery: [
+      '/products/black-table/blacktable1.jpg',
+      '/products/black-table/blacktable2.jpg',
+      '/products/black-table/blacktable3.jpg',
+      '/products/black-table/blacktable4.jpg',
+      '/products/black-table/blacktable5.jpg',
+    ],
+  },
+  {
+    id: 'tile-table',
+    date: '2026-02-15',
+    type: 'archive',
+    pieceId: 'tile',
+    title: 'Ceramic Tile Table',
+    image: '/products/tile-table/1.jpg',
+    size: 'W 120  /  D 70  /  H 40 cm',
+    price: '₩ 2,200,000',
+    status: 'sold_out',
+    gallery: [
+      '/products/tile-table/1.jpg',
+      '/products/tile-table/2.jpg',
+      '/products/tile-table/3.jpg',
+      '/products/tile-table/4.jpg',
+    ],
+  },
+  {
+    id: 'white-coffee',
+    date: '2026-01-22',
+    type: 'archive',
+    pieceId: 'white',
+    title: 'White Resin Coffee Table',
+    image: '/products/white-table/1.jpg',
+    size: 'W 100  /  D 50  /  H 38 cm',
+    price: '₩ 1,400,000',
+    status: 'sold_out',
+    gallery: [
+      '/products/white-table/1.jpg',
+      '/products/white-table/2.jpg',
+      '/products/white-table/3.jpg',
+      '/products/white-table/4.jpg',
+    ],
+  },
+  {
+    id: 'cabinet-black',
+    date: '2025-12-10',
+    type: 'archive',
+    pieceId: 'cabinet-black',
+    title: 'Black Cabinet',
+    image: '/products/cabinet-black/1.jpg',
+    size: 'W 140  /  D 45  /  H 90 cm',
+    price: '₩ 2,800,000',
+    status: 'sold_out',
+    gallery: [
+      '/products/cabinet-black/1.jpg',
+      '/products/cabinet-black/2.jpg',
+      '/products/cabinet-black/3.jpg',
+      '/products/cabinet-black/4.jpg',
+      '/products/cabinet-black/5.jpg',
+    ],
+  },
+  {
+    id: 'acrylic-blue-leg',
+    date: '2025-11-05',
+    type: 'archive',
+    pieceId: 'acrylic-blue-leg',
+    title: 'Acrylic Blue Leg Table',
+    image: '/products/acrylic-blue-leg/1.jpg',
+    size: 'W 80  /  D 50  /  H 50 cm',
+    price: '₩ 1,100,000',
+    status: 'sold_out',
+    gallery: [
+      '/products/acrylic-blue-leg/1.jpg',
+      '/products/acrylic-blue-leg/2.jpg',
+      '/products/acrylic-blue-leg/3.jpg',
+      '/products/acrylic-blue-leg/4.jpg',
+    ],
+  },
+];
