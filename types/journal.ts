@@ -1,29 +1,18 @@
-export type EntryType =
-  | 'in_progress'
-  | 'completed'
-  | 'material'
-  | 'archive'
-  | 'announcement';
+export type Category = 'furniture' | 'object' | 'painting';
 
 export type PieceStatus = 'available' | 'sold_out' | 'commission_only';
 
 export interface FeedEntry {
   id: string;
-  date: string; // YYYY-MM-DD
-  type: EntryType;
-  pieceId?: string;
-  day?: { current: number; total: number };
+  category: Category;
   title: string;
-  subtitle?: string;
   image: string;
-  // Detail page fields:
+  // Optional metadata (furniture usually has these; objet/painting may not):
+  year?: string;
   size?: string; // 'Ø 74 - 76 cm  /  H 76 cm'
   price?: string; // '₩ 1,500,000'
   status?: PieceStatus;
-  gallery?: string[]; // additional images for detail
-  // Optional, used by legacy single-column feed (kept for backwards compat):
-  body?: string;
-  cta?: { label: string; href: string };
+  gallery?: string[]; // additional images for detail page
 }
 
 export interface FeaturedWork {

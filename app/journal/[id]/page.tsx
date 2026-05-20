@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { JOURNAL_ENTRIES } from '@/data/journal-entries';
-import type { PieceStatus } from '@/types/journal';
+import type { PieceStatus, FeedEntry } from '@/types/journal';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -34,9 +34,15 @@ const STATUS_LABEL: Record<PieceStatus, string> = {
 };
 
 const STATUS_COLOR: Record<PieceStatus, string> = {
-  available: '#7dcea0',
-  sold_out: '#e74c3c',
-  commission_only: '#8a9488',
+  available: '#9ccfae',
+  sold_out: '#b06a64',
+  commission_only: '#9aa39c',
+};
+
+const CATEGORY_LABEL: Record<FeedEntry['category'], string> = {
+  furniture: 'Furniture',
+  object: 'Object',
+  painting: 'Painting',
 };
 
 export default async function JournalDetailPage({ params }: RouteParams) {
@@ -45,18 +51,19 @@ export default async function JournalDetailPage({ params }: RouteParams) {
   if (!entry) notFound();
 
   const gallery = entry.gallery?.length ? entry.gallery : [entry.image];
+  const hasSpec = entry.size || entry.price || entry.status;
 
   return (
     <div
       className="min-h-screen bg-[#2e3330] text-[#e8ebe8]"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
-      {/* Top bar with back */}
+      {/* Top bar */}
       <div className="sticky top-0 z-10 bg-[#1a1d1b] border-b border-[#2a2e2c] h-14 flex items-center px-4 md:px-6">
         <Link
-          href="/journal"
-          className="flex items-center gap-2 text-sm text-[#c0c5c2] hover:text-white transition-colors"
-          aria-label="Back to journal"
+          href={`/journal?category=${entry.category}`}
+          className="flex items-center gap-2 text-sm text-[#c0c5c2] hover:text-white transition-colors min-h-[44px]"
+          aria-label={`Back to ${entry.category}`}
         >
           <svg
             width="18"
@@ -70,70 +77,94 @@ export default async function JournalDetailPage({ params }: RouteParams) {
             <polyline points="13,4 7,10 13,16" />
           </svg>
           <span
-            className="text-[10px] tracking-[0.18em] uppercase"
+            className="text-[10px] tracking-[0.2em] uppercase"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
-            Journal
+            {CATEGORY_LABEL[entry.category]}
           </span>
         </Link>
       </div>
 
-      {/* Layout: info left, gallery right (desktop), stacked (mobile) */}
       <div className="flex flex-col md:flex-row">
         {/* Info column */}
         <aside className="md:w-[40%] md:max-w-[480px] md:sticky md:top-14 md:h-[calc(100vh-3.5rem)] md:overflow-y-auto md:border-r md:border-[#2a2e2c] px-6 md:px-10 py-10 md:py-14">
+          {/* Category + year meta */}
           <div
-            className="text-[10px] tracking-[0.18em] uppercase text-[#8a9488] mb-3"
+            className="flex items-center gap-2.5 text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
-            {new Date(entry.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-            })}
+            <span>{CATEGORY_LABEL[entry.category]}</span>
+            {entry.year && (
+              <>
+                <span className="text-[#4a4f4b]">·</span>
+                <span>{entry.year}</span>
+              </>
+            )}
           </div>
 
+          {/* Title */}
           <h1
-            className="text-3xl md:text-4xl text-[#e8ebe8] mb-6 tracking-[0.01em] leading-tight"
-            style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}
+            className="text-3xl md:text-4xl lg:text-[42px] text-[#e8ebe8] mb-6 tracking-[-0.005em] leading-[1.12]"
+            style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
           >
             {entry.title}
           </h1>
 
-          {/* Size */}
-          {entry.size && (
-            <div className="text-sm text-[#c0c5c2] mb-3 tracking-[0.04em]">
-              {entry.size}
-            </div>
-          )}
-
-          {/* Price */}
-          {entry.price && (
-            <div className="text-base text-[#e8ebe8] mb-4">{entry.price}</div>
-          )}
-
-          {/* Status */}
-          {entry.status && (
-            <div
-              className="inline-block text-[11px] tracking-[0.18em] uppercase mb-8"
-              style={{
-                fontFamily: "var(--font-staatliches), sans-serif",
-                color: STATUS_COLOR[entry.status],
-              }}
-            >
-              {STATUS_LABEL[entry.status]}
-            </div>
+          {/* Specs (furniture only typically) */}
+          {hasSpec && (
+            <dl className="space-y-2 mb-7">
+              {entry.size && (
+                <div className="flex items-baseline gap-3">
+                  <dt
+                    className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
+                    style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+                  >
+                    Size
+                  </dt>
+                  <dd className="text-sm text-[#c0c5c2] tracking-[0.02em]">{entry.size}</dd>
+                </div>
+              )}
+              {entry.price && (
+                <div className="flex items-baseline gap-3">
+                  <dt
+                    className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
+                    style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+                  >
+                    Price
+                  </dt>
+                  <dd className="text-sm text-[#e8ebe8]">{entry.price}</dd>
+                </div>
+              )}
+              {entry.status && (
+                <div className="flex items-baseline gap-3">
+                  <dt
+                    className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
+                    style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+                  >
+                    Status
+                  </dt>
+                  <dd
+                    className="text-[11px] tracking-[0.2em] uppercase"
+                    style={{
+                      fontFamily: "var(--font-staatliches), sans-serif",
+                      color: STATUS_COLOR[entry.status],
+                    }}
+                  >
+                    {STATUS_LABEL[entry.status]}
+                  </dd>
+                </div>
+              )}
+            </dl>
           )}
 
           {/* Commission CTA */}
-          <div className="mt-2">
-            <Link
-              href="/order"
-              className="inline-block px-5 py-3 border border-[#5a6058] text-[11px] tracking-[0.18em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors"
-              style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
-            >
-              Commission a similar piece →
-            </Link>
-          </div>
+          <Link
+            href="/order"
+            className="inline-block px-5 py-3 border border-[#5a6058] text-[11px] tracking-[0.2em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors min-h-[44px]"
+            style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+          >
+            Commission a similar piece →
+          </Link>
         </aside>
 
         {/* Gallery */}

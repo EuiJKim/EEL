@@ -1,43 +1,44 @@
 import type { FeaturedWork } from '@/types/journal';
 
 /**
- * Featured Works — sidebar + mobile top section
- * Curate 4~6 best representative pieces. Update as new works finish.
+ * Featured Works — sidebar (desktop) + mobile top section.
+ * Curated mix across categories. Update when a new flagship piece lands.
+ * Data accurate as of products/page.tsx source of truth.
  */
 export const FEATURED_WORKS: FeaturedWork[] = [
   {
-    id: 'turquoise',
+    id: 'cabinet-black',
+    title: 'Glacier Blue Resin Table',
+    status: '₩ 1,800,000',
+    thumbnail: '/products/cabinet-black/1.jpg',
+    href: '/journal/cabinet-black',
+  },
+  {
+    id: 'table-first',
     title: 'Turquoise Resin Table',
-    status: 'Day 14 / 21',
+    status: 'Sold Out',
     thumbnail: '/products/table-first/1.jpg',
-    href: '#entry-turquoise-day-14',
+    href: '/journal/table-first',
   },
   {
-    id: 'deep-green',
+    id: 'deep-green-table',
     title: 'Deep Green Resin Table',
-    status: 'Completed',
+    status: '₩ 410,000',
     thumbnail: '/products/deep-green-table/deepgreen1.jpg',
-    href: '#entry-deep-green-completed',
+    href: '/journal/deep-green-table',
   },
   {
-    id: 'black-coated',
-    title: 'Black Coated Table',
-    status: 'Sold Out',
-    thumbnail: '/products/black-table/blacktable1.jpg',
-    href: '#entry-black-coated',
-  },
-  {
-    id: 'tile',
+    id: 'tile-table',
     title: 'Ceramic Tile Table',
-    status: 'Sold Out',
+    status: '₩ 750,000',
     thumbnail: '/products/tile-table/1.jpg',
-    href: '#entry-tile-table',
+    href: '/journal/tile-table',
   },
   {
-    id: 'white',
-    title: 'White Resin Coffee Table',
-    status: 'Sold Out',
-    thumbnail: '/products/white-table/1.jpg',
-    href: '#entry-white-coffee',
+    id: 'painting-1',
+    title: 'Painting 01',
+    status: 'Archive',
+    thumbnail: '/products/painting-1/1.jpg',
+    href: '/journal/painting-1',
   },
 ];

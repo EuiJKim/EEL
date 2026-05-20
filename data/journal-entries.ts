@@ -1,25 +1,22 @@
 import type { FeedEntry } from '@/types/journal';
 
 /**
- * Journal entries — reverse chronological feed.
- * Add new entries to the TOP of the array.
+ * Journal entries — sourced from real product data in
+ * `app/products/page.tsx`. Add new entries to the TOP.
  *
- * Each entry can be a fully-fledged piece (with size/price/status) or a
- * lightweight note (in_progress / material study). Cards click through to
- * `/journal/[id]` detail pages.
+ * Three categories surfaced on /journal: furniture, object, painting.
  */
 export const JOURNAL_ENTRIES: FeedEntry[] = [
+  // ── FURNITURE ──────────────────────────────────────────────
   {
-    id: 'turquoise',
-    date: '2026-05-15',
-    type: 'in_progress',
-    pieceId: 'turquoise',
-    day: { current: 14, total: 21 },
+    id: 'table-first',
+    category: 'furniture',
     title: 'Turquoise Resin Table',
     image: '/products/table-first/1.jpg',
+    year: '2024',
     size: 'Ø 74 - 76 cm  /  H 76 cm',
     price: '₩ 1,500,000',
-    status: 'commission_only',
+    status: 'sold_out',
     gallery: [
       '/products/table-first/1.jpg',
       '/products/table-first/2.jpg',
@@ -28,33 +25,32 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     ],
   },
   {
-    id: 'deep-green',
-    date: '2026-04-20',
-    type: 'completed',
-    pieceId: 'deep-green',
-    title: 'Deep Green Resin Table',
-    image: '/products/deep-green-table/deepgreen1.jpg',
-    size: 'Ø 78 cm  /  H 38 cm',
+    id: 'cabinet-black',
+    category: 'furniture',
+    title: 'Glacier Blue Resin Table',
+    image: '/products/cabinet-black/1.jpg',
+    year: '2024',
+    size: 'Ø 73 - 77 cm  /  H 72 cm',
     price: '₩ 1,800,000',
     status: 'available',
     gallery: [
-      '/products/deep-green-table/deepgreen1.jpg',
-      '/products/deep-green-table/deepgreen2.jpg',
-      '/products/deep-green-table/deepgreen3.jpg',
-      '/products/deep-green-table/deepgreen4.jpg',
-      '/products/deep-green-table/deepgreen5.jpg',
-      '/products/deep-green-table/deepgreen6.jpg',
+      '/products/cabinet-black/1.jpg',
+      '/products/cabinet-black/2.jpg',
+      '/products/cabinet-black/3.jpg',
+      '/products/cabinet-black/4.jpg',
+      '/products/cabinet-black/5.jpg',
+      '/products/cabinet-black/6.jpg',
+      '/products/cabinet-black/7.jpg',
     ],
   },
   {
-    id: 'black-coated',
-    date: '2026-03-28',
-    type: 'archive',
-    pieceId: 'black-coated',
+    id: 'black-table',
+    category: 'furniture',
     title: 'Black Coated Table',
     image: '/products/black-table/blacktable1.jpg',
-    size: 'W 110  /  D 60  /  H 38 cm',
-    price: '₩ 1,200,000',
+    year: '2025',
+    size: 'W 80 cm  /  D 80 cm  /  H 44 cm',
+    price: '₩ 1,220,000',
     status: 'sold_out',
     gallery: [
       '/products/black-table/blacktable1.jpg',
@@ -66,14 +62,13 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
   },
   {
     id: 'tile-table',
-    date: '2026-02-15',
-    type: 'archive',
-    pieceId: 'tile',
+    category: 'furniture',
     title: 'Ceramic Tile Table',
     image: '/products/tile-table/1.jpg',
-    size: 'W 120  /  D 70  /  H 40 cm',
-    price: '₩ 2,200,000',
-    status: 'sold_out',
+    year: '2024',
+    size: 'W 92.5 cm  /  D 64.5 cm  /  H 35.3 cm',
+    price: '₩ 750,000',
+    status: 'available',
     gallery: [
       '/products/tile-table/1.jpg',
       '/products/tile-table/2.jpg',
@@ -82,15 +77,35 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     ],
   },
   {
-    id: 'white-coffee',
-    date: '2026-01-22',
-    type: 'archive',
-    pieceId: 'white',
+    id: 'deep-green-table',
+    category: 'furniture',
+    title: 'Deep Green Resin Table',
+    image: '/products/deep-green-table/deepgreen1.jpg',
+    year: '2024',
+    size: 'Ø 38 - 48 cm  /  H 54.5 cm',
+    price: '₩ 410,000',
+    status: 'available',
+    gallery: [
+      '/products/deep-green-table/deepgreen1.jpg',
+      '/products/deep-green-table/deepgreen2.jpg',
+      '/products/deep-green-table/deepgreen3.jpg',
+      '/products/deep-green-table/deepgreen4.jpg',
+      '/products/deep-green-table/deepgreen5.jpg',
+      '/products/deep-green-table/deepgreen6.jpg',
+      '/products/deep-green-table/deepgreen7.jpg',
+      '/products/deep-green-table/deepgreen8.jpg',
+      '/products/deep-green-table/deepgreen9.jpg',
+    ],
+  },
+  {
+    id: 'white-table',
+    category: 'furniture',
     title: 'White Resin Coffee Table',
     image: '/products/white-table/1.jpg',
-    size: 'W 100  /  D 50  /  H 38 cm',
-    price: '₩ 1,400,000',
-    status: 'sold_out',
+    year: '2024',
+    size: 'Ø 48 - 54 cm  /  H 41.8 cm',
+    price: '₩ 350,000',
+    status: 'available',
     gallery: [
       '/products/white-table/1.jpg',
       '/products/white-table/2.jpg',
@@ -99,33 +114,31 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     ],
   },
   {
-    id: 'cabinet-black',
-    date: '2025-12-10',
-    type: 'archive',
-    pieceId: 'cabinet-black',
-    title: 'Black Cabinet',
-    image: '/products/cabinet-black/1.jpg',
-    size: 'W 140  /  D 45  /  H 90 cm',
-    price: '₩ 2,800,000',
-    status: 'sold_out',
+    id: 'table-second',
+    category: 'furniture',
+    title: 'Leaking Light Cabinet',
+    image: '/products/table-second/1.jpg',
+    year: '2023',
+    size: 'W 76 cm  /  D 42 cm  /  H 46 cm',
+    price: '₩ 700,000',
+    status: 'available',
     gallery: [
-      '/products/cabinet-black/1.jpg',
-      '/products/cabinet-black/2.jpg',
-      '/products/cabinet-black/3.jpg',
-      '/products/cabinet-black/4.jpg',
-      '/products/cabinet-black/5.jpg',
+      '/products/table-second/1.jpg',
+      '/products/table-second/2.jpg',
+      '/products/table-second/3.jpg',
+      '/products/table-second/4.jpg',
+      '/products/table-second/5.jpg',
     ],
   },
   {
     id: 'acrylic-blue-leg',
-    date: '2025-11-05',
-    type: 'archive',
-    pieceId: 'acrylic-blue-leg',
-    title: 'Acrylic Blue Leg Table',
+    category: 'furniture',
+    title: 'Acrylic Table',
     image: '/products/acrylic-blue-leg/1.jpg',
-    size: 'W 80  /  D 50  /  H 50 cm',
-    price: '₩ 1,100,000',
-    status: 'sold_out',
+    year: '2023',
+    size: 'W 38 cm  /  D 40 cm  /  H 52 cm',
+    price: '₩ 200,000',
+    status: 'available',
     gallery: [
       '/products/acrylic-blue-leg/1.jpg',
       '/products/acrylic-blue-leg/2.jpg',
@@ -133,4 +146,30 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       '/products/acrylic-blue-leg/4.jpg',
     ],
   },
+
+  // ── OBJECT (15 pieces) ─────────────────────────────────────
+  ...Array.from({ length: 15 }, (_, i) => {
+    const n = i + 1;
+    const num = String(n).padStart(2, '0');
+    return {
+      id: `object-${n}`,
+      category: 'object' as const,
+      title: `Object ${num}`,
+      image: `/products/object-${n}/1.jpg`,
+      gallery: [`/products/object-${n}/1.jpg`],
+    };
+  }),
+
+  // ── PAINTING (8 pieces) ────────────────────────────────────
+  ...Array.from({ length: 8 }, (_, i) => {
+    const n = i + 1;
+    const num = String(n).padStart(2, '0');
+    return {
+      id: `painting-${n}`,
+      category: 'painting' as const,
+      title: `Painting ${num}`,
+      image: `/products/painting-${n}/1.jpg`,
+      gallery: [`/products/painting-${n}/1.jpg`],
+    };
+  }),
 ];
