@@ -1,8 +1,13 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { STUDIO } from '@/data/studio';
-import { FEATURED_WORKS } from '@/data/featured-works';
+import { JOURNAL_ENTRIES } from '@/data/journal-entries';
 import LiveClock from './LiveClock';
+
+const COUNTS = {
+  furniture: JOURNAL_ENTRIES.filter((e) => e.category === 'furniture').length,
+  object: JOURNAL_ENTRIES.filter((e) => e.category === 'object').length,
+  painting: JOURNAL_ENTRIES.filter((e) => e.category === 'painting').length,
+};
 
 /**
  * Desktop sidebar (≥ md). Sticky, full-height, independent scroll for long
@@ -11,19 +16,33 @@ import LiveClock from './LiveClock';
 export default function Sidebar() {
   return (
     <aside
-      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-y-auto bg-[#1a1d1b] border-r border-[#2a2e2c] p-7 gap-7"
+      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-[#1a1d1b] p-7 gap-7"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Brand + Clock */}
       <div>
         <Link
-          href="/journal"
+          href="/"
           className="block text-3xl mb-6 tracking-[0.04em] hover:opacity-80 transition-opacity"
           style={{ fontFamily: "var(--font-space-grotesk), sans-serif", color: '#e8ebe8' }}
         >
           {STUDIO.name}
         </Link>
         <LiveClock size="sm" />
+
+        {/* Status pill */}
+        <div className="flex items-center gap-2 mt-4">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#9ccfae] opacity-60 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9ccfae]" />
+          </span>
+          <span
+            className="text-[10px] tracking-[0.2em] uppercase text-[#9ccfae]"
+            style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+          >
+            Accepting commissions
+          </span>
+        </div>
       </div>
 
       {/* About */}
@@ -34,48 +53,40 @@ export default function Sidebar() {
         >
           About
         </div>
-        <p className="text-[13px] text-[#c0c5c2] leading-[1.65]">{STUDIO.about}</p>
+        <p className="text-[13px] text-[#c0c5c2] leading-[1.65] mb-3">{STUDIO.about}</p>
+        <p
+          className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488]"
+          style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+        >
+          Made-to-order · 21-day cure · Seoul
+        </p>
       </section>
 
-      {/* Featured Works */}
+      {/* Index */}
       <section>
         <div
-          className="text-[10px] tracking-[0.18em] uppercase text-[#8a9488] mb-3"
+          className="text-[10px] tracking-[0.18em] uppercase text-[#8a9488] mb-2"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
-          Featured Works
+          Index
         </div>
-        <ul className="space-y-3">
-          {FEATURED_WORKS.map((w) => (
-            <li key={w.id}>
-              <a
-                href={w.href ?? '#'}
-                className="flex items-center gap-3 hover:opacity-70 transition-opacity"
-              >
-                <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-sm bg-[#2a2e2c]">
-                  <Image
-                    src={w.thumbnail}
-                    alt={w.title}
-                    fill
-                    sizes="48px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="text-[12px]">
-                  <div className="text-[#e8ebe8] leading-tight">{w.title}</div>
-                  <div className="text-[#8a9488] text-[11px] mt-0.5">{w.status}</div>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <Link
-          href="/products"
-          className="inline-block mt-4 text-[10px] tracking-[0.18em] uppercase text-[#8a9488] hover:text-[#e8ebe8] transition-colors border-b border-[#2a2e2c] hover:border-[#5a6058] pb-0.5"
+        <ul
+          className="text-[12px] text-[#c0c5c2] space-y-1"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
-          View all works →
-        </Link>
+          <li className="flex justify-between tracking-[0.14em] uppercase">
+            <span>Furniture</span>
+            <span className="text-[#8a9488]">{String(COUNTS.furniture).padStart(2, '0')}</span>
+          </li>
+          <li className="flex justify-between tracking-[0.14em] uppercase">
+            <span>Object</span>
+            <span className="text-[#8a9488]">{String(COUNTS.object).padStart(2, '0')}</span>
+          </li>
+          <li className="flex justify-between tracking-[0.14em] uppercase">
+            <span>Painting</span>
+            <span className="text-[#8a9488]">{String(COUNTS.painting).padStart(2, '0')}</span>
+          </li>
+        </ul>
       </section>
 
       {/* Spacer */}
@@ -111,12 +122,20 @@ export default function Sidebar() {
         </ul>
         <Link
           href="/order"
-          className="inline-block px-4 py-2 border border-[#5a6058] text-[11px] tracking-[0.14em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors"
-          style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+          className="inline-block px-4 py-2 border border-[#5a6058] text-[12px] tracking-[0.14em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors"
+          style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
         >
           Commission
         </Link>
       </section>
+
+      {/* Imprint */}
+      <div
+        className="text-[10px] tracking-[0.2em] uppercase text-[#5a6058] pt-4"
+        style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+      >
+        © 2026 EEL Studio · Seoul
+      </div>
     </aside>
   );
 }

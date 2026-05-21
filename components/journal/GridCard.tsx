@@ -22,13 +22,13 @@ const CATEGORY_LABEL: Record<FeedEntry['category'], string> = {
 
 /**
  * Grid card — category · year · status chip · title · image · price.
- * Whole card links to /journal/[id]. Object/Painting render minimal
+ * Whole card links to /works/[id]. Object/Painting render minimal
  * (no year/status/price) — just category + title + image.
  */
 export default function GridCard({ entry }: { entry: FeedEntry }) {
   return (
     <Link
-      href={`/journal/${entry.id}`}
+      href={`/works/${entry.id}`}
       className="group block"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
