@@ -65,7 +65,7 @@ export default function LiveClock({ size = 'sm', compact = false }: Props) {
       {compact ? (
         <>
           <div>
-            {day}, {date}
+            {day}. {date}
           </div>
           <div>
             {STUDIO.city} · {time}

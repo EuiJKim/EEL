@@ -2,15 +2,30 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { STUDIO } from '@/data/studio';
+import { useLanguage } from '@/lib/language-context';
 
-/**
- * Small inline "About" link in the tabs row. Click opens a panel that
- * overlays the top of the grid (absolute positioned beneath the trigger).
- * Outside-click + ESC to close.
- */
+const ABOUT_KO = '서울 기반 핸드메이드 스튜디오. 독특하고 정교한 무언가를 만듭니다. 주문 제작은 최대 21일, 촬영 소품 대여도 가능합니다.';
+
+const T = {
+  en: {
+    about: 'About',
+    body: STUDIO.about,
+    tagline: 'Made-to-order · 21-day cure · Seoul',
+    contact: 'Contact',
+  },
+  ko: {
+    about: '소개',
+    body: ABOUT_KO,
+    tagline: '주문 제작 · 21일 경화 · 서울',
+    contact: 'Contact',
+  },
+};
+
 export default function AboutPopover() {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLanguage();
+  const t = T[lang];
 
   useEffect(() => {
     if (!open) return;
@@ -43,7 +58,7 @@ export default function AboutPopover() {
         }`}
         style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
       >
-        About
+        {t.about}
         <svg
           width="10"
           height="10"
@@ -63,29 +78,27 @@ export default function AboutPopover() {
           className="absolute left-0 top-full mt-2 w-[88vw] max-w-[420px] bg-[#1a1d1b] border border-[#2a2e2c] shadow-2xl z-30 p-6"
           style={{ fontFamily: 'var(--font-inter), sans-serif' }}
         >
-          {/* About */}
           <div
             className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-2"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
           >
-            About
+            {t.about}
           </div>
-          <p className="text-[13px] text-[#c0c5c2] leading-[1.7] mb-3">{STUDIO.about}</p>
+          <p className="text-[13px] text-[#c0c5c2] leading-[1.7] mb-3 whitespace-pre-line">{t.body}</p>
           <p
             className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-5"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
           >
-            Made-to-order · 21-day cure · Seoul
+            {t.tagline}
           </p>
 
           <div className="h-px bg-[#2a2e2c] my-5" />
 
-          {/* Contact */}
           <div
             className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
           >
-            Contact
+            {t.contact}
           </div>
           <ul className="space-y-1.5 text-[13px] text-[#c0c5c2]">
             <li>

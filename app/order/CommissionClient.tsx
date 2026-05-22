@@ -416,9 +416,7 @@ export default function CommissionClient() {
             <polyline points="13,4 7,10 13,16" />
           </svg>
         </Link>
-        <Link href="/" className="text-[20px] text-white tracking-[0.12em] hover:opacity-50 transition-opacity" style={{ fontFamily: "var(--font-gravitas, 'Gravitas One'), serif" }}>
-          EEL
-        </Link>
+        <div />
         <div className="flex gap-1.5 items-center">
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
             <button key={i} onClick={() => goToStep(i)}

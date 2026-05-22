@@ -5,6 +5,7 @@ import MobileFooter from '@/components/journal/MobileFooter';
 import MobileStickyCTA from '@/components/journal/MobileStickyCTA';
 import GridLayout from '@/components/journal/GridLayout';
 import type { Category } from '@/types/journal';
+import { LanguageProvider } from '@/lib/language-context';
 
 export const metadata: Metadata = {
   title: 'EEL — Seoul resin atelier',
@@ -32,14 +33,16 @@ export default async function HomePage({
       : 'all';
 
   return (
-    <div className="min-h-screen bg-[#2e3330] text-[#e8ebe8] flex flex-col md:flex-row pb-11 md:pb-0">
-      <Sidebar />
-      <MobileHeader />
-      <div className="flex-1 flex flex-col">
-        <GridLayout category={active} />
-        <MobileFooter />
+    <LanguageProvider>
+      <div className="min-h-screen bg-[#2e3330] text-[#e8ebe8] flex flex-col md:flex-row pb-11 md:pb-0">
+        <Sidebar />
+        <MobileHeader />
+        <div className="flex-1 flex flex-col">
+          <GridLayout category={active} />
+          <MobileFooter />
+        </div>
+        <MobileStickyCTA />
       </div>
-      <MobileStickyCTA />
-    </div>
+    </LanguageProvider>
   );
 }

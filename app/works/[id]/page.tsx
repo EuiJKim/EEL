@@ -106,8 +106,8 @@ export default async function JournalDetailPage({ params }: RouteParams) {
 
           {/* Title */}
           <h1
-            className="text-3xl md:text-4xl lg:text-[42px] text-[#e8ebe8] mb-6 tracking-[-0.005em] leading-[1.12]"
-            style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
+            className="text-2xl md:text-3xl lg:text-[34px] text-[#e8ebe8] mb-6 tracking-[-0.005em] leading-[1.12] whitespace-nowrap overflow-hidden"
+            style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}
           >
             {entry.title}
           </h1>
@@ -173,18 +173,18 @@ export default async function JournalDetailPage({ params }: RouteParams) {
         </aside>
 
         {/* Gallery */}
-        <main className="flex-1">
+        <main className="flex-1 flex flex-col items-end py-8 gap-6">
           {gallery.map((img, i) => (
             <div
               key={img + i}
-              className="relative w-full aspect-[4/5] md:aspect-[1/1] bg-[#2a2e2c] border-b border-[#2a2e2c] last:border-b-0"
+              className="relative w-full md:w-[50vw] aspect-[4/5] bg-[#2a2e2c] overflow-hidden"
             >
               <Image
                 src={img}
                 alt={`${entry.title} — ${i + 1}`}
                 fill
                 priority={i === 0}
-                sizes="(max-width: 768px) 100vw, 60vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

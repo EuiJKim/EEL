@@ -5,7 +5,7 @@ export const STUDIO: StudioInfo = {
   city: 'Seoul',
   timezone: 'Asia/Seoul',
   about:
-    'A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand. Made-to-order, cured over 21 days.',
+    'A Seoul-based studio crafting resin objects that are eccentric by nature, precise by hand. Made-to-order, cured over 21 days.\nSelect pieces available for editorial and photo shoot rental.',
   contact: {
     email: 'eelobjects@gmail.com',
     instagram: '@eel.eel.eel.eel',

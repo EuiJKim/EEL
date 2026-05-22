@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { JOURNAL_ENTRIES } from '@/data/journal-entries';
 import type { Category } from '@/types/journal';
 import GridCard from './GridCard';
@@ -23,8 +24,19 @@ export default function GridLayout({ category = 'all' }: Props) {
       className="flex-1 min-h-screen bg-[#2e3330]"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
+      {/* Banner */}
+      <div className="hidden md:block w-full h-[85px] relative overflow-hidden">
+        <Image
+          src="/green.jpg"
+          alt="EEL banner"
+          fill
+          className="object-cover object-left"
+          priority
+        />
+      </div>
+
       {/* Section header + category tabs — sticky on mobile */}
-      <div className="sticky top-0 z-20 bg-[#2e3330] md:static px-6 md:px-14 pt-4 md:pt-20 pb-3 md:pb-8">
+      <div className="sticky top-0 z-20 bg-[#2e3330] md:static px-6 md:px-14 pt-4 md:pt-6 pb-3 md:pb-8">
         <div className="flex items-center justify-between gap-3 md:gap-6">
           <AboutPopover />
           <div className="-mx-2 md:mx-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

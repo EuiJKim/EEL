@@ -1,11 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import type { Category } from '@/types/journal';
+import { useLanguage } from '@/lib/language-context';
 
-const TABS: { key: 'all' | Category; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'furniture', label: 'Furniture' },
-  { key: 'object', label: 'Object' },
-  { key: 'painting', label: 'Painting' },
+const TABS: { key: 'all' | Category; en: string; ko: string }[] = [
+  { key: 'all', en: 'All', ko: '전체' },
+  { key: 'furniture', en: 'Furniture', ko: '가구' },
+  { key: 'object', en: 'Object', ko: '오브제' },
+  { key: 'painting', en: 'Painting', ko: '페인팅' },
 ];
 
 interface Props {
@@ -13,6 +16,8 @@ interface Props {
 }
 
 export default function CategoryTabs({ active }: Props) {
+  const { lang } = useLanguage();
+
   return (
     <nav
       className="flex items-center gap-1 md:gap-2"
@@ -31,7 +36,7 @@ export default function CategoryTabs({ active }: Props) {
                 : 'text-[#8a9488] border-b border-transparent hover:text-[#c0c5c2]'
             }`}
           >
-            {t.label}
+            {lang === 'ko' ? t.ko : t.en}
           </Link>
         );
       })}
