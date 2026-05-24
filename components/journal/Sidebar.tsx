@@ -172,9 +172,10 @@ export default function Sidebar() {
           >
             <p>010-5229-7728</p>
             <p>Daily 12:00 – 18:00</p>
-            <p>37-14, Hoedong-gil, 403, Seoul, Korea</p>
+            <p>37-14, Hoedong-gil, 403, Korea</p>
             <p>BIZ LICENSE 305-46-07793</p>
-            <p>EEL · CHAE MINSOO</p>
+            <p>EEL</p>
+            <p>CHAE MINSOO</p>
             <p>Copyright © 2025 EEL All rights reserved.</p>
           </div>
         </div>
