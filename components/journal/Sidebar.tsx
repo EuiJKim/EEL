@@ -56,8 +56,8 @@ export default function Sidebar() {
         <div className="flex items-start justify-between mb-8">
           <Link
             href="/"
-            className="block text-[56px] font-bold tracking-[0.04em] hover:opacity-80 transition-opacity leading-none"
-            style={{ fontFamily: "var(--font-space-grotesk), sans-serif", color: '#e8ebe8' }}
+            className="block text-[56px] font-normal tracking-[0.04em] hover:opacity-80 transition-opacity leading-none"
+            style={{ fontFamily: "var(--font-gravitas), serif", color: '#e8ebe8' }}
           >
             {STUDIO.name}
           </Link>

@@ -47,7 +47,7 @@ export default function GridLayout({ category = 'all' }: Props) {
       </div>
 
       {/* Grid */}
-      <div className="px-6 md:px-14 pt-6 md:pt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-10 md:gap-y-20 pb-16 md:pb-24">
+      <div className="px-6 md:px-10 pt-6 md:pt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-5 md:gap-x-6 gap-y-10 md:gap-y-14 pb-16 md:pb-24">
         {entries.map((entry) => (
           <GridCard key={entry.id} entry={entry} />
         ))}

@@ -67,7 +67,7 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
 
       {/* Title */}
       <h3
-        className="text-[15px] md:text-[16px] leading-[1.18] text-[#e8ebe8] mb-4 tracking-[-0.005em] whitespace-nowrap overflow-hidden group-hover:text-white transition-colors duration-300"
+        className="text-[13px] md:text-[14px] leading-[1.18] text-[#e8ebe8] mb-3 tracking-[-0.005em] whitespace-nowrap overflow-hidden group-hover:text-white transition-colors duration-300"
         style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}
       >
         {entry.title}
