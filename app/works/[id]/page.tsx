@@ -159,16 +159,23 @@ export default async function JournalDetailPage({ params }: RouteParams) {
             </dl>
           )}
 
-          {/* CTAs */}
+          {/* CTAs — Object/Painting are unique pieces, Inquire only.
+              Furniture is commissionable: Inquire (if available) + Commission. */}
           <div className="flex flex-col gap-3">
-            {entry.status === 'available' && <PieceInquiryButton entry={entry} />}
-            <Link
-              href="/order"
-              className="inline-block text-center px-5 py-3 border border-[#5a6058] text-[12px] tracking-[0.16em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors min-h-[44px]"
-              style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
-            >
-              Commission a similar piece →
-            </Link>
+            {entry.category === 'furniture' ? (
+              <>
+                {entry.status === 'available' && <PieceInquiryButton entry={entry} />}
+                <Link
+                  href="/order"
+                  className="inline-block text-center px-5 py-3 border border-[#5a6058] text-[12px] tracking-[0.16em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors min-h-[44px]"
+                  style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
+                >
+                  Commission a similar piece →
+                </Link>
+              </>
+            ) : (
+              <PieceInquiryButton entry={entry} />
+            )}
           </div>
         </aside>
 
