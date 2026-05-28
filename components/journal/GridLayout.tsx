@@ -25,7 +25,7 @@ export default function GridLayout({ category = 'all' }: Props) {
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Banner */}
-      <div className="hidden md:block w-full h-[85px] relative overflow-hidden">
+      <div className="hidden md:block w-full h-[60px] relative overflow-hidden">
         <Image
           src="/green.jpg"
           alt="EEL banner"
