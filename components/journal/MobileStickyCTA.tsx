@@ -11,7 +11,8 @@ export default function MobileStickyCTA() {
     <div
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#1a1d1b]/95 backdrop-blur-sm border-t border-[#2a2e2c] flex items-stretch"
       style={{
-        paddingBottom: 'env(safe-area-inset-bottom)',
+        paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)',
+        paddingTop: '8px',
       }}
     >
       <a
@@ -19,9 +20,9 @@ export default function MobileStickyCTA() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Instagram"
-        className="flex items-center justify-center w-12 h-11 text-[#c0c5c2] hover:text-white transition-colors border-r border-[#2a2e2c]"
+        className="flex items-center justify-center w-14 h-14 text-[#c0c5c2] hover:text-white transition-colors border-r border-[#2a2e2c]"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="5" />
           <circle cx="12" cy="12" r="4" />
           <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
@@ -30,7 +31,7 @@ export default function MobileStickyCTA() {
       <a
         href={`mailto:${STUDIO.contact.email}`}
         aria-label="Email"
-        className="flex items-center justify-center w-12 h-11 text-[#c0c5c2] hover:text-white transition-colors border-r border-[#2a2e2c]"
+        className="flex items-center justify-center w-14 h-14 text-[#c0c5c2] hover:text-white transition-colors border-r border-[#2a2e2c]"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="5" width="18" height="14" rx="1.5" />
@@ -39,7 +40,7 @@ export default function MobileStickyCTA() {
       </a>
       <Link
         href="/order"
-        className="flex-1 flex items-center justify-center h-11 text-[#e8ebe8] text-[11px] tracking-[0.16em] uppercase hover:text-white transition-colors"
+        className="flex-1 flex items-center justify-center h-14 text-[#e8ebe8] text-[11px] tracking-[0.16em] uppercase hover:text-white transition-colors"
         style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 500 }}
       >
         Commission a piece →
