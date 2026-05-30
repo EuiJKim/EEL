@@ -37,7 +37,7 @@ export default function MobileHeader() {
         <Link
           href="/"
           className="text-[42px] font-bold tracking-[0.04em] leading-none"
-          style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', color: '#e8ebe8' }}
+          style={{ fontFamily: 'var(--font-gravitas), serif', color: '#e8ebe8' }}
         >
           {STUDIO.name}
         </Link>
