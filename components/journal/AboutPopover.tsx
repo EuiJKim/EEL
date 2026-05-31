@@ -51,7 +51,7 @@ export default function AboutPopover() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className={`text-[11px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center gap-1.5 transition-colors ${
+        className={`text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center gap-1.5 transition-colors ${
           open
             ? 'text-[#e8ebe8] border-b border-[#e8ebe8]'
             : 'text-[#8a9488] border-b border-transparent hover:text-[#c0c5c2]'
@@ -84,7 +84,7 @@ export default function AboutPopover() {
           >
             {t.about}
           </div>
-          <p className="text-[13px] text-[#c0c5c2] leading-[1.7] mb-3 whitespace-pre-line">{t.body}</p>
+          <p className="text-[12px] text-[#c0c5c2] leading-[1.7] mb-3 whitespace-pre-line">{t.body}</p>
           <p
             className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-5"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
@@ -100,7 +100,7 @@ export default function AboutPopover() {
           >
             {t.contact}
           </div>
-          <ul className="space-y-1.5 text-[13px] text-[#c0c5c2]">
+          <ul className="space-y-1.5 text-[12px] text-[#c0c5c2]">
             <li>
               <a
                 href={STUDIO.contact.instagramUrl}
