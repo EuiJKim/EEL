@@ -52,11 +52,13 @@ export default function AboutPopover() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         className={`text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center gap-1.5 transition-colors ${
-          open
-            ? 'text-[#e8ebe8] border-b border-[#e8ebe8]'
-            : 'text-[#8a9488] border-b border-transparent hover:text-[#c0c5c2]'
+          open ? 'border-b' : 'border-b border-transparent'
         }`}
-        style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
+        style={{
+          fontFamily: 'var(--font-staatliches), sans-serif',
+          color: open ? '#e8ebe8' : '#8a9488',
+          borderColor: open ? '#e8ebe8' : 'transparent',
+        }}
       >
         {t.about}
         <svg

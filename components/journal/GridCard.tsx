@@ -33,16 +33,16 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
       {/* Meta row */}
       <div className="flex items-center gap-2.5 mb-2.5">
         <span
-          className="text-[10px] tracking-[0.18em] uppercase text-[#8a9488]"
+          className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
           {CATEGORY_LABEL[lang][entry.category]}
         </span>
         {entry.year && (
           <>
-            <span className="text-[#4a4f4b] text-[10px]">·</span>
+            <span className="text-[#bbb] text-[10px]">·</span>
             <span
-              className="text-[10px] tracking-[0.18em] uppercase text-[#8a9488]"
+              className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
               style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
             >
               {entry.year}
@@ -51,7 +51,7 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
         )}
         {entry.status && (
           <>
-            <span className="text-[#4a4f4b] text-[10px]">·</span>
+            <span className="text-[#bbb] text-[10px]">·</span>
             <span
               className="text-[10px] tracking-[0.18em] uppercase"
               style={{
@@ -68,7 +68,7 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
       {/* Title */}
       <h3
         className="text-[13px] md:text-[14px] leading-[1.18] text-[#e8ebe8] mb-3 tracking-[-0.005em] whitespace-nowrap overflow-hidden group-hover:text-white transition-colors duration-300"
-        style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}
+        style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 600 }}
       >
         {entry.title}
       </h3>
