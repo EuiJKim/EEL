@@ -13,7 +13,14 @@ const inquirySchema = z.object({
   pieceTitle:  z.string().min(1).max(120),
   pieceSize:   z.string().max(120).optional().default(''),
   piecePrice:  z.string().max(60).optional().default(''),
+  utm:         z.record(z.string(), z.string()).optional().default({}),
 });
+
+function formatUTM(utm: Record<string, string>): string {
+  const entries = Object.entries(utm).filter(([, v]) => v);
+  if (entries.length === 0) return '-';
+  return entries.map(([k, v]) => `${k}=${v}`).join(' · ');
+}
 
 function escapeHtml(str: string): string {
   return str
@@ -35,7 +42,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '필수 항목 누락' }, { status: 400 });
     }
 
-    const { name, phone, email, note, pieceId, pieceTitle, pieceSize, piecePrice } = parsed.data;
+    const { name, phone, email, note, pieceId, pieceTitle, pieceSize, piecePrice, utm } = parsed.data;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -58,6 +65,8 @@ export async function POST(req: NextRequest) {
             <tr><td style="padding:8px 0;color:#888;">전화번호</td><td style="padding:8px 0;color:#fff;">${safe(phone)}</td></tr>
             <tr><td style="padding:8px 0;color:#888;">이메일</td><td style="padding:8px 0;color:#fff;">${safe(email)}</td></tr>
             <tr><td style="padding:8px 0;color:#888;vertical-align:top;">문의 내용</td><td style="padding:8px 0;color:#fff;">${safe(note)}</td></tr>
+            <tr><td colspan="2" style="padding:16px 0 8px;border-top:1px solid #333;"></td></tr>
+            <tr><td style="padding:8px 0;color:#888;vertical-align:top;">유입 경로</td><td style="padding:8px 0;color:#aaa;font-size:12px;">${safe(formatUTM(utm))}</td></tr>
           </table>
         </div>
       `,

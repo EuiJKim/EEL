@@ -13,9 +13,11 @@ const TABS: { key: 'all' | Category; en: string; ko: string }[] = [
 
 interface Props {
   active: 'all' | Category;
+  /** Base path for tab links. '/' for home, '/available' for Available landing. */
+  basePath?: '/' | '/available';
 }
 
-export default function CategoryTabs({ active }: Props) {
+export default function CategoryTabs({ active, basePath = '/' }: Props) {
   const { lang } = useLanguage();
 
   return (
@@ -25,7 +27,7 @@ export default function CategoryTabs({ active }: Props) {
     >
       {TABS.map((t) => {
         const isActive = t.key === active;
-        const href = t.key === 'all' ? '/' : `/?category=${t.key}`;
+        const href = t.key === 'all' ? basePath : `${basePath}?category=${t.key}`;
         return (
           <Link
             key={t.key}

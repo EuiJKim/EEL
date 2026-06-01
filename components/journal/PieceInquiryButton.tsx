@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { FeedEntry } from '@/types/journal';
+import { getStoredUTM } from '@/components/UTMTracker';
 
 interface Props {
   entry: FeedEntry;
@@ -50,6 +51,7 @@ export default function PieceInquiryButton({ entry }: Props) {
     setState('sending');
     setErrorMsg('');
     try {
+      const utm = getStoredUTM();
       const res = await fetch('/api/piece-inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,6 +64,7 @@ export default function PieceInquiryButton({ entry }: Props) {
           pieceTitle: entry.title,
           pieceSize: entry.size ?? '',
           piecePrice: entry.price ?? '',
+          utm,
         }),
       });
       if (!res.ok) {
@@ -69,6 +72,17 @@ export default function PieceInquiryButton({ entry }: Props) {
         throw new Error(data.error ?? '전송 실패');
       }
       setState('sent');
+      // Fire Pixel Lead event with ad attribution
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        const value = parseFloat((entry.price ?? '').replace(/[^0-9]/g, '')) || 500_000;
+        window.fbq('track', 'Lead', {
+          value,
+          currency: 'KRW',
+          content_name: entry.title,
+          content_category: entry.category,
+          ...utm,
+        });
+      }
     } catch (err) {
       setState('error');
       setErrorMsg(err instanceof Error ? err.message : '전송 실패');

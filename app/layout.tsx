@@ -3,6 +3,7 @@ import { Gravitas_One, Staatliches, DM_Sans, Inter, Space_Grotesk } from "next/f
 import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import PageIntro from "@/components/PageIntro";
+import UTMTracker from "@/components/UTMTracker";
 
 const gravitasOne = Gravitas_One({
   variable: "--font-gravitas",
@@ -85,6 +86,7 @@ export default function RootLayout({
       </head>
       <body className={`${gravitasOne.variable} ${staatliches.variable} ${dmSans.variable} ${inter.variable} ${spaceGrotesk.variable} antialiased`}>
         <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ''} />
+        <UTMTracker />
         <PageIntro />
         {children}
       </body>
