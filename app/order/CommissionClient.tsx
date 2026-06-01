@@ -231,29 +231,32 @@ export default function CommissionClient() {
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Shape</h2>
       <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 상판 모양을 선택해주세요</p>
       <div className="grid grid-cols-2 gap-3">
-        {SHAPE_OPTIONS.map((s) => (
+        {SHAPE_OPTIONS.map((s) => {
+          const isActive = selectedShape === s.value;
+          return (
           <button key={s.value}
             onClick={() => { setSelectedShape(s.value); if (s.value === 'rectangle' && selectedLegs === '1') setSelectedLegs('4'); }}
-            className="border py-6 px-3 cursor-pointer flex flex-col items-center gap-3 transition-all"
-            style={{ borderColor: selectedShape === s.value ? '#fff' : '#222', background: selectedShape === s.value ? 'rgba(255,255,255,0.04)' : 'transparent' }}>
+            className={`relative py-6 px-3 cursor-pointer flex flex-col items-center gap-3 transition-all active:scale-[0.98] ${isActive ? 'border-2' : 'border'}`}
+            style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent' }}>
+            {isActive && <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white" />}
             <div className="w-12 h-12 flex items-center justify-center">
               {s.value === 'organic' && (
-                <svg width="48" height="48" viewBox="-6 -6 12 12" fill="none" stroke={selectedShape === s.value ? '#fff' : '#888'} strokeWidth="0.4">
+                <svg width="48" height="48" viewBox="-6 -6 12 12" fill="none" stroke={isActive ? '#fff' : '#888'} strokeWidth="0.4">
                   <path d="M0.3,4.3 C2.3,5 4.4,4.3 5.1,2.6 C5.9,0.9 5.3,-1.2 4.2,-2.6 C3,-4.3 0.9,-5 -1.1,-4.6 C-3.1,-4.1 -4.7,-2.7 -5.1,-0.9 C-5.6,1 -4.9,3 -3.1,3.9 C-2.1,4.4 -1,3.6 0.3,4.3Z" />
                 </svg>
               )}
               {s.value === 'round' && (
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={selectedShape === s.value ? '#fff' : '#888'} strokeWidth="1.5">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={isActive ? '#fff' : '#888'} strokeWidth="1.5">
                   <circle cx="24" cy="24" r="18" />
                 </svg>
               )}
               {s.value === 'square' && (
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={selectedShape === s.value ? '#fff' : '#888'} strokeWidth="1.5">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={isActive ? '#fff' : '#888'} strokeWidth="1.5">
                   <rect x="6" y="6" width="36" height="36" rx="3" />
                 </svg>
               )}
               {s.value === 'rectangle' && (
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={selectedShape === s.value ? '#fff' : '#888'} strokeWidth="1.5">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke={isActive ? '#fff' : '#888'} strokeWidth="1.5">
                   <rect x="3" y="10" width="42" height="28" rx="3" />
                 </svg>
               )}
@@ -261,7 +264,8 @@ export default function CommissionClient() {
             <span className="text-white text-sm" style={{ fontFamily: "var(--font-gravitas)" }}>{s.label}</span>
             <span className="text-xs text-[#999] tracking-[0.04em]">{s.desc}</span>
           </button>
-        ))}
+        );
+        })}
       </div>
     </div>,
 
@@ -273,10 +277,12 @@ export default function CommissionClient() {
       <div className="flex gap-3">
         {(['S', 'M', 'L'] as const).map((letter) => {
           const range = letter === 'S' ? '40–50 cm' : letter === 'M' ? '50–65 cm' : '70–90 cm';
+          const isActive = selectedSize === letter;
           return (
             <button key={letter} onClick={() => setSelectedSize(letter)}
-              className="flex-1 border py-8 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all"
-              style={{ borderColor: selectedSize === letter ? '#fff' : '#222', background: selectedSize === letter ? 'rgba(255,255,255,0.04)' : 'transparent' }}>
+              className={`relative flex-1 py-8 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98] ${isActive ? 'border-2' : 'border'}`}
+              style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent' }}>
+              {isActive && <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white" />}
               <span className="text-white text-3xl leading-none" style={{ fontFamily: "var(--font-gravitas)" }}>{letter}</span>
               <span className="text-xs text-[#999] tracking-[0.04em] text-center">{range}</span>
             </button>
@@ -298,16 +304,20 @@ export default function CommissionClient() {
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Height</h2>
       <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 높이를 선택해주세요</p>
       <div className="flex gap-3">
-        {HEIGHT_OPTIONS.map((h) => (
+        {HEIGHT_OPTIONS.map((h) => {
+          const isActive = selectedHeight === h.label;
+          return (
           <button key={h.label} onClick={() => setSelectedHeight(h.label)}
-            className="flex-1 border py-8 px-3 cursor-pointer flex items-center justify-center transition-all"
+            className={`relative flex-1 py-8 px-3 cursor-pointer flex items-center justify-center transition-all active:scale-[0.98] ${isActive ? 'border-2' : 'border'}`}
             style={{
-              borderColor: selectedHeight === h.label ? '#fff' : '#222',
-              background: selectedHeight === h.label ? 'rgba(255,255,255,0.04)' : 'transparent',
+              borderColor: isActive ? '#fff' : '#3a3a3a',
+              background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
             }}>
+            {isActive && <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white" />}
             <span className="text-white text-lg text-center leading-snug" style={{ fontFamily: "var(--font-gravitas)" }}>{h.label}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>,
 
@@ -319,11 +329,13 @@ export default function CommissionClient() {
       <div className="flex gap-3">
         {LEG_OPTIONS.map((l) => {
           const disabled = l.value === '1' && selectedShape === 'rectangle';
+          const isActive = selectedLegs === l.value && !disabled;
           return (
             <button key={l.value}
               onClick={() => { if (!disabled) setSelectedLegs(l.value); }}
-              className={`flex-1 border py-8 px-3 flex flex-col items-center gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
-              style={{ borderColor: selectedLegs === l.value && !disabled ? '#fff' : '#222', background: selectedLegs === l.value && !disabled ? 'rgba(255,255,255,0.04)' : 'transparent' }}>
+              className={`relative flex-1 py-8 px-3 flex flex-col items-center gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed border' : 'cursor-pointer active:scale-[0.98]'} ${isActive ? 'border-2' : 'border'}`}
+              style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent' }}>
+              {isActive && <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white" />}
               <div className="flex flex-col items-center gap-1 h-14 justify-end">
                 <div className="w-12 h-2 bg-[#888] rounded-sm" />
                 {l.value === '4' ? (
