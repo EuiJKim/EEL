@@ -34,6 +34,11 @@ export default async function HomePage({
 
   return (
     <LanguageProvider>
+      {/* SEO h1 — visually hidden, present for search engines & a11y */}
+      <h1 className="sr-only">
+        EEL — Seoul resin atelier. Handmade furniture, objects, and paintings.
+        Made-to-order, cured over 21 days.
+      </h1>
       <div className="min-h-screen bg-[#2e3330] text-[#e8ebe8] flex flex-col md:flex-row pb-11 md:pb-0">
         <Sidebar />
         <MobileHeader />
