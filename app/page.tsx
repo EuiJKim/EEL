@@ -43,6 +43,9 @@ export default async function HomePage({
       <div className="min-h-screen bg-black text-[#e8ebe8] flex flex-col md:flex-row pb-11 md:pb-0">
         <Sidebar />
         <MobileHeader />
+        <div className="md:hidden h-[12px] flex-shrink-0 relative overflow-hidden">
+          <Image src="/green.jpg" alt="" fill className="object-cover" />
+        </div>
         <div className="hidden md:flex w-[12px] flex-shrink-0 self-stretch relative overflow-hidden">
           <Image src="/green.jpg" alt="" fill className="object-cover" />
         </div>
