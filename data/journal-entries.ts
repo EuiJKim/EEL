@@ -116,7 +116,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
   {
     id: 'table-second',
     category: 'furniture',
-    title: 'Leaking Light Cabinet',
+    title: 'Light Cabinet',
     image: '/products/table-second/1.jpg',
     year: '2026',
     size: 'W 76 cm  /  D 42 cm  /  H 46 cm',
