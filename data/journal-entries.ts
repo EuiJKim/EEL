@@ -155,7 +155,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       id: `object-${n}`,
       category: 'object' as const,
       title: `Object ${num}`,
-      year: '2026',
+      year: '2024',
       image: `/products/object-${n}/1.jpg`,
       gallery: [`/products/object-${n}/1.jpg`],
     };
@@ -169,7 +169,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       id: `painting-${n}`,
       category: 'painting' as const,
       title: `Painting ${num}`,
-      year: '2026',
+      year: '2024',
       image: `/products/painting-${n}/1.jpg`,
       gallery: [`/products/painting-${n}/1.jpg`],
     };

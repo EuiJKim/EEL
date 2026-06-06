@@ -37,7 +37,7 @@ export default function MobileHeader() {
         <Link
           href="/"
           className="text-[42px] font-bold tracking-[0.04em] leading-none"
-          style={{ fontFamily: 'var(--font-gravitas), serif', color: '#e8ebe8' }}
+          style={{ fontFamily: 'var(--font-gravitas), serif', color: '#F2EDE4' }}
         >
           {STUDIO.name}
         </Link>
@@ -49,9 +49,9 @@ export default function MobileHeader() {
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
             aria-label="Toggle language"
           >
-            <span className={lang === 'ko' ? 'text-[#e8ebe8]' : 'text-[#5a6058]'}>KR</span>
+            <span className={lang === 'ko' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>KR</span>
             <span className="text-[#3a403c]">·</span>
-            <span className={lang === 'en' ? 'text-[#e8ebe8]' : 'text-[#5a6058]'}>EN</span>
+            <span className={lang === 'en' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>EN</span>
           </button>
         </div>
       </div>

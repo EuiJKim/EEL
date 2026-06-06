@@ -56,7 +56,7 @@ export default function LiveClock({ size = 'sm', compact = false }: Props) {
 
   return (
     <div
-      className={`text-[#e8ebe8] ${sizeClass}`}
+      className={`text-[#F2EDE4] ${sizeClass}`}
       style={{
         fontFamily: 'var(--font-inter), sans-serif',
         fontVariantNumeric: 'tabular-nums',

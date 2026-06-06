@@ -40,7 +40,7 @@ export default function MobileStickyCTA() {
       </a>
       <Link
         href="/order"
-        className="flex-1 flex items-center justify-center h-14 text-[#e8ebe8] text-[11px] tracking-[0.16em] uppercase hover:text-white transition-colors"
+        className="flex-1 flex items-center justify-center h-14 text-[#F2EDE4] text-[11px] tracking-[0.16em] uppercase hover:text-white transition-colors"
         style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 500 }}
       >
         Commission a piece →

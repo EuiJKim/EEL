@@ -36,8 +36,8 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
               isActive ? 'border-b' : 'border-b border-transparent'
             }`}
             style={{
-              color: isActive ? '#e8ebe8' : '#8a9488',
-              borderColor: isActive ? '#e8ebe8' : 'transparent',
+              color: isActive ? '#F2EDE4' : '#8a9488',
+              borderColor: isActive ? '#F2EDE4' : 'transparent',
             }}
           >
             {lang === 'ko' ? t.ko : t.en}

@@ -57,7 +57,7 @@ export default function Sidebar() {
           <Link
             href="/"
             className="block text-[56px] font-normal tracking-[0.04em] hover:opacity-80 transition-opacity leading-none"
-            style={{ fontFamily: "var(--font-gravitas), serif", color: '#e8ebe8' }}
+            style={{ fontFamily: "var(--font-gravitas), serif", color: '#F2EDE4' }}
           >
             {STUDIO.name}
           </Link>
@@ -67,9 +67,9 @@ export default function Sidebar() {
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
             aria-label="Toggle language"
           >
-            <span className={lang === 'ko' ? 'text-[#e8ebe8]' : 'text-[#5a6058]'}>KR</span>
+            <span className={lang === 'ko' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>KR</span>
             <span className="text-[#3a403c]">·</span>
-            <span className={lang === 'en' ? 'text-[#e8ebe8]' : 'text-[#5a6058]'}>EN</span>
+            <span className={lang === 'en' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>EN</span>
           </button>
         </div>
         <LiveClock size="sm" compact />
@@ -133,7 +133,7 @@ export default function Sidebar() {
         </ul>
         <Link
           href="/order"
-          className="block w-full mt-3 py-1.5 border border-[#5a6058] text-[12px] tracking-[0.14em] uppercase text-center text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors"
+          className="block w-full mt-3 py-1.5 border border-[#5a6058] text-[12px] tracking-[0.14em] uppercase text-center text-[#F2EDE4] hover:bg-[#F2EDE4] hover:text-[#1a1d1b] transition-colors"
           style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
         >
           {t.commission}

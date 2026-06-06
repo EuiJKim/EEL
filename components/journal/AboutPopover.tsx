@@ -56,8 +56,8 @@ export default function AboutPopover() {
         }`}
         style={{
           fontFamily: 'var(--font-staatliches), sans-serif',
-          color: open ? '#e8ebe8' : '#8a9488',
-          borderColor: open ? '#e8ebe8' : 'transparent',
+          color: open ? '#F2EDE4' : '#8a9488',
+          borderColor: open ? '#F2EDE4' : 'transparent',
         }}
       >
         {t.about}

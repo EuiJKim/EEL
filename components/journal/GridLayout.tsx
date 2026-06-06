@@ -41,7 +41,7 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
             ● Available Now · {entries.length} pieces
           </div>
           <h2
-            className="text-[#e8ebe8] text-2xl md:text-3xl tracking-[-0.005em] mb-2"
+            className="text-[#F2EDE4] text-2xl md:text-3xl tracking-[-0.005em] mb-2"
             style={{ fontFamily: 'var(--font-gravitas), serif' }}
           >
             Ready to ship

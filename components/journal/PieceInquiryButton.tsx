@@ -106,7 +106,7 @@ export default function PieceInquiryButton({ entry }: Props) {
           reset();
           setOpen(true);
         }}
-        className="inline-block text-center px-5 py-3 bg-[#e8ebe8] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px]"
+        className="inline-block text-center px-5 py-3 bg-[#F2EDE4] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px]"
         style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
       >
         Inquire about this piece →
@@ -143,7 +143,7 @@ export default function PieceInquiryButton({ entry }: Props) {
                 Inquire
               </div>
               <h2
-                className="text-[22px] text-[#e8ebe8] leading-[1.2] mb-1"
+                className="text-[22px] text-[#F2EDE4] leading-[1.2] mb-1"
                 style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 500 }}
               >
                 {entry.title}
@@ -155,7 +155,7 @@ export default function PieceInquiryButton({ entry }: Props) {
 
               {state === 'sent' ? (
                 <div className="py-6">
-                  <p className="text-[14px] text-[#e8ebe8] leading-[1.7] mb-2">
+                  <p className="text-[14px] text-[#F2EDE4] leading-[1.7] mb-2">
                     문의가 접수되었습니다.
                   </p>
                   <p className="text-[12px] text-[#8a9488] leading-[1.7] mb-6">
@@ -164,7 +164,7 @@ export default function PieceInquiryButton({ entry }: Props) {
                   <button
                     type="button"
                     onClick={() => setOpen(false)}
-                    className="w-full px-5 py-3 border border-[#5a6058] text-[11px] tracking-[0.2em] uppercase text-[#e8ebe8] hover:bg-[#e8ebe8] hover:text-[#1a1d1b] transition-colors min-h-[44px]"
+                    className="w-full px-5 py-3 border border-[#5a6058] text-[11px] tracking-[0.2em] uppercase text-[#F2EDE4] hover:bg-[#F2EDE4] hover:text-[#1a1d1b] transition-colors min-h-[44px]"
                     style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
                   >
                     Close
@@ -207,7 +207,7 @@ export default function PieceInquiryButton({ entry }: Props) {
                       rows={4}
                       maxLength={1000}
                       placeholder="배송, 결제, 추가 정보 등 궁금한 점을 적어주세요."
-                      className="w-full bg-[#2e3330] border border-[#3a403c] focus:border-[#8a9488] outline-none px-3 py-2.5 text-[14px] text-[#e8ebe8] placeholder-[#5a6058] resize-none"
+                      className="w-full bg-[#2e3330] border border-[#3a403c] focus:border-[#8a9488] outline-none px-3 py-2.5 text-[14px] text-[#F2EDE4] placeholder-[#5a6058] resize-none"
                     />
                   </div>
 
@@ -218,7 +218,7 @@ export default function PieceInquiryButton({ entry }: Props) {
                   <button
                     type="submit"
                     disabled={state === 'sending' || !name || !phone}
-                    className="w-full px-5 py-3 bg-[#e8ebe8] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-5 py-3 bg-[#F2EDE4] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
                   >
                     {state === 'sending' ? 'Sending…' : 'Send Inquiry →'}
@@ -263,7 +263,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         autoComplete={autoComplete}
-        className="w-full bg-[#2e3330] border border-[#3a403c] focus:border-[#8a9488] outline-none px-3 py-2.5 text-[14px] text-[#e8ebe8] placeholder-[#5a6058]"
+        className="w-full bg-[#2e3330] border border-[#3a403c] focus:border-[#8a9488] outline-none px-3 py-2.5 text-[14px] text-[#F2EDE4] placeholder-[#5a6058]"
       />
     </div>
   );
