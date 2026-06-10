@@ -68,7 +68,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     year: '2026',
     size: 'W 92.5 cm  /  D 64.5 cm  /  H 35.3 cm',
     price: '₩ 750,000',
-    status: 'available',
+    status: 'sold_out',
     gallery: [
       '/products/tile-table/1.jpg',
       '/products/tile-table/2.jpg',
@@ -84,7 +84,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     year: '2026',
     size: 'Ø 38 - 48 cm  /  H 54.5 cm',
     price: '₩ 410,000',
-    status: 'available',
+    status: 'sold_out',
     gallery: [
       '/products/deep-green-table/deepgreen1.jpg',
       '/products/deep-green-table/deepgreen2.jpg',
@@ -121,7 +121,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     year: '2026',
     size: 'W 76 cm  /  D 42 cm  /  H 46 cm',
     price: '₩ 700,000',
-    status: 'available',
+    status: 'sold_out',
     gallery: [
       '/products/table-second/1.jpg',
       '/products/table-second/2.jpg',
