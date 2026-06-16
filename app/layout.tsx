@@ -4,6 +4,7 @@ import "./globals.css";
 import MetaPixel from "@/components/MetaPixel";
 import PageIntro from "@/components/PageIntro";
 import UTMTracker from "@/components/UTMTracker";
+import { LanguageProvider } from "@/lib/language-context";
 
 const gravitasOne = Gravitas_One({
   variable: "--font-gravitas",
@@ -88,7 +89,7 @@ export default function RootLayout({
         <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ''} />
         <UTMTracker />
         <PageIntro />
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

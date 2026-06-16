@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { FeedEntry } from '@/types/journal';
 import { getStoredUTM } from '@/components/UTMTracker';
+import { useLanguage } from '@/lib/language-context';
 
 interface Props {
   entry: FeedEntry;
@@ -12,6 +13,7 @@ interface Props {
 type SendState = 'idle' | 'sending' | 'sent' | 'error';
 
 export default function PieceInquiryButton({ entry }: Props) {
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -109,7 +111,7 @@ export default function PieceInquiryButton({ entry }: Props) {
         className="inline-block text-center px-5 py-3 bg-[#F2EDE4] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px]"
         style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
       >
-        Inquire about this piece →
+        {lang === 'ko' ? '이 제품 구매하기 →' : 'Inquire about this piece →'}
       </button>
 
       {open && mounted && createPortal(

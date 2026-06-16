@@ -32,7 +32,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     year: '2026',
     size: 'Ø 73 - 77 cm  /  H 72 cm',
     price: '₩ 1,800,000',
-    status: 'available',
+    status: 'sold_out',
     gallery: [
       '/products/cabinet-black/1.jpg',
       '/products/cabinet-black/2.jpg',
@@ -158,6 +158,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       year: '2024',
       image: `/products/object-${n}/1.jpg`,
       gallery: [`/products/object-${n}/1.jpg`],
+      status: 'sold_out' as const,
     };
   }),
 
@@ -165,6 +166,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
   ...Array.from({ length: 8 }, (_, i) => {
     const n = i + 1;
     const num = String(n).padStart(2, '0');
+    const soldOutPaintings = [1, 3, 7, 8];
     return {
       id: `painting-${n}`,
       category: 'painting' as const,
@@ -172,6 +174,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       year: '2024',
       image: `/products/painting-${n}/1.jpg`,
       gallery: [`/products/painting-${n}/1.jpg`],
+      ...(soldOutPaintings.includes(n) ? { status: 'sold_out' as const } : {}),
     };
   }),
 ];

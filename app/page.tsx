@@ -6,7 +6,6 @@ import MobileFooter from '@/components/journal/MobileFooter';
 import MobileStickyCTA from '@/components/journal/MobileStickyCTA';
 import GridLayout from '@/components/journal/GridLayout';
 import type { Category } from '@/types/journal';
-import { LanguageProvider } from '@/lib/language-context';
 
 export const metadata: Metadata = {
   title: 'EEL — Seoul resin atelier',
@@ -34,7 +33,7 @@ export default async function HomePage({
       : 'all';
 
   return (
-    <LanguageProvider>
+    <>
       {/* SEO h1 — visually hidden, present for search engines & a11y */}
       <h1 className="sr-only">
         EEL — Seoul resin atelier. Handmade furniture, objects, and paintings.
@@ -55,6 +54,6 @@ export default async function HomePage({
         </div>
         <MobileStickyCTA />
       </div>
-    </LanguageProvider>
+    </>
   );
 }
