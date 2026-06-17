@@ -43,3 +43,12 @@ next-env.d.ts
 
 # OG image source (large file, processed → og-image.jpg)
 public/og-source.*
+
+# Shopify theme files (separate project)
+/assets/
+/config/
+/layout/
+/locales/
+/sections/
+/snippets/
+/templates/
