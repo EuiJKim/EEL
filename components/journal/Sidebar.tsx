@@ -161,7 +161,7 @@ export default function Sidebar() {
               className="text-[#c0c5c2] hover:text-white transition-colors"
               aria-label="Email"
             >
-              <Mail width={18} height={20} strokeWidth={1.5} />
+              <Mail strokeWidth={1.5} style={{ width: '18px', height: '22px' }} />
             </a>
           </div>
 
