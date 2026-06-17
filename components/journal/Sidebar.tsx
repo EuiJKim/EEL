@@ -48,7 +48,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-hidden bg-[#0D0618] px-6 pt-5 pb-8 justify-between"
+      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-hidden bg-[#0E1218] px-6 pt-5 pb-8 justify-between"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Brand + Clock */}
@@ -118,23 +118,23 @@ export default function Sidebar() {
           className="text-[12px] text-[#c0c5c2] space-y-1"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
-          <li className="flex justify-between tracking-[0.14em] uppercase">
+          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
             <span>{t.furniture}</span>
             <span className="text-[#8a9488]">{String(COUNTS.furniture).padStart(2, '0')}</span>
           </li>
-          <li className="flex justify-between tracking-[0.14em] uppercase">
+          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
             <span>{t.object}</span>
             <span className="text-[#8a9488]">{String(COUNTS.object).padStart(2, '0')}</span>
           </li>
-          <li className="flex justify-between tracking-[0.14em] uppercase">
+          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
             <span>{t.painting}</span>
             <span className="text-[#8a9488]">{String(COUNTS.painting).padStart(2, '0')}</span>
           </li>
         </ul>
         <Link
           href="/order"
-          className="block w-full mt-3 py-1.5 border border-[#5a6058] text-[12px] tracking-[0.14em] uppercase text-center text-[#F2EDE4] hover:bg-[#F2EDE4] hover:text-[#1a1d1b] transition-colors"
-          style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500 }}
+          className="commission-link block w-full mt-3 py-1.5 text-[12px] tracking-[0.14em] uppercase text-center bg-[#F2EDE4] hover:bg-white transition-colors"
+          style={{ fontFamily: "var(--font-space-grotesk), sans-serif", fontWeight: 500, color: '#1a1d1b' }}
         >
           {t.commission}
         </Link>

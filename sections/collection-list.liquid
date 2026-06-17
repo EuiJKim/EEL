@@ -1,0 +1,154 @@
+<div class="content-section gutter--{% if section.settings.gutter_enabled %}on{% else %}off{% endif %} collection-list {{ section.settings.layout }}">
+
+  {% for block in section.blocks %}
+    {% render 'collection-item', collection: collections[block.settings.collection], text_alignment: section.settings.alignment, image: block.settings.collection_image %}
+  {% endfor %}
+
+</div>
+
+{% if section.settings.color_text != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .collection-item__header {
+      color: {{ section.settings.color_text }};
+    }
+    #shopify-section-{{ section.id }} .collection-item__title span {
+      background-image: linear-gradient(to right, {{ section.settings.color_text }}, {{ section.settings.color_text }});
+    }
+  {% endstyle %}
+{% endif %}
+
+{% if section.settings.color_bg != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .collection-item__background:after {
+      background: {{ section.settings.color_bg }};
+    }
+  {% endstyle %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "overflow-hidden",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "layout-fulls",
+            "label": "100%"
+          },
+          {
+            "value": "layout-halves",
+            "label": "50%"
+          },
+          {
+            "value": "layout-thirds",
+            "label": "33.333%"
+          }
+        ],
+        "default": "layout-halves"
+      },
+      {
+        "type": "select",
+        "id": "alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "horizontal-left vertical-top",
+            "label": "Left top"
+          },
+          {
+            "value": "horizontal-center vertical-top",
+            "label": "Center top"
+          },
+          {
+            "value": "horizontal-right vertical-top",
+            "label": "Right top"
+          },
+          {
+            "value": "horizontal-left vertical-middle",
+            "label": "Left middle"
+          },
+          {
+            "value": "horizontal-center vertical-middle",
+            "label": "Center middle"
+          },
+          {
+            "value": "horizontal-right vertical-middle",
+            "label": "Right middle"
+          },
+          {
+            "value": "horizontal-left vertical-bottom",
+            "label": "Left bottom"
+          },
+          {
+            "value": "horizontal-center vertical-bottom",
+            "label": "Center bottom"
+          },
+          {
+            "value": "horizontal-right vertical-bottom",
+            "label": "Right bottom"
+          }
+        ],
+        "default": "horizontal-left vertical-top"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background overlay",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "header",
+        "content": "Gutter"
+      },
+      {
+        "type": "checkbox",
+        "id": "gutter_enabled",
+        "label": "Enable inner content spacing"
+      }
+    ],
+    "blocks": [{
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_image",
+          "label": "Image",
+          "info": "If the collection doesn't have a featured image."
+        }
+      ]
+    }],
+    "presets": [{
+      "name": "Collection list",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }]
+  }
+{% endschema %}

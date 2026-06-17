@@ -1,0 +1,205 @@
+{% render 'video-background-content',
+  id: section.id
+  gutter_enabled: section.settings.gutter_enabled,
+  url: section.settings.url,
+  button_label: section.settings.button_label,
+  text_alignment: section.settings.text_alignment,
+  text_size: section.settings.text_size,
+  text_width: section.settings.text_width,
+  title: section.settings.title,
+  body: section.settings.body,
+  video: section.settings.video,
+  video_height: section.settings.video_height,
+  image: section.settings.image,
+  color_text: section.settings.color_text,
+  color_bg: section.settings.color_bg
+%}
+
+{% schema %}
+  {
+    "name": "Video: background (MP4)",
+    "class": "mount-video-background mount-color-button",
+    "settings": [
+      {
+        "id": "video",
+        "type": "text",
+        "label": "Video URL",
+        "info": "Path to an .mp4 video file",
+        "default": "//cdn.shopify.com/s/files/1/0266/9543/4315/files/Share_your_brand_story_by_adding_a_video_to_your_store.mp4?3663"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Fallback image",
+        "info": "A fallback image will be used on mobile devices where autoplay might be disabled."
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Video background"
+      },
+      {
+        "type": "richtext",
+        "id": "body",
+        "label": "Text",
+        "default": "<p>Share information about your brand.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "url",
+        "label": "Link",
+        "info": "The entire section will transform into a link unless there is a label for the button."
+      },
+      {
+        "type": "header",
+        "content": "Size & alignment"
+      },
+      {
+        "type": "select",
+        "id": "video_height",
+        "label": "Video height",
+        "options": [
+          {
+            "value": "56.25%",
+            "label": "Natural (16:9)",
+            "group": "Uncropped"
+          },
+          {
+            "value": "70vh",
+            "label": "Large",
+            "group": "Cropped"
+          },
+          {
+            "value": "100vh",
+            "label": "Full",
+            "group": "Cropped"
+          }
+        ],
+        "default": "56.25%"
+      },
+      {
+        "type": "select",
+        "id": "text_width",
+        "label": "Text container width",
+        "options": [
+          {
+            "value": "50%",
+            "label": "Medium"
+          },
+          {
+            "value": "75%",
+            "label": "Large"
+          },
+          {
+            "value": "100%",
+            "label": "Full"
+          }
+        ],
+        "default": "50%"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          {
+            "value": "regular",
+            "label": "Regular"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "huge",
+            "label": "Extra large"
+          }
+        ],
+        "default": "regular"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "horizontal-left vertical-top",
+            "label": "Left top"
+          },
+          {
+            "value": "horizontal-center vertical-top",
+            "label": "Center top"
+          },
+          {
+            "value": "horizontal-right vertical-top",
+            "label": "Right top"
+          },
+          {
+            "value": "horizontal-left vertical-middle",
+            "label": "Left middle"
+          },
+          {
+            "value": "horizontal-center vertical-middle",
+            "label": "Center middle"
+          },
+          {
+            "value": "horizontal-right vertical-middle",
+            "label": "Right middle"
+          },
+          {
+            "value": "horizontal-left vertical-bottom",
+            "label": "Left bottom"
+          },
+          {
+            "value": "horizontal-center vertical-bottom",
+            "label": "Center bottom"
+          },
+          {
+            "value": "horizontal-right vertical-bottom",
+            "label": "Right bottom"
+          }
+        ],
+        "default": "horizontal-left vertical-bottom"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Overlay color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "header",
+        "content": "Gutter"
+      },
+      {
+        "type": "checkbox",
+        "id": "gutter_enabled",
+        "label": "Enable inner content spacing"
+      }
+    ],
+    "presets": [{
+      "name": "Video: background (MP4)",
+      "category": "Video"
+    }]
+  }
+{% endschema %}

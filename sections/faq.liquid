@@ -1,0 +1,60 @@
+<div class="faq">
+
+	<div class="toggles">
+
+		{% for block in section.blocks %}
+
+      <div class="toggle" {{ block.shopify_attributes }}>
+        <h3 class="toggle__title {% if forloop.first and section.settings.open_first %} opened {% endif %}">{{ block.settings.title | escape }}</h3>
+        <div class="toggle__content" {% if forloop.first and section.settings.open_first %} style="display: block;" {% endif %}>
+          {{ block.settings.body }}
+          {% unless block.settings.image == blank %}
+            {% render 'lazy-image', image: block.settings.image, type: 'image' %}
+          {% endunless %}
+        </div>
+      </div>
+
+		{% endfor %}
+
+	</div>
+	
+</div>
+
+{% schema %}
+	{
+    "name": "FAQ",
+    "class": "mount-toggles",
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "open_first",
+				"label": "Have the first toggle opened by default"
+			}
+		],
+		"blocks": [
+      {
+        "type": "text",
+        "name": "Extra content",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Question title"
+          },
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Text",
+            "default": "<p>Write a complete answer to the most frequent questions that your customers might have, such as important product information, shipping policies, payment issues or returns.</p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

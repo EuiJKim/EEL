@@ -1,0 +1,121 @@
+<div class="content-section gutter--on shop-the-look">
+    
+  <div class="shop-the-look__header">
+
+    {%- unless section.settings.title == blank -%}
+      <h3 class="shop-the-look__title h1">{{ section.settings.title | escape }}</h3>
+    {%- endunless -%}
+
+    {%- unless section.settings.title == blank -%}
+      <p class="shop-the-look__subheading">{{ section.settings.subheading | escape }}</p>
+    {%- endunless -%}
+
+    <div class="shop-the-look__background">
+      {%- if section.settings.image -%}
+        {%- render 'lazy-image', image: section.settings.image, type: 'background', alt: section.settings.title -%}
+      {%- else -%}
+        <span class="onboarding-svg onboarding-background">{{ 'collection-1' | placeholder_svg_tag }}</span>
+      {%- endif -%}
+    </div>
+
+  </div>
+
+  <div class="shop-the-look__content">
+      
+    {% if section.blocks.size > 0 %}
+      <div class="collection--slider mount-collection">
+        {% for block in section.blocks %}
+          {% render 'product-item', product: all_products[block.settings.product] %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  {%- if section.settings.color_text != 'rgba(0,0,0,0)' -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .shop-the-look__header {
+        color: {{ section.settings.color_text }};
+      }
+    {% endstyle %}
+  {%- endif -%}
+
+  {%- if section.settings.color_bg != 'rgba(0,0,0,0)' -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .shop-the-look__background:after {
+        background-color: {{ section.settings.color_bg }};
+      }
+    {% endstyle %}
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+  {
+    "name": "Shop the look",
+    "class": "mount-shop-the-look overflow-hidden",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Shop the look"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background overlay",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      }
+    ],
+    "blocks": [
+       {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Select product"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Shop the look",
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }]
+  }
+{% endschema %}

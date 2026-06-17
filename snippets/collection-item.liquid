@@ -1,0 +1,44 @@
+<div class="collection-item" {{ block.shopify_attributes }}>
+
+	<a class="collection-item__link" href="{{ collection.url | escape }}" title="{{ collection.title | escape }}">
+
+		<div class="collection-item__header {% unless text_alignment == blank %} {{ text_alignment }} {% else %} horizontal-left vertical-top {% endunless %}">
+
+			<h3 class="collection-item__title h1">
+				<span>
+					{%- liquid
+						unless collection.title == blank
+							echo collection.title | escape
+						else
+							echo 'Collection'
+						endunless
+					-%}
+				</span>
+			</h3>
+
+		</div>
+
+		<div class="collection-item__background">
+
+			{%- liquid
+				unless image == blank
+					assign collection_image = image
+				else
+					assign collection_image = collection.image
+				endunless
+			-%}
+
+			{%- unless collection_image == blank %}
+				{%- render 'lazy-image', image: collection_image, type: 'background', alt: collection.title -%}
+			{%- else -%}
+				<span class="onboarding-svg">
+	   			{%- assign no = forloop.index | modulo: 6 | plus: 1 -%}
+			    {{ 'collection-X' | replace: 'X', no | placeholder_svg_tag }}
+			  </span>
+			{%-endunless -%}
+
+		</div>
+
+	</a>
+
+</div>

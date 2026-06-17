@@ -1,0 +1,123 @@
+<div class="popup-content" data-show="{{ section.settings.newsletter_auto }}" data-freq="{{ section.settings.newsletter_frequent }}" data-enable="{{ section.settings.popup_enable }}">
+
+  {% if section.settings.image %}
+    <div class="popup-image" aria-hidden="true">
+      <figure class="lazy-image lazy-image--background lazy-preloader">
+        <img
+          src="{{ section.settings.image | img_url: '620x200', crop: 'center' }}" alt="{{ section.settings.title | escape }}"
+          srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          data-srcset="{{ section.settings.image | img_url: '620x200', crop: 'center' }} 620w, {{ section.settings.image | img_url: '1240x400', crop: 'center' }}, 1240w"
+          data-sizes="auto" class="lazyload" 
+          width="620" height="200"
+        />
+      </figure>
+    </div>
+  {% endif %}
+
+  <div class="popup-text">
+
+    {% if section.settings.title %}
+      <h4 class="h1 popup-title">{{ section.settings.title }}</h4>
+    {% endif %}
+
+    {% if section.settings.title %}
+      <div class="rte">{{ section.settings.content }}</div>
+    {% endif %}
+
+    {% if section.settings.newsletter_enable %}
+      <div class="popup-form">
+        {% form 'customer' %}
+          {% render 'form-errors', form: form %}
+          {% if form.posted_successfully? %}
+            <span class="alert alert--success">{{ 'general.newsletter.confirmation' | t }}</span>
+          {% else %}
+            <div>
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input type="email" class="newsletter__input" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter.email_label' | t }}" name="contact[email]" id="Email" aria-label="{{ 'general.newsletter.email_label' | t }}" autocorrect="off" autocapitalize="off">
+              <button type="submit" class="newsletter__submit" id="Subscribe" aria-label="{{ 'general.newsletter.submit_label' | t }}">
+                <span aria-hidden="true">{% render 'theme-symbols', icon: 'arrow-long' %}</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endform %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <button class="popup-close" aria-label="{{ 'general.accessibility_labels.close' | t }}">
+    {% render 'theme-symbols', icon: 'close' %}
+  </button>
+
+</div>
+
+<div class="popup-background"></div>
+
+{% schema %}
+  {
+    "name": "Popup",
+    "class": "mount-popup",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "popup_enable",
+        "label": "Enable popup",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "newsletter_auto",
+        "label": "Show popup after",
+        "min": 10,
+        "max": 60,
+        "step": 10,
+        "unit": "sec",
+        "default": 10
+      },
+      {
+        "type": "select",
+        "id": "newsletter_frequent",
+        "label": "Popup frequency",
+        "options": [
+          {
+            "value": "day",
+            "label": "Show each day"
+          },
+          {
+            "value": "week",
+            "label": "Show each week"
+          },
+          {
+            "value": "once",
+            "label": "Show only once"
+          }
+        ],
+        "default": "week"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "1240 x 400px .jpg recommended"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Newsletter"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content",
+        "default": "<p>Stay up to date on the latest product releases, special offers & news by signing up for our newsletter.</p><p>Read our <a href='#'>privacy policy</a>.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "newsletter_enable",
+        "label": "Show newsletter",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

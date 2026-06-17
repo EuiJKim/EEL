@@ -32,12 +32,11 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
           <Link
             key={t.key}
             href={href}
-            className={`text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-colors ${
-              isActive ? 'border-b' : 'border-b border-transparent'
+            className={`tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left ${
+              isActive ? 'text-[15px]' : 'text-[12px]'
             }`}
             style={{
               color: isActive ? '#F2EDE4' : '#8a9488',
-              borderColor: isActive ? '#F2EDE4' : 'transparent',
             }}
           >
             {lang === 'ko' ? t.ko : t.en}

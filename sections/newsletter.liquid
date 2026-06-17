@@ -1,0 +1,139 @@
+<div class="content-section gutter--on newsletter {% if section.settings.color_bg != 'rgba(0,0,0,0)' %} parent-has-inner-padding {% endif %}">
+
+  {% unless section.settings.title == blank %}
+    <h3 class="newsletter__title h1">{{ section.settings.title | escape }}</h3>
+  {% endunless %}
+
+  <div class="newsletter__form">
+
+    {% form 'customer' %}
+
+      {% render 'form-errors', form: form %}
+
+      {% if form.posted_successfully? %}
+
+        <span class="alert alert--success">{{ 'general.newsletter.confirmation' | t }}</span>
+
+      {% else %}
+        
+        <div>
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="email" class="newsletter__input" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter.email_label' | t }}" name="contact[email]" id="Email" aria-label="{{ 'general.newsletter.email_label' | t }}" autocorrect="off" autocapitalize="off">
+          <button type="submit" class="newsletter__submit" id="Subscribe" aria-label="{{ 'general.newsletter.submit_label' | t }}">
+            <span aria-hidden="true">{% render 'theme-symbols', icon: 'arrow-long' %}</span>
+          </button>
+        </div>
+
+      {% endif %}
+
+    {% endform %}
+
+  </div>
+
+  {% unless section.settings.text == blank %}
+    <div class="newsletter__text rte">{{ section.settings.text }}</div>
+  {% endunless %}
+
+</div>
+
+{% if section.settings.color_bg != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .newsletter {
+      background: {{ section.settings.color_bg }};
+      padding-top: 10vw;;
+      padding-bottom: 10vw;;
+    }
+    @media all and (max-width: 1280px) {
+      #shopify-section-{{ section.id }} .newsletter {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+    } 
+    @media all and (max-width: 948px) {
+      #shopify-section-{{ section.id }} .newsletter {
+        padding-top: 70px;
+        padding-bottom: 70px;
+      }
+    }
+    @media all and (max-width: 480px) {
+      #shopify-section-{{ section.id }} .newsletter {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+    }
+    #shopify-section-{{ section.id }} {
+      margin-top: 0;
+    }
+
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:hover, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:focus, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px {{ section.settings.color_bg }} inset !important;
+    }
+  {% endstyle %}
+{% endif %}
+
+{% if section.settings.color_text != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .newsletter,
+    #shopify-section-{{ section.id }} .newsletter a {
+      color: {{ section.settings.color_text }};
+    }
+    #shopify-section-{{ section.id }} .newsletter .svg path {
+      fill: {{ section.settings.color_text }};
+    }
+    #shopify-section-{{ section.id }} .newsletter__input {
+      color: {{ section.settings.color_text }};
+      border-color: {{ section.settings.color_text }};
+    }
+    #shopify-section-{{ section.id }} .newsletter__input::placeholder { color: {{ section.settings.color_text }}; }
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:hover, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:focus, 
+    #shopify-section-{{ section.id }} input[type="email"]:-webkit-autofill:active {
+      -webkit-text-fill-color: {{ section.settings.color_text }} !important;
+    }
+  {% endstyle %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "class": "mount-newsletter",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Sign up for our newsletter"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Subheading",
+        "default": "<p><em>When you sign up for our newsletter, you will receive news regarding products per e-mail. You can at any time withdraw your consent by unsubscribing directly in the newsletter. Read our <a href='#'>privacy policy</a>.</em></p>"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Custom background color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      }
+    ],
+    "presets": [{
+      "name": "Newsletter",
+      "category": "Promotional"
+    }]
+  }
+{% endschema %}

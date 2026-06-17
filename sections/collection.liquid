@@ -1,0 +1,279 @@
+<div class="collection-header {% if section.settings.show_collection_image and collection.image %} has-image {% endif %} {% if section.settings.tags_enable or section.settings.sort_enable %} has-filters {% endif %}" data-handle="{{ collection.handle }}">
+    
+  <div class="collection-header__container">
+
+    {% render 'breadcrumb' %}
+
+    {%- unless template contains 'collection' -%}
+    <h1 class="collection-header__title h1">{{ collection.title | escape }}</h1>
+    {%- endunless -%}
+
+    {% unless collection.description == blank %}
+      {% unless section.settings.show_collection_description_below == true %}
+        <div class="collection-header__description rte">{{ collection.description }}</div>
+      {% endunless %}
+    {% endunless %}
+
+  </div>
+
+  {% if section.settings.tags_enable or section.settings.sort_enable %}
+
+    <div class="collection-filters-handle-holder">
+      <button id="collection-filters-handle" class="button button--small button--outline">
+        {{ 'collections.sort_and_filter_button' | t }}
+        <span aria-hidden="true">{% render 'theme-symbols', icon: 'filter' %}</span>
+      </button>
+    </div>
+
+  {% endif %}
+
+  {% if section.settings.show_collection_image and collection.image %}
+    <div class="collection-header__background" aria-hidden="true">
+      {% render 'lazy-image', image: collection.image, type: 'background', alt: collection.title %}
+    </div>
+  {% endif %}
+
+  {% unless collection.handle == 'vendors' %}
+
+    {% if section.settings.color_text != 'rgba(0,0,0,0)' %}
+      {% style %}
+        .collection-header, 
+        .collection-header a {
+          color: {{ section.settings.color_text }};
+        }
+        @media all and (min-width: 648px) {
+          .collection-header .button--outline {
+            border-color: {{ section.settings.color_text }} !important;
+            color: {{ section.settings.color_text }} !important;
+            background: transparent !important;
+          }
+          .collection-header .button--outline path {
+            fill: {{ section.settings.color_text }} !important;
+          }
+        }
+      {% endstyle %}
+    {% endif %}
+
+    {% if section.settings.color_bg != 'rgba(0,0,0,0)' %}
+      {% style %}
+        .collection-header__background:before {
+          background-color: {{ section.settings.color_bg }};
+        }
+      {% endstyle %}
+    {% endif %}
+
+  {% endunless %}
+
+</div>
+
+{% paginate collection.products by section.settings.products_number %}
+  
+  <div class="gutter--on">
+
+    {% if collection.description != blank and section.settings.show_collection_description_below %}
+      <div class="collection-body__description rte">{{ collection.description }}</div>
+    {% endif %}
+
+    <div class="collection collection--{{ settings.grid_style }} collection--grid mount-collection">
+
+      {% for product in collection.products %}
+        {% if template == 'collection.rental' or collection.handle == 'rental' %}
+          {% render 'product-item', product: product, rental_mode: true %}
+        {% else %}
+          {% unless product.id == 8159765201066 %}
+            {% render 'product-item', product: product %}
+          {% endunless %}
+        {% endif %}
+      {% else %}
+        <p class="no-content-message">{{ 'products.grid.no_products_text' | t }}</p>
+      {% endfor %}
+
+    </div>
+
+    {%- liquid
+      if paginate.pages > 1
+        render 'pagination', paginate: paginate
+      endif
+    -%}
+
+  </div>
+
+{% endpaginate %}
+
+<div id="collection-filters" class="collection__filters" data-collection-handle="{{ collection.handle }}">
+
+  <div>
+
+    <div class="filters">
+
+      {% if section.settings.sort_enable %}
+
+        <div class="option">
+          <label for="sort-by">{{ 'collections.sort_dropdown.label' | t }}</label>
+          <select name="sort-by" id="sort-by">
+            <option value="manual">{{ 'collections.sort_dropdown.sort_by_featured' | t }}</option>
+            <option value="best-selling">{{ 'collections.sort_dropdown.sort_by_best_selling' | t }}</option>
+            <option value="title-ascending">{{ 'collections.sort_dropdown.sort_by_title_asc' | t }}</option>
+            <option value="title-descending">{{ 'collections.sort_dropdown.sort_by_title_desc' | t }}</option>
+            <option value="price-ascending">{{ 'collections.sort_dropdown.sort_by_price_asc' | t }}</option>
+            <option value="price-descending">{{ 'collections.sort_dropdown.sort_by_price_desc' | t }}</option>
+            <option value="created-descending">{{ 'collections.sort_dropdown.sort_by_date_desc' | t }}</option>
+            <option value="created-ascending">{{ 'collections.sort_dropdown.sort_by_date_asc' | t }}</option>
+          </select>
+        </div>
+
+      {% endif %}
+
+      {% if section.settings.tags_enable %}
+
+        {% if section.settings.collection_filtering_type == 'by-tags' %}
+
+          <div class="option">
+            <label for="filter-by">{{ 'collections.filter_dropdown.label' | t }}</label>
+            <select name="filter-by" class="filter-by">
+                <option value="">{{ 'collections.filter_dropdown.filter_all' | t }}</option>
+                {% for tag in collection.all_tags %}
+                  {% if current_tags contains tag %}
+                    <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+                  {% else %}
+                    <option value="{{ tag | handle }}">{{ tag }}</option>
+                  {% endif %}
+                {% endfor %}
+            </select>
+          </div>
+
+        {% else %}
+
+          {% if collection.all_tags.size > 0 %}
+
+            {% assign categories = '' %}
+            {% for tag in collection.all_tags %}
+              {% if tag contains '_' %}
+                {% capture categories %}{% unless categories == blank %}{{ categories }}|{% endunless %}{{ tag | split: '_' | first }}{% endcapture %}
+              {% endif %}
+            {% endfor %}
+            {% assign cat_array = categories | split: '|' | uniq %}
+
+            {% for cat_item in cat_array %}
+
+              <div class="option">
+                <label for="filter-by">{{ cat_item }}:</label>
+                <select name="filter-by" class="filter-by">
+
+                  <option value="">{{ 'collections.filter_dropdown.filter_none' | t }}</option>
+
+                  {% for tag in collection.all_tags %}
+
+                    {% assign cat = tag | split: '_' | first %} 
+
+                    {% if cat != tag and cat_item == cat %}
+
+                      {% if current_tags contains tag %}
+                          <option class="advanced-filter active-filter" data-group="{{ cat_item }}" value="{{ tag | handle }}" selected>{{ tag | remove_first: cat_item | remove_first: '_' | link_to_remove_tag: tag }}</option>
+                      {% else %}
+                        <option class="advanced-filter" data-group="{{ cat_item }}" value="{{ tag | handle }}">{{ tag | remove_first: cat_item | remove_first: '_' | link_to_add_tag: tag }}</option>
+                      {% endif %}
+
+                    {% endif %}
+
+                  {% endfor %}
+
+                </select>
+
+              </div>
+
+            {% endfor %}
+
+          {% endif %}
+      
+        {% endif %}
+
+      {% endif %}
+
+      <div class="actions">
+        <button id="apply-sort-filter" class="button button--solid" style="margin-right: 10px;">{{ 'collections.apply_filters_button' | t }}</button>
+        <button id="clear-sort-filter" class="button button--outline button--outline-hover">{{ 'collections.clear_filters_button' | t }}</button>
+      </div>
+
+    </div>
+
+    <span class="collection__filters-close" tabindex="0">
+      <span class="visually-hidden">{{ 'general.accessibility_labels.close' | t }}</span>
+      <span aria-hidden="true">{%- render 'theme-symbols', icon: 'close' -%}</span>
+    </span>
+
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Collection page",
+    "class": "mount-collection mount-collection-filters overflow-hidden",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_number",
+        "label": "Products per page",
+        "min": 12,
+        "max": 48,
+        "step": 4,
+        "default": 24
+      },
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Show collection image",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Overlay color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_description_below",
+        "label": "Show collection description below the header",
+        "default": false,
+        "info": "Useful for collections with large descriptions"
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_enable",
+        "label": "Show sorting options"
+      },
+      {
+        "type": "checkbox",
+        "id": "tags_enable",
+        "label": "Show filtering options"
+      },
+      {
+        "type": "select",
+        "id": "collection_filtering_type",
+        "label": "Filtering type",
+        "options": [
+          {
+            "value": "by-tags",
+            "label": "Filter by tags"
+          },
+          {
+            "value": "by-groups",
+            "label": "Filter by groups"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

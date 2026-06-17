@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { STUDIO } from '@/data/studio';
+import { useLanguage } from '@/lib/language-context';
 
 /**
  * Mobile-only fixed bottom action bar. Always visible while browsing
@@ -7,6 +10,7 @@ import { STUDIO } from '@/data/studio';
  * away. Footer info still surfaces below for users who scroll all the way.
  */
 export default function MobileStickyCTA() {
+  const { lang } = useLanguage();
   return (
     <div
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#1a1d1b]/95 backdrop-blur-sm border-t border-[#2a2e2c] flex items-stretch"
@@ -43,7 +47,7 @@ export default function MobileStickyCTA() {
         className="flex-1 flex items-center justify-center h-14 text-[#F2EDE4] text-[11px] tracking-[0.16em] uppercase hover:text-white transition-colors"
         style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 500 }}
       >
-        Commission a piece →
+        {lang === 'ko' ? '커스텀 주문하기 →' : 'Commission a piece →'}
       </Link>
     </div>
   );

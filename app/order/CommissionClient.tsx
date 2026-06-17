@@ -222,7 +222,7 @@ export default function CommissionClient() {
       </div>
 
       <p className="text-[#666] text-xs leading-relaxed">
-        레진 소재의 특성상 실제 색상은 선택하신 컬러와 다소 차이가 있을 수 있습니다.
+        레진 소재의 특성상 실제 색상은 선택하신 컬러와<br />다소 차이가 있을 수 있습니다.
       </p>
     </div>,
 
@@ -356,7 +356,7 @@ export default function CommissionClient() {
 
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Inquiry</h2>
       <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-[#999] tracking-[0.04em]">선택 내용을 확인하고 문의를 보내주세요</p>
+        <p className="text-sm text-[#999] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
         {!submitted && (
           <button form="inquiry-form" type="submit" disabled={submitting}
             className="bg-white text-black border-none py-2.5 px-8 text-xs tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity disabled:opacity-40 shrink-0"

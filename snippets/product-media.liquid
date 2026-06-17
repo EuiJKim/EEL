@@ -1,0 +1,46 @@
+<div 
+	id="FeaturedMedia-{{ media.id }}-wrapper" 
+	class="product-gallery__item" 
+	data-index="{{ index }}" 
+	data-product-media-type="{{ media.media_type }}"
+  {% if media.media_type == 'external_video' %} 
+    data-video-id="{{ media.external_id }}" 
+    data-video-host="{{ media.host }}"
+  {% endif %}
+  data-product-single-media-wrapper
+  data-media-id="{{ media.id }}"
+  tabindex="-1"
+>
+
+	{%- if media.media_type == 'image' -%}
+
+		{%- render 'lazy-image', image: media, type: 'image', zoom: enable_zoom -%}
+
+	{%- else -%}
+
+		<div data-crop="true" class="lazy-image" {% unless media.aspect_ratio > 0 %} data-ratio="1" style="padding-top: 100%" {% else %} data-ratio="{{ media.aspect_ratio }}" style="padding-top: {{ 100 | divided_by: media.aspect_ratio }}%" {% endunless %}>
+
+			{%- liquid 
+
+				case media.media_type
+					when 'video
+						echo media | video_tag: class: 'media-video', image_size: '1680x'
+					when 'external_video'
+						echo media | external_video_tag
+					when 'model'
+		      	echo media | model_viewer_tag: image_size: '1680x', reveal: 'interaction', toggleable: true, data-model-id: media.id
+		      else
+		    		echo media | media_tag
+		    endcase
+
+		    if settings.show_preloader
+		    	echo '<span class="lazy-preloader"></span>'
+		    endif
+
+			-%}
+
+		</div>
+
+	{%- endif -%}
+
+</div>

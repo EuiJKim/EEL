@@ -1,0 +1,231 @@
+{% assign number_of_comments = article.comments_count %}
+{% capture date_format %} {{ 'general.date_format.month_day_year' | t }} {% endcapture %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+<article class="page-section article">
+
+  <div class="article__content">
+
+    <header class="article__header">
+
+      <h1 class="article__title h0">{{ article.title | escape }}</h1>
+
+      <div class="article-meta">
+
+        {% if section.settings.blog_show_date %}
+          <span class="article-meta__date">{{ article.published_at | time_tag: date_format }}</span>
+        {% endif %}
+
+        {% if section.settings.blog_show_author %}
+          <span class="article-meta__author">{{ 'general.prefixes.by' | t }} {{ article.author | escape }}</span>
+        {% endif %}
+
+        {% if section.settings.blog_show_comments and blog.comments_enabled? %}
+          <span class="article-meta__comments">
+            <a href="#comments">
+              {{ 'blog.grid.comments_count' | t: count: article.comments_count }}
+              <span class="hidden" aria-hidden="true">{{ article.comments_count }}</span>
+            </a>
+          </span>
+        {% endif %}
+
+      </div>
+
+    </header>
+
+    <section class="article__body">
+
+      <div class="rte">{{ article.content }}</div>
+
+      {% if section.settings.blog_show_tags and article.tags != blank %}
+        <div class="article__tags">
+          {% for tag in article.tags %}
+            <span class="tag"><a href="{{ blog.url }}/tagged/{{ tag.handle }}">{{ tag }}</a></span>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    </section>
+
+    <aside>
+
+      {% if section.settings.show_share %}
+        {% render 'share-popup', title: article.title, url: article.url, image: article.image %}
+      {% endif %}
+
+      {% if section.settings.blog_show_adjacents %}
+        {% if blog.next_article or blog.previous_article %}
+          <nav class="article__navigation">
+            {% if blog.next_article %}
+              <a class="previous-article" href="{{ blog.next_article }}" title="{{ 'blog.article.previous_article_link' | t }}"> 
+                <span aria-hidden="true">{% render 'theme-symbols', icon: 'arrow-left' %}</span> 
+                <span class="text">{{ 'blog.article.previous_article_link' | t }}</span>
+              </a>
+            {% endif %}
+            {% if blog.previous_article %}
+              <a class="next-article" href="{{ blog.previous_article }}" title="{{ 'blog.article.next_article_link' | t }}"> 
+                <span class="text">{{ 'blog.article.next_article_link' | t }}</span>
+                <span aria-hidden="true">{% render 'theme-symbols', icon: 'arrow-right' %}</span>
+              </a>
+            {% endif %}
+          </nav>
+        {% endif %}
+      {% endif %}
+
+    </aside>
+
+    {% if blog.comments_enabled? %}
+
+      <aside id="comments" class="article__comments">
+
+        <h4 class="h2">{{ 'blog.article.comments_list_title' | t }} ({{ article.comments_count }})</h4>
+
+        {% paginate article.comments by 10 %}
+
+          {% if number_of_comments > 0 %}
+
+            <ul id="comments" class="comments">
+              {% for comment in article.comments %}
+                <li id="{{ comment.id }}" class="comment">
+                  <span class="comment__author h5">{{ comment.author | escape }}</span>
+                  <span class="comment__date">{{ comment.created_at | time_tag: date_format }}</span>
+                  <div class="comment_content">{{ comment.content }}</div>
+                </li>
+              {% endfor %}
+            </ul>
+
+            {%- liquid
+              if paginate.pages > 1
+                render 'pagination', paginate: paginate
+              endif
+            -%}
+
+          {% else %}
+
+            <p>{{ 'blog.article.no_comments_message' | t }}</p>
+
+          {% endif %}
+
+          <div id="comments-form" class="comments__form">
+
+            {% form 'new_comment', article %}
+
+              <h4 class="h2" id="add-comment">{{ 'blog.article.comments_form_title' | t }}</h4>
+
+              {% render 'form-errors', form: form %}
+
+              {% if form.posted_successfully? %}
+                <p class="alert alert--success">
+                  {% if blog.moderated? %}
+                    {{ 'blog.article.comment_under_moderation' | t }}
+                  {% else %}
+                    {{ 'blog.article.comment_posted' | t }}
+                  {% endif %}
+                </p>
+              {% endif %}
+
+              <div class="krown-column-container one-half first">
+                <label for="comment-author" class="hidden">{{ 'blog.article.comments_form_name_label' | t }}</label>
+                <input {% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" placeholder="{{ 'blog.article.comments_form_name_label' | t }}" id="comment-author" value="{{ form.author }}" autocapitalize="words">
+              </div>
+
+              <div class="krown-column-container one-half last">
+                <label for="comment-email" class="hidden">{{ 'blog.article.comments_form_email_label' | t }}</label>
+                <input {% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" placeholder="{{ 'blog.article.comments_form_email_label' | t }}" id="comment-email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+              </div>
+
+              <div class="krown-column-container one-whole first last">
+                <label for="comment-body" class="hidden">{{ 'blog.article.comments_form_message_label' | t }}</label>
+                <textarea {% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="comment-body" placeholder="{{ 'blog.article.comments_form_message_label' | t }}">{{ form.body }}</textarea>
+              </div>
+
+              <input type="submit" class="button button--solid" style="width: 100%;" value="{{ 'blog.article.comments_form_submit_label' | t }}">
+
+              {% if blog.moderated? %}
+                <small><em>{{ 'blog.article.comments_notice' | t }}</em></small>
+              {% endif %}
+
+              {% if form.errors %}
+                <script>
+                  window.location.hash = '#add-comment';
+                </script>
+              {% endif %}
+
+              {% if form.posted_successfully? %}
+                <script>
+                  window.location.hash = '#comments';
+                </script>
+              {% endif %}
+
+            {% endform %}
+
+          </div>
+
+        {% endpaginate %}
+
+      </aside>
+
+    {% endif %}
+
+  </div>
+
+  {%- if section.settings.blog_show_image and article.image -%}
+    <div class="article__image">
+      {%- render 'lazy-image', image: article.image, type: 'background', alt: article.title -%}
+    </div>
+  {%- endif -%}
+
+</article>
+
+{% schema %}
+	{
+    "name": "Article",
+    "class": "mount-article",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "blog_show_image",
+        "label": "Show article image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_comments",
+        "label": "Show comments number",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_adjacents",
+        "label": "Show links to adjacent posts",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_tags",
+        "label": "Show tags",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share",
+        "label": "Show share link",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

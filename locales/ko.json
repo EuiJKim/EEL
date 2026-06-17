@@ -1,0 +1,371 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "general": {
+    "404": {
+      "title": "",
+      "subtitle": "",
+      "search_placeholder": "",
+      "continue_browsing": ""
+    },
+    "newsletter": {
+      "email_label": "",
+      "submit_label": "",
+      "confirmation": ""
+    },
+    "contact_form": {
+      "title": "",
+      "name_label": "",
+      "email_label": "",
+      "phone_label": "",
+      "message_label": "",
+      "submit_label": "",
+      "success_message": ""
+    },
+    "password_page": {
+      "login_form_heading": "",
+      "login_form_password_label": "",
+      "login_form_password_placeholder": "",
+      "login_form_submit": "",
+      "signup_form_heading": "",
+      "signup_form_email_label": "",
+      "signup_form_email_placeholder": "",
+      "signup_form_submit": "",
+      "signup_form_success": "",
+      "admin_link_html": "",
+      "password_link": "",
+      "powered_by_shopify_html": ""
+    },
+    "prefixes": {
+      "by": ""
+    },
+    "account_link": {
+      "logged_in": "",
+      "logged_out": ""
+    },
+    "breadcrumb": {
+      "homepage": "",
+      "collections": "",
+      "search": "",
+      "blog": "",
+      "account": "",
+      "cart": ""
+    },
+    "date_format": {
+      "month_day_year": "",
+      "month_names": {
+        "January": "",
+        "February": "",
+        "March": "",
+        "April": "",
+        "May": "",
+        "June": "",
+        "July": "",
+        "August": "",
+        "September": "",
+        "October": "",
+        "November": "",
+        "December": ""
+      }
+    },
+    "copyright": "",
+    "meta": {
+      "tags": "",
+      "page": ""
+    },
+    "share_on": "",
+    "accessibility_labels": {
+      "home": "",
+      "skip_to_content": "",
+      "next": "",
+      "previous": "",
+      "close": "",
+      "back": "",
+      "play_video": "",
+      "language_dropdown_label": "",
+      "currency_dropdown_label": "",
+      "price": {
+        "regular": "",
+        "sale": "",
+        "unit": ""
+      },
+      "form_error": ""
+    }
+  },
+  "collections": {
+    "title": "",
+    "sort_dropdown": {
+      "label": "",
+      "sort_by_featured": "",
+      "sort_by_best_selling": "",
+      "sort_by_title_asc": "",
+      "sort_by_title_desc": "",
+      "sort_by_price_asc": "",
+      "sort_by_price_desc": "",
+      "sort_by_date_desc": "",
+      "sort_by_date_asc": ""
+    },
+    "filter_dropdown": {
+      "label": "",
+      "filter_all": "",
+      "filter_none": ""
+    },
+    "sort_and_filter_button": "",
+    "apply_filters_button": "",
+    "clear_filters_button": "",
+    "view_all_products": "",
+    "no_collections": ""
+  },
+  "products": {
+    "grid": {
+      "on_sale_from_html": "",
+      "from_text_html": "",
+      "sold_out_product": "",
+      "on_sale_product": "",
+      "new_product": "",
+      "preorder_product": "",
+      "no_products_text": ""
+    },
+    "page": {
+      "sku": "",
+      "barcode": "",
+      "more_description_label": "",
+      "less_description_label": "",
+      "inventory": {
+        "sold_out_variant": "",
+        "unavailable_variant": "",
+        "one_product": "",
+        "few_products": "",
+        "no_products": "",
+        "preoder": ""
+      },
+      "add_to_cart_button": "",
+      "preorder_button": "",
+      "share_link": "",
+      "loading_reviews": "",
+      "include_taxes": "",
+      "shipping_policy_html": "",
+      "view_in_space": "",
+      "view_in_space_label": ""
+    },
+    "featured_product": "",
+    "portfolio": {
+      "navigation": {
+        "previous": "",
+        "next": ""
+      }
+    }
+  },
+  "cart": {
+    "title": "",
+    "total": "",
+    "subtotal": "",
+    "discount": "",
+    "discounts": "",
+    "checkout": "",
+    "note": "",
+    "shipping_at_checkout": "",
+    "empty": "",
+    "continue_browsing": "",
+    "remove_item": "",
+    "add_error": "",
+    "general_error": "",
+    "view_cart": "",
+    "items_count": {
+      "one": "",
+      "other": ""
+    },
+    "added_items_count": {
+      "one": "",
+      "other": ""
+    }
+  },
+  "blog": {
+    "grid": {
+      "comments_count": "",
+      "read_more_label": "",
+      "no_articles_text": "",
+      "tags_dropdown": {
+        "all": ""
+      }
+    },
+    "article": {
+      "comments_list_title": "",
+      "comment_under_moderation": "",
+      "comment_posted": "",
+      "no_comments_message": "",
+      "comments_form_title": "",
+      "comments_form_name_label": "",
+      "comments_form_email_label": "",
+      "comments_form_message_label": "",
+      "comments_form_submit_label": "",
+      "comments_notice": "",
+      "previous_article_link": "",
+      "next_article_link": ""
+    },
+    "view_all_articles": ""
+  },
+  "search": {
+    "form": {
+      "placeholder": "",
+      "responsive_placeholder": "",
+      "submit": "",
+      "collection_results_title": "",
+      "page_results_title": "",
+      "article_results_title": "",
+      "search_for_html": ""
+    },
+    "page": {
+      "title": "",
+      "subtitle": "",
+      "no_results": "",
+      "results": "",
+      "products_found": "",
+      "pages_and_articles_found": "",
+      "results_count": {
+        "zero": "",
+        "one": "",
+        "other": ""
+      },
+      "continue_browsing": ""
+    }
+  },
+  "customers": {
+    "account_page": {
+      "title": "",
+      "subtitle": "",
+      "orders_table": {
+        "order": "",
+        "date": "",
+        "payment_status": "",
+        "fulfillment_status": "",
+        "total": ""
+      },
+      "no_orders_message": "",
+      "account_details_title": "",
+      "account_details_subtitle": "",
+      "view_addresses_link": ""
+    },
+    "account_activation_page": {
+      "title": "",
+      "subtitle": "",
+      "form_password_label": "",
+      "form_password_confirm_label": "",
+      "form_activate_button": "",
+      "form_decline_button": ""
+    },
+    "login_page": {
+      "title": "",
+      "form_email_label": "",
+      "form_password_label": "",
+      "form_login_button": "",
+      "form_logout_button": "",
+      "forgot_password_check": "",
+      "new_customer_button": "",
+      "guest_check": "",
+      "guest_button": "",
+      "password_reset": {
+        "title": "",
+        "subtitle": "",
+        "email_label": "",
+        "submit_button": "",
+        "cancel_button": "",
+        "success_message": ""
+      }
+    },
+    "password_reset_page": {
+      "title": "",
+      "subtitle": "",
+      "password_label": "",
+      "password_confirm_label": "",
+      "submit": ""
+    },
+    "register_page": {
+      "title": "",
+      "form": {
+        "first_name_label": "",
+        "last_name_label": "",
+        "email_label": "",
+        "password_label": "",
+        "submit_button": ""
+      }
+    },
+    "addresses_page": {
+      "title": "",
+      "subtitle": "받으실 주소 (한,영 입력 가능)",
+      "add_address_link": "",
+      "edit_address_link": "",
+      "delete_address_link": "",
+      "add_address_title": "",
+      "edit_address_title": "",
+      "default_address": "",
+      "form": {
+        "first_name_label": "",
+        "last_name_label": "",
+        "company_label": "",
+        "address_1_label": "",
+        "address_2_label": "",
+        "city_label": "도시",
+        "country_label": "국가",
+        "province_label": "시",
+        "zip_label": "우편번호 ",
+        "phone_label": "번호 ",
+        "add_button": "",
+        "update_button": "",
+        "set_as_default_check": "",
+        "delete_check": ""
+      }
+    },
+    "orders_page": {
+      "title": "",
+      "subtitle": "",
+      "placed_order": "",
+      "cancelled": "",
+      "cancelled_reason": "",
+      "orders_table": {
+        "product": "",
+        "sku": "",
+        "price": "",
+        "qty": "",
+        "total": "",
+        "fulfilled_at": "",
+        "subtotal": "",
+        "discount": "",
+        "shipping": "",
+        "tax": ""
+      },
+      "billing_title": "",
+      "billing_status": "",
+      "shipping_title": "",
+      "shipping_status": ""
+    }
+  },
+  "gift_card": {
+    "title": "",
+    "disabled": "",
+    "expired": "",
+    "active": "",
+    "balance_left": "",
+    "redeem": "",
+    "shop_link": "",
+    "print": ""
+  },
+  "store_availability": {
+    "view_store_info": "",
+    "check_other_stores": "",
+    "pick_up_available": "",
+    "pick_up_currently_unavailable": "",
+    "pick_up_available_at_html": "",
+    "pick_up_unavailable_at_html": "",
+    "invalid_location_address": "",
+    "kilometers": "",
+    "miles": ""
+  }
+}

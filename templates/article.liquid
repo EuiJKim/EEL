@@ -1,0 +1,17 @@
+{% section 'article' %}
+
+<script type="text/javascript">
+
+	window.onload = function(){
+		if ( location.hash == "#add-comment" ) {
+			setTimeout(function(){
+				document.querySelector('html').scrollTop = document.getElementById('add-comment').offsetTop - 50;
+			}, 500); 
+		} else if ( location.hash == "#comments" ) {
+			setTimeout(function(){
+				document.querySelector('html').scrollTop = document.getElementById('comments').offsetTop - 50;
+			}, 500);
+		}
+	}
+
+</script>

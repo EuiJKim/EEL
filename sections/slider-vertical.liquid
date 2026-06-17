@@ -1,0 +1,286 @@
+{% if section.blocks.size > 0 %}
+
+	<div id="slider-{{ section.id }}"  class="content-section gutter--off slider slider--vertical slider--scroll slider--horizontal-mobile-{{ section.settings.style_mobile }} {% if section.settings.size == '100vh' %} slider--mobile-js-height {% endif %}" data-blocks="{{ section.blocks.size }}">
+
+	  {% for block in section.blocks %}
+
+	  	<div id="slide-{{ block.id }}" class="slide" {{ block.shopify_attributes }} data-index="{{ forloop.index }}">
+	  		
+				<div class="slide__text {{ block.settings.alignment }}">
+
+		      {% if block.settings.url != blank and block.settings.button_label == blank %}
+		        <a href="{{ block.settings.url | escape }}">
+		      {% endif %}
+
+						<div>
+						
+							{% unless block.settings.caption == blank %}
+								<div class="slide__caption"><span>{{ block.settings.caption | escape }}</span></div>
+							{% endunless %}
+
+							{% unless block.settings.title == blank %}
+								<div class="slide__title"><h2 class="{% if section.settings.text_size == 'regular' %} h1 {% elsif section.settings.text_size == 'large' %} h0 {% else %} hh {% endif %}"><span>{{ block.settings.title | escape }}</span></h2></div>
+							{% endunless %}
+							
+							{% unless block.settings.subheading == blank %}
+								<div class="slide__subheading"><span>{{ block.settings.subheading | escape }}</span></div>
+							{% endunless %}
+
+							{% unless block.settings.button_label == blank %}
+								<div class="slide__button"><a class="button button--solid" href="{{ block.settings.url | escape }}" title="{{ block.settings.button_label | escape }}">{{ block.settings.button_label | escape }} {% render 'theme-symbols', icon: 'arrow-right' %}</a></div>
+							{% endunless %}
+
+						</div>
+
+		      {% if block.settings.url != blank and block.settings.button_label == blank %}
+		        </a>
+		      {% endif %}
+
+				</div>
+
+				<div class="slide__image">
+
+	        {% if block.settings.image == blank %}
+
+	          {% assign no = forloop.index | modulo: 2 | plus: 1 %}
+	          <span class="onboarding-svg">{{ 'lifestyle-X' | replace: 'X', no | placeholder_svg_tag }}</span>
+
+	        {% else %}
+					
+						{% render 'lazy-image', image: block.settings.image, type: 'background', alt: block.settings.title %}
+
+					{% endif %}
+
+					<span class="slide__overlay"></span>
+
+				</div>
+					
+				{% if block.settings.color_text != 'rgba(0,0,0,0)' %}
+
+        {%- liquid
+          assign color_text = block.settings.color_text
+          assign color_text_brightness = color_text | color_brightness
+          if color_text_brightness > 150
+            assign color_text_foreground = '#000'
+          else
+            assign color_text_foreground = '#fff'
+          endif
+        -%}
+
+					{% style %}
+						#slide-{{ block.id }} .slide__text,
+						#slide-{{ block.id }} .slide__text a {
+							color: {{ block.settings.color_text }};
+						}
+			      #slide-{{ block.id }} .slide__title span {
+			        background-image: linear-gradient(to right, {{ block.settings.color_text }}, {{ block.settings.color_text }});
+			      }
+			      #slide-{{ block.id }} a.button--solid {
+			        background: {{ block.settings.color_text }};
+			        color: {{ color_text_foreground }};
+			      }
+			      #slide-{{ block.id }} .button--solid path {
+			      	fill: {{ color_text_foreground }};
+			    	}
+					{% endstyle %}
+					
+				{% endif %}
+
+				{% if block.settings.color_bg != 'rgba(0,0,0,0)' %}
+					{% style %}
+						#slide-{{ block.id }} .slide__text:before {
+							background-color: {{ block.settings.color_bg }};
+						}
+					{% endstyle %}
+				{% endif %}
+
+			</div>
+
+		{% endfor %}
+
+	</div>
+
+	{% if section.settings.style_mobile %}
+		{% style %}
+			@media all and (max-width: 948px) {
+				#shopify-section-{{ section.id }} .slider--scroll.slider--horizontal-mobile-true {
+					height: calc({{ section.settings.size }} - 120px);
+				}
+				#shopify-section-{{ section.id }} {
+					padding-bottom: 57px;
+				}
+			}
+		{% endstyle %}
+	{% endif %}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Slideshow: vertical",
+    "class": "mount-slider overflow-hidden",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Heading size",
+        "options": [
+          {
+            "value": "regular",
+            "label": "Regular"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "huge",
+            "label": "Extra large"
+          }
+        ],
+        "default": "regular"
+      },
+      {
+				"type": "header",
+				"content": "Mobile design" 
+      },
+	    {
+	      "type": "checkbox",
+	      "id": "style_mobile",
+	      "label": "Turn the vertical slider into a horizontal one on mobile",
+	      "default": true
+	    },
+	    {
+				"type": "select",
+				"id": "size",
+				"label": "Mobile slider height",
+				"options": [
+					{
+						"value": "60vh",
+						"label": "Medium"
+					},
+					{
+						"value": "80vh",
+						"label": "Large"
+					},
+					{
+						"value": "100vh",
+						"label": "Full"
+					}
+				],
+				"default": "80vh"
+	    }
+	  ],
+    "blocks": [
+    	{
+	      "type": "image",
+	      "name": "Image",
+	      "settings": [
+	        {
+	          "type": "image_picker",
+	          "id": "image",
+	          "label": "Image"
+	        },
+		      {
+		        "type": "text",
+		        "id": "title",
+		        "label": "Heading"
+		      },
+		      {
+		        "type": "text",
+		        "id": "subheading",
+		        "label": "Subheading"
+		      },
+		      {
+		        "type": "text",
+		        "id": "caption",
+		        "label": "Caption"
+		      },
+		      {
+		        "type": "text",
+		        "id": "button_label",
+		        "label": "Button label"
+		      },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link",
+            "info": "Unless there is a label for the button, the link will be on the text."
+          },
+		      {
+		        "type": "select",
+		        "id": "alignment",
+		        "label": "Text alignment",
+		        "options": [
+		          {
+		            "value": "horizontal-left vertical-top",
+		            "label": "Left top"
+		          },
+		          {
+		            "value": "horizontal-center vertical-top",
+		            "label": "Center top"
+		          },
+		          {
+		            "value": "horizontal-right vertical-top",
+		            "label": "Right top"
+		          },
+		          {
+		            "value": "horizontal-left vertical-middle",
+		            "label": "Left middle"
+		          },
+		          {
+		            "value": "horizontal-center vertical-middle",
+		            "label": "Center middle"
+		          },
+		          {
+		            "value": "horizontal-right vertical-middle",
+		            "label": "Right middle"
+		          },
+		          {
+		            "value": "horizontal-left vertical-bottom",
+		            "label": "Left bottom"
+		          },
+		          {
+		            "value": "horizontal-center vertical-bottom",
+		            "label": "Center bottom"
+		          },
+		          {
+		            "value": "horizontal-right vertical-bottom",
+		            "label": "Right bottom"
+		          }
+		        ],
+		        "default": "horizontal-left vertical-bottom"
+		      },
+		      {
+		        "type": "header",
+		        "content": "Colors"
+		      },
+	        {
+		        "type": "color",
+		        "id": "color_text",
+		        "label": "Custom text color",
+		        "default": "rgba(0,0,0,0)"
+	      	},
+	        {
+		        "type": "color",
+		        "id": "color_bg",
+		        "label": "Overlay color",
+        		"default": "rgba(0,0,0,0)"
+	      	}
+	      ]
+	    }
+	  ],
+    "presets": [{
+      "name": "Slideshow: vertical",
+      "category": "Image",
+      "blocks": [{
+        "type": "image"
+      },{
+        "type": "image"
+      },{
+        "type": "image"
+      }]
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,154 @@
+{% assign aspect_ratio = section.settings.gallery_aspect %}
+
+<div class="content-section gutter--{% if section.settings.gutter_enabled %}on{% else %}off{% endif %} gallery gallery--grid gallery--mobile-slider-{{ section.settings.style_mobile }}" data-blocks-size="{{ section.blocks.size }}" data-slider-height="{{ section.settings.slider_height }}">
+
+  <div class="gallery__content" data-lightbox="{{ section.settings.lightbox }}">
+
+    {% for block in section.blocks %}
+    
+      <div class="gallery__item {% if block.settings.featured %} featured {% endif %}" {{ block.shopify_attributes }}>
+
+        <div class="gallery__image">
+
+          {% unless block.settings.image == blank %}
+
+            {% render 'lazy-image', image: block.settings.image, type: 'image', ratio: aspect_ratio, alt: block.settings.caption, caption: block.settings.caption %}
+
+          {% else %}
+
+            <span class="onboarding-svg onboarding-background" style="padding-top:{{ aspect_ratio | times: 100 }}%" data-padding="{{ aspect_ratio }}">
+              {{ 'image' | placeholder_svg_tag }}
+            </span>
+
+          {% endunless %}
+
+          {% if section.settings.lightbox and block.settings.image != blank %}
+            <div class="gallery__zoom" data-src="{{ block.settings.image | img_url: 'master' }}" aria-hidden="true">
+              {% render 'theme-symbols', icon: 'zoom-in' %}
+            </div>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Gallery",
+    "class": "mount-gallery",
+    "max_blocks": 99,
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption"
+          },
+          {
+            "type": "checkbox",
+            "id": "featured",
+            "label": "Enlarge image in grid"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "select",
+        "id": "gallery_aspect",
+        "label": "Images aspect ratio",
+        "options": [
+          {
+            "value": "1",
+            "label": "Square (1:1)",
+            "group": "Cropped"
+          },
+          {
+            "value": "0.66666",
+            "label": "Tall (2:3)",
+            "group": "Cropped"
+          },
+          {
+            "value": "1.33333",
+            "label": "Short (4:3)",
+            "group": "Cropped"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "checkbox",
+        "id": "style_mobile",
+        "label": "Turn gallery into slider on mobile",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "slider_height",
+        "label": "Mobile slider height",
+        "options": [
+          {
+            "value": "50vh",
+            "label": "Medium"
+          },
+          {
+            "value": "75vh",
+            "label": "Large"
+          },
+          {
+            "value": "100vh",
+            "label": "Full"
+          }
+        ],
+        "default": "75vh"
+      },
+      {
+        "type": "checkbox",
+        "id": "lightbox",
+        "label": "Enable lightbox",
+        "info": "Shows larger image on click",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Gutter"
+      },
+      {
+        "type": "checkbox",
+        "id": "gutter_enabled",
+        "label": "Enable inner content spacing"
+      }
+    ], 
+    "presets": [{
+      "name": "Gallery",
+      "category": "Image",
+      "blocks": [{
+        "type": "image"
+      },{
+        "type": "image"
+      },{
+        "type": "image"
+      },{
+        "type": "image"
+      },{
+        "type": "image"
+      },{
+        "type": "image"
+      }]
+    }]
+  }
+{% endschema %}

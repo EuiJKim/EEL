@@ -1,0 +1,645 @@
+{% for block in section.blocks %}
+
+  {%- liquid
+    assign show_block = false
+    if block.settings.product == blank or block.settings.product != blank and all_products[block.settings.product].handle == product.handle
+      if block.settings.collection == blank
+        assign show_block = true
+      else
+        for collection in product.collections
+          if collection.handle == block.settings.collection
+            assign show_block = true
+          endif
+        endfor
+      endif
+    endif
+  -%}
+
+  {%- if show_block -%}
+
+    <div id="block-{{ block.id }}" {{ block.shopify_attributes }} {% if block.type == 'video' %} class=" mount-video-background" {% endif %}>
+
+      {%- case block.type -%}
+
+        {%- when 'image' -%}
+
+          <div class="content-section gutter--{% if block.settings.gutter_enabled %}on{% else %}off{% endif %} image-text image-text--size-1 {% if block.settings.color_bg != 'rgba(0,0,0,0)' %} parent-has-inner-padding {% endif %}">
+
+            {%- render 'image-with-text-content',
+              url: block.settings.url,
+              button_label: block.settings.button_label,
+              text_alignment: block.settings.text_alignment,
+              text_size: block.settings.text_size,
+              title: block.settings.title,
+              body: block.settings.body,
+              color_text: block.settings.color_text,
+              color_bg: block.settings.color_bg,
+              image: block.settings.image 
+            -%}
+
+            {%- if block.settings.color_text != 'rgba(0,0,0,0)' -%}
+
+              {%- liquid
+                assign color_text = block.settings.color_text
+                assign color_text_brightness = color_text | color_brightness
+                if color_text_brightness > 150
+                  assign color_text_foreground = '#000'
+                else
+                  assign color_text_foreground = '#fff'
+                endif
+              -%}
+
+              {% style %}
+                #block-{{ block.id }}, 
+                #block-{{ block.id }} a {
+                  color: {{ block.settings.color_text }};
+                }
+                #block-{{ block.id }} a.button--solid {
+                  background: {{ block.settings.color_text }};
+                  color: {{ color_text_foreground }};
+                }
+                #block-{{ block.id }} .button--solid path {
+                  fill: {{ color_text_foreground }};
+                }
+                #block-{{ block.id }} .image-text__title span {
+                  background-image: linear-gradient(to right, {{ block.settings.color_text }}, {{ block.settings.color_text }});
+                }
+              {% endstyle %}
+
+            {%- endif -%}
+
+            {%- if block.settings.color_bg != 'rgba(0,0,0,0)' -%}
+              {% style %}
+                #block-{{ block.id }} .image-text__background:before {
+                  background: {{ block.settings.color_bg }};
+                }
+              {% endstyle %}
+            {%- endif -%}
+
+            {% style %}
+              #block-{{ block.id }} .image-text {
+                height: {{ block.settings.image_height }};
+              }
+              #block-{{ block.id }} .image-text__content > div {
+                max-width: {{ block.settings.text_width }};
+              }
+            {% endstyle %}
+
+          </div>
+
+        {%- when 'text' -%} 
+
+          {%- render 'rich-text-content', 
+            id: block.id,
+            gutter_enabled: false,
+            image: block.settings.image,
+            image_position: block.settings.image_position,
+            image_height: block.settings.image_height,
+            title: block.settings.title,
+            body: block.settings.body,
+            text_alignment: block.settings.text_alignment,
+            text_size: block.settings.text_size,
+            color_bg: block.settings.color_bg,
+            color_text: block.settings.color_text
+          -%}
+
+        {%- when 'video' -%}
+
+          {%- render 'video-background-content',
+            id: block.id
+            gutter_enabled: block.settings.gutter_enabled,
+            url: block.settings.url,
+            button_label: block.settings.button_label,
+            text_alignment: block.settings.text_alignment,
+            text_size: block.settings.text_size,
+            text_width: block.settings.text_width,
+            title: block.settings.title,
+            body: block.settings.body,
+            video: block.settings.video,
+            video_height: block.settings.video_height,
+            image: block.settings.image,
+            color_text: block.settings.color_text,
+            color_bg: block.settings.color_bg
+          -%}
+
+      {%- endcase -%}
+
+    </div>
+
+  {%- endif -%}
+
+{%- endfor -%}
+
+{% schema %}
+  {
+    "name": "Product story",
+    "class": "mount-images mount-custom-footer",
+    "max_blocks": 99,
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image with text",
+        "settings": [
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Image with text"
+          },
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Text",
+            "default": "<p>Share your latest products, collections or promotions!</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link",
+            "info": "The entire block will transform into a link unless there is a label for the button."
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background image"
+          },
+          {
+            "type": "select",
+            "id": "image_height",
+            "label": "Image height",
+            "options": [
+              {
+                "value": "25vh",
+                "label": "Small"
+              },
+              {
+                "value": "50vh",
+                "label": "Medium"
+              },
+              {
+                "value": "75vh",
+                "label": "Large"
+              },
+              {
+                "value": "100vh",
+                "label": "Full"
+              }
+            ],
+            "default": "50vh"
+          },
+          {
+            "type": "select",
+            "id": "text_width",
+            "label": "Text container width",
+            "options": [
+              {
+                "value": "50%",
+                "label": "Medium"
+              },
+              {
+                "value": "75%",
+                "label": "Large"
+              },
+              {
+                "value": "100%",
+                "label": "Full"
+              }
+            ],
+            "default": "50%"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "label": "Text size",
+            "options": [
+              {
+                "value": "regular",
+                "label": "Regular"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              },
+              {
+                "value": "huge",
+                "label": "Extra large"
+              }
+            ],
+            "default": "regular"
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "horizontal-left vertical-top",
+                "label": "Left top"
+              },
+              {
+                "value": "horizontal-center vertical-top",
+                "label": "Center top"
+              },
+              {
+                "value": "horizontal-right vertical-top",
+                "label": "Right top"
+              },
+              {
+                "value": "horizontal-left vertical-middle",
+                "label": "Left middle"
+              },
+              {
+                "value": "horizontal-center vertical-middle",
+                "label": "Center middle"
+              },
+              {
+                "value": "horizontal-right vertical-middle",
+                "label": "Right middle"
+              },
+              {
+                "value": "horizontal-left vertical-bottom",
+                "label": "Left bottom"
+              },
+              {
+                "value": "horizontal-center vertical-bottom",
+                "label": "Center bottom"
+              },
+              {
+                "value": "horizontal-right vertical-bottom",
+                "label": "Right bottom"
+              }
+            ],
+            "default": "horizontal-left vertical-bottom"
+          },
+          {
+            "type": "header",
+            "content": "Colors"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "Custom text color",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "color",
+            "id": "color_bg",
+            "label": "Background overlay",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "header",
+            "content": "Gutter"
+          },
+          {
+            "type": "checkbox",
+            "id": "gutter_enabled",
+            "label": "Enable inner content spacing"
+          },
+          {
+            "type": "header",
+            "content": "Visibility",
+            "info": "By default, this block appears on all product pages. If you want to limit it's appearance to a specific product or products from a specific collection, you can set this up here."
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Show on a single product"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Show on a single collection"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Rich text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+          }, 
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p><p><a href=\"#\">Insert links as well</a></p>"
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "left"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "label": "Heading size",
+            "options": [
+              {
+                "value": "regular",
+                "label": "Regular"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              },
+              {
+                "value": "huge",
+                "label": "Extra large"
+              }
+            ],
+            "default": "regular"
+          },
+          {
+            "type": "select",
+            "id": "image_position",
+            "label": "Image position",
+            "options": [
+              {
+                "value": "align-right",
+                "label": "Left"
+              },
+              {
+                "value": "align-left",
+                "label": "Right"
+              }
+            ],
+            "default": "align-left"
+          },
+          {
+            "type": "select",
+            "id": "image_height",
+            "label": "Image height",
+            "options": [
+              {
+                "value": "50vh",
+                "label": "Regular"
+              },
+              {
+                "value": "75vh",
+                "label": "Large"
+              },
+              {
+                "value": "100vh",
+                "label": "Full"
+              }
+            ],
+            "default": "75vh"
+          },
+          {
+            "type": "color",
+            "id": "color_bg",
+            "label": "Custom background color",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "Custom text color",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "header",
+            "content": "Visibility",
+            "info": "By default, this block appears on all product pages. If you want to limit it's appearance to a specific product or products from a specific collection, you can set this up here."
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Show on a single product"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Show on a single collection"
+          }
+        ]
+      },
+      {
+        "type": "video",
+        "name": "Video: background (MP4)",
+        "settings": [
+          {
+            "id": "video",
+            "type": "text",
+            "label": "Video URL",
+            "info": "Path to an .mp4 video file"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Fallback image",
+            "info": "A fallback image will be used on mobile devices where autoplay might be disabled."
+          },
+          {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Video background"
+          },
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Text",
+            "default": "<p>Share information about your brand.</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link",
+            "info": "The entire section will transform into a link unless there is a label for the button."
+          },
+          {
+            "type": "header",
+            "content": "Size & alignment"
+          },
+          {
+            "type": "select",
+            "id": "video_height",
+            "label": "Video height",
+            "options": [
+              {
+                "value": "56.25%",
+                "label": "Natural (16:9)",
+                "group": "Uncropped"
+              },
+              {
+                "value": "70vh",
+                "label": "Large",
+                "group": "Cropped"
+              },
+              {
+                "value": "100vh",
+                "label": "Full",
+                "group": "Cropped"
+              }
+            ],
+            "default": "56.25%"
+          },
+          {
+            "type": "select",
+            "id": "text_width",
+            "label": "Text container width",
+            "options": [
+              {
+                "value": "50%",
+                "label": "Medium"
+              },
+              {
+                "value": "75%",
+                "label": "Large"
+              },
+              {
+                "value": "100%",
+                "label": "Full"
+              }
+            ],
+            "default": "50%"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "label": "Text size",
+            "options": [
+              {
+                "value": "regular",
+                "label": "Regular"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              },
+              {
+                "value": "huge",
+                "label": "Extra large"
+              }
+            ],
+            "default": "regular"
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "horizontal-left vertical-top",
+                "label": "Left top"
+              },
+              {
+                "value": "horizontal-center vertical-top",
+                "label": "Center top"
+              },
+              {
+                "value": "horizontal-right vertical-top",
+                "label": "Right top"
+              },
+              {
+                "value": "horizontal-left vertical-middle",
+                "label": "Left middle"
+              },
+              {
+                "value": "horizontal-center vertical-middle",
+                "label": "Center middle"
+              },
+              {
+                "value": "horizontal-right vertical-middle",
+                "label": "Right middle"
+              },
+              {
+                "value": "horizontal-left vertical-bottom",
+                "label": "Left bottom"
+              },
+              {
+                "value": "horizontal-center vertical-bottom",
+                "label": "Center bottom"
+              },
+              {
+                "value": "horizontal-right vertical-bottom",
+                "label": "Right bottom"
+              }
+            ],
+            "default": "horizontal-left vertical-bottom"
+          },
+          {
+            "type": "header",
+            "content": "Colors"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "Custom text color",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "color",
+            "id": "color_bg",
+            "label": "Overlay color",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "header",
+            "content": "Gutter"
+          },
+          {
+            "type": "checkbox",
+            "id": "gutter_enabled",
+            "label": "Enable inner content spacing"
+          },
+          {
+            "type": "header",
+            "content": "Visibility",
+            "info": "By default, this block appears on all product pages. If you want to limit it's appearance to a specific product or products from a specific collection, you can set this up here."
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Show on a single product"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Show on a single collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

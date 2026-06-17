@@ -1,0 +1,111 @@
+<div class="content-section gutter--on featured-collection">
+
+  <div class="featured-collection__header rte {% if section.settings.show_collection_image %} has-image {% endif %}">
+  
+    <div class="remove-end-margin" style="flex: 1; padding-right: 10%;">
+
+      {% unless section.settings.title == blank %}
+        <h2 class="featured-collection__title h1">{{ section.settings.title | escape }}</h2>
+      {% endunless %}
+
+      {% unless section.settings.subheading == blank %}
+        <p class="featured-collection__caption">{{ section.settings.subheading | escape }}</p>
+      {% endunless %}
+
+    </div>
+
+    {% if section.settings.show_view_all %}
+      <span><a href="{{ collections[section.settings.collection].url }}">{{ 'collections.view_all_products' | t }}</a></span>
+    {% endif %}
+
+    <!--{% if section.settings.show_collection_image %}
+      <div class="featured-collection__background" aria-hidden="true">
+        {% render 'lazy-image', image: collections[section.settings.collection].image, type: 'background' %}
+      </div>
+    {% endif %}-->
+
+  </div>
+
+  <div class="featured-collection__content">
+
+    <div class="collection collection--{{ settings.grid_style }} collection--{{ section.settings.layout }}  mount-collection" {% if section.settings.products_number < 5 %} data-limit="{{ section.settings.products_number }}" {% endif %}>
+
+      {% if section.settings.collection != blank %}
+
+        {% for product in collections[section.settings.collection].products limit: section.settings.products_number %}
+          {% render 'product-item', product: product %}
+        {% endfor %}
+
+      {% else %}
+
+        {% for i in (1..section.settings.products_number) %}
+          {% render 'product-item', blank_product: true %}
+        {% endfor %}
+
+      {% endif %}
+
+    </div>
+  
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "class": "mount-featured-collection overflow-hidden",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show link to collection page",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "label": "Slider",
+            "value": "slider"
+          },
+          {
+            "label": "Grid",
+            "value": "grid"
+          }
+        ],
+        "default": "grid"
+      },
+      {
+        "type": "range",
+        "id": "products_number",
+        "label": "Maximum number of products shown",
+        "min": 2,
+        "max": 24,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      }
+    ],
+    "presets": [{
+      "name": "Featured collection",
+      "category": "Collection"
+    }]
+  }
+{% endschema %}

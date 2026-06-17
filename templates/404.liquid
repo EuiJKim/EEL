@@ -1,0 +1,18 @@
+<div class="page-wrapper">
+
+	<div class="page-content">
+		
+		<div class="page-header">
+			<h1 class="title h0">{{ 'general.404.title' | t }}</h1>
+			<p class="subtitle">{{ 'general.404.subtitle' | t }}</p>
+		</div>
+
+		<div class="page-body">
+			{% capture search_placeholder %}{{ 'general.404.search_placeholder' | t }}{% endcapture %}
+			{% render 'search-form', placeholder: search_placeholder %}
+			<div class="page-action"><a href="{{ routes.all_products_collection_url }}" class="button button--solid">{{ 'general.404.continue_browsing' | t }}</a></div>
+		</div>
+
+	</div>
+
+</div>

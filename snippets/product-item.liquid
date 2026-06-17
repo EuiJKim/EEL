@@ -1,0 +1,177 @@
+{%- liquid
+
+	assign on_sale = false
+	if product.compare_at_price > product.price
+		assign on_sale = true
+	endif
+
+	assign sold_out = true
+	if product.available
+		assign sold_out = false
+	endif
+
+	if settings.grid_aspect == 'natural'
+		if product.media.size == 0 or blank_product
+			assign aspect_ratio = 1
+		else
+			unless product.featured_media.aspect_ratio > 0
+				assign aspect_ratio = 1
+			else
+				assign aspect_ratio = product.featured_media.aspect_ratio
+			endunless
+		endif
+	else
+		assign aspect_ratio = settings.grid_aspect
+	endif
+
+-%}
+
+<div class="product-item {% if product.tags contains 'featured' and settings.grid_enhance_featured_product and template != 'search' %} featured {% endif %}">
+
+	<a href="{{ product.url | within: collection }}{% if rental_mode %}?view=rental{% endif %}" class="product-item__link">
+
+		{% if product.media.size == 0 or blank_product %}
+
+	  	<span class="product-item__thumbnail onboarding-svg onboarding-background" style="padding-top:{{ aspect_ratio | times: 100 }}%" data-padding="{{ aspect_ratio | times: 100 }}">
+   			{% assign no = forloop.index | modulo: 6 | plus: 1 %}
+		    {{ 'product-X' | replace: 'X', no | placeholder_svg_tag }}
+		   </span>
+
+		{% else %}
+
+			<div class="product-item__thumbnail" style="padding-top:{{ 100 | divided_by: aspect_ratio }}%" data-padding="{{ 100 | divided_by: aspect_ratio }}">
+
+				{%- liquid
+					if grid_aspect == 'natural'
+						render 'lazy-image', image: product.featured_media, type: 'background', alt: product.title
+					else
+						render 'lazy-image', image: product.featured_media, type: 'background', ratio: aspect_ratio, alt: product.title
+					endif
+				-%}
+
+		  	{% if settings.grid_show_secondary_image and product.media.size >= 2 %}
+
+					<div class="product-item__secondary-image">
+						{%- liquid
+							if grid_aspect == 'natural'
+								render 'lazy-image', image: product.media[1], type: 'background', alt: product.title
+							else
+								render 'lazy-image', image: product.media[1], type: 'background', ratio: aspect_ratio, alt: product.title
+							endif
+						-%}
+					</div>
+
+		  	{% endif %}
+
+		  </div>
+
+		{% endif %}
+
+	  <div class="product-item__caption {% if settings.show_reviews_badge %} reviews-visible {% endif %}">
+
+	  	<h3 class="product-item__title h3 {% if settings.grid_style == 'classic' %} underline-animation {% endif %}">
+				{%- liquid
+	  			unless product.title == blank
+	  				echo product.title | escape
+	  			else
+	  				echo 'Product title'
+	  			endunless
+	  		-%}
+	  	</h3>
+
+			<div class="product-item__price">
+
+				{%- if product.tags contains 'rental' or product.id == 8159765201066 or rental_mode -%}
+
+					<a href="/pages/contact" class="product-item__price--original" style="font-size:0.85em; color:inherit; text-decoration:none; opacity:0.6;">렌탈 견적 별도 문의</a>
+
+				{%- elsif customer -%}
+
+					{% unless product.price == blank %}
+
+						{%- assign variant = product.selected_or_first_available_variant -%}
+
+						{%- if product.price_varies -%}
+							<span class="product-item__from">
+								{%- liquid
+									if product.compare_at_price > product.price
+										echo 'products.grid.on_sale_from_html' | t: price: price
+									else
+										echo 'products.grid.from_text_html' | t: price: price
+									endif
+								-%}
+							</span>
+						{%- endif -%}
+
+						<span class="product-item__price--original">
+							{{ product.price | money }}
+						</span>
+
+						{%- if on_sale -%}
+							<span class="product-item__price--compare">{{ product.compare_at_price | money }}</span>
+						{%- endif -%}
+
+						{%- liquid
+							if variant.unit_price_measurement
+								echo '<span class="unit-price">'
+								echo variant.unit_price | money
+								echo ' / '
+								if variant.unit_price_measurement.reference_value != 1
+									echo variant.unit_price_measurement.reference_value
+								endif
+								echo variant.unit_price_measurement.reference_unit
+								echo '</span>'
+							endif
+						-%}
+
+					{%- else -%}
+						<span class="product-item__price--original">
+							{{ 9999 | money }}
+						</span>
+					{%- endunless -%}
+
+				{%- else -%}
+
+					<a href="{{ routes.account_login_url }}" class="product-item__price--original" style="font-size:0.85em; color:inherit; text-decoration:none; opacity:0.6;">로그인 후 가격 공개</a>
+
+				{%- endif -%}
+
+			</div>
+
+      {%- if settings.show_reviews_badge -%}
+        <span class="product-item__reviews">
+        	<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        </span>
+      {%- endif -%}
+
+		</div>
+
+		{%- unless blank_product or product.tags contains 'rental' or product.id == 8159765201066 or rental_mode -%}
+
+	  	{%- if sold_out -%}
+
+				<span class="product-item__badge product-item__badge--sold"><span>{{ 'products.grid.sold_out_product' | t }}</span></span>
+
+			{%- elsif on_sale -%}
+
+				{%- if settings.grid_discount == 'percentage' -%}
+					<span class="product-item__badge product-item__badge--sale"><span>-{{ product.price | times: 100.0 | divided_by: product.compare_at_price | minus: 100 | abs | round }}%</span></span>
+				{%- else -%}
+					<span class="product-item__badge product-item__badge--sale"><span>{{ 'products.grid.on_sale_product' | t }}</span></span>
+				{%- endif -%}
+
+			{%- elsif product.tags contains 'preorder' -%}
+
+				<span class="product-item__badge product-item__badge--preorder"><span>{{ 'products.grid.preorder_product' | t }}</span></span>
+
+			{%- elsif product.tags contains 'new' -%}
+
+				<span class="product-item__badge product-item__badge--new"><span>{{ 'products.grid.new_product' | t }}</span></span>
+
+			{%- endif -%}
+
+		{%- endunless -%}
+
+	</a>
+
+</div>

@@ -1,0 +1,33 @@
+<div class="page-content">
+
+	<header class="page-title" style="flex-direction: column; align-items: flex-start;">
+		<h1 class="title h0">{{ 'customers.account_activation_page.title' | t }}</h1>
+		<span class="subtitle">{{ 'customers.account_activation_page.subtitle' | t }}</span>
+	</header>
+
+	{% form 'activate_customer_password' %}
+
+		<div class="krown-columns-container one-whole">
+
+			{% render 'form-errors', form: form %}
+
+      <div class="krown-column-container one-whole first last">
+				<label for="customer_password" class="hidden">{{ 'customers.account_activation_page.form_password_label' | t }}</label>
+				<input type="password" value="" name="customer[password]" placeholder="{{ 'customers.account_activation_page.form_password_label' | t }}" id="customer_password">
+			</div>
+
+    	<div class="krown-column-container one-whole first last">
+				<label for="customer_password_confirmation" class="hidden">{{ 'customers.account_activation_page.form_password_confirm_label' | t }}</label>
+				<input type="password" value="" name="customer[password_confirmation]" placeholder="{{ 'customers.account_activation_page.form_password_confirm_label' | t }}" id="customer_password_confirmation">
+			</div>
+
+			<div class="login-actions">
+				<input type="submit" class="button button--solid button--wide" value="{{ 'customers.account_activation_page.form_activate_button' | t }}">
+				<input type="submit" class="text-link" name="decline" id="customer_decline" value="{{ 'customers.account_activation_page.form_decline_button' | t }}">
+			</div>
+
+		</div>
+
+	{% endform %}
+
+</div>

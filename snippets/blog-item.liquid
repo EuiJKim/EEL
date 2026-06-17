@@ -1,0 +1,67 @@
+{%- capture date_format -%} {{ 'general.date_format.month_day_year' | t }} {%- endcapture -%}
+<article class="blog-item">
+
+	{%- if blog_show_image -%}
+		<div class="blog-item__image">
+			<a class="blog-item__header" href="{{ article.url | escape }}" title="{{ article.title | escape }}">
+				{%- if article.image -%}
+					{%- render 'lazy-image', image: article.image, type: 'background', alt: article.title -%}
+				{%- else -%}
+        	<span class="onboarding-svg onboarding-background">{{ 'image' | placeholder_svg_tag }}</span>
+				{%- endif -%}
+			</a>
+		</div>
+	{%- endif -%}
+
+	<div class="blog-item__content">
+		
+		<div class="blog-item__title-holder">
+			<a href="{{ article.url | escape }}" title="{{ article.title | escape }}">
+				<h3 class="blog-item__title h0"><span>
+					{% unless blank_article %}
+						{{ article.title | escape }}</span>
+					{% else %}
+						Article title
+					{% endunless %}
+				</h3>
+			</a>
+		</div>
+	
+		{%- unless blank_article -%}
+
+			<div class="blog-item__meta">
+
+				{%- if blog_show_author -%}
+					<span class="blog-item__author">{{ article.author | escape }}</span>
+				{%- endif %}
+
+				{%- if blog_show_date -%}
+					<span class="blog-item__date">{{ article.published_at | time_tag: date_format }}</span>
+				{%- endif -%}
+
+			</div>
+
+			<div class="blog-item__excerpt">
+				{%- if article.excerpt.size > 0 -%}
+					{{ article.excerpt }}
+				{% else %}
+					{%- liquid 
+						if layout == 'slider cols-4'
+							assign excerpt_length = 18
+						elsif layout == 'grid cols-1'
+							assign excerpt_length = 35
+						else
+							assign excerpt_length = 25
+						endif
+					-%}
+					<p>{{ article.content | strip_html | truncatewords: excerpt_length }}</p>
+				{%- endif -%}
+			</div>
+
+			{%- endunless -%}
+
+		<div><a class="blog-item__more" href="{{ article.url | escape }}">{{ 'blog.grid.read_more_label' | t }}</a></div>
+
+	</div>
+
+</article>

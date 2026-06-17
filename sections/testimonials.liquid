@@ -1,0 +1,172 @@
+<div class="content-section gutter--on testimonials {% if section.settings.color_bg != 'rgba(0,0,0,0)' %} parent-has-inner-padding {% endif %}">
+
+  <div class="testimonials__container content-slider" data-autoplay="{% if section.settings.autorotate %}{{ section.settings.autorotate_speed | times: 1000 }}{% else %}0{% endif %}">
+        
+    {% for block in section.blocks %}
+
+      <div class="testimonial content-slider__item" {{ block.shopify_attributes }}>
+
+        <div class="testimonial__header">
+
+          {% if block.settings.author_avatar %}
+            <figure class="testimonial__author-avatar lazy-image lazy--image" aria-hidden="true">
+              <img 
+                src="{{ block.settings.author_avatar | img_url: '66x66', crop: 'center' }}"
+                alt="{{ block.settings.author_avatar.alt | escape }}"
+                srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                data-srcset="{{ block.settings.author_avatar | img_url: '66x66', crop: 'center' }} 66w, {{ block.settings.author_avatar | img_url: '132x132', crop: 'center' }} 132w" 
+                data-sizes="auto" class="lazyload" 
+                width="66" height="66"
+              />
+            </figure>
+          {% endif %}
+          
+          <div>
+
+            {% if block.settings.author_name %}
+              <span class="testimonial__author-name">{{ block.settings.author_name | escape }}</span>
+            {% endif %}
+
+            {% if block.settings.author_title %}
+              <span class="testimonial__author-title">{{ block.settings.author_title | escape }}</span>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+        <div class="testimonial__content rte">
+          {{ block.settings.quote }}
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% if section.settings.color_bg != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .testimonials {
+      background: {{ section.settings.color_bg }};
+      padding-top: 10vw;;
+      padding-bottom: 10vw;;
+    }
+    @media all and (max-width: 1280px) {
+      #shopify-section-{{ section.id }} .testimonials {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+    } 
+    @media all and (max-width: 948px) {
+      #shopify-section-{{ section.id }} .testimonials {
+        padding-top: 70px;
+        padding-bottom: 70px;
+      }
+    }
+    @media all and (max-width: 480px) {
+      #shopify-section-{{ section.id }} .testimonials {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+    }
+    #shopify-section-{{ section.id }} {
+      margin-top: 0;
+    }
+  {% endstyle %}
+{% endif %}
+
+{% if section.settings.color_text != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .testimonials,
+    #shopify-section-{{ section.id }} .testimonials a {
+      color: {{ section.settings.color_text }};
+    }
+    #shopify-section-{{ section.id }} .testimonials svg path {
+      fill: {{ section.settings.color_text }};
+    }
+  {% endstyle %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Testimonials",
+    "class": "mount-testimonials",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "autorotate",
+        "label": "Autorotate"
+      },
+      {
+        "type": "range",
+        "id": "autorotate_speed",
+        "label": "Autorotate speed",
+        "min": 3,
+        "max": 9,
+        "step": 1,
+        "unit": "sec",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Custom background color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "quote",
+            "label": "Quote",
+            "default": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>"
+          },
+          {
+            "type": "text",
+            "id": "author_name",
+            "label": "Author name",
+            "default": "Author"
+          },
+          {
+            "type": "text",
+            "id": "author_title",
+            "label": "Author title",
+            "default": "Customer"
+          },
+          {
+            "type": "image_picker",
+            "id": "author_avatar",
+            "label": "Author avatar"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Testimonials",
+      "category": "Text",
+      "blocks": [{
+        "type": "testimonial"
+      }, {
+        "type": "testimonial"
+      }]
+    }]
+  }
+{% endschema %}

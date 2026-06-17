@@ -30,7 +30,7 @@ export default function MobileHeader() {
 
   return (
     <header
-      className="md:hidden bg-[#0D0618]"
+      className="md:hidden bg-[#0E1218]"
       style={{ fontFamily: 'var(--font-inter), sans-serif' }}
     >
       <div className="flex items-start justify-between gap-3 px-5 pt-6 pb-2">

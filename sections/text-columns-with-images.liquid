@@ -1,0 +1,108 @@
+<div class="content-section gutter--on text-w-image {% if section.settings.color_bg != 'rgba(0,0,0,0)' %} parent-has-inner-padding {% endif %}" data-size="{{ section.blocks.size }}">
+
+	{% for block in section.blocks %}
+    {% render 'text-columns-with-images-content', block: block %}
+	{% endfor %}
+
+</div>
+
+{% if section.settings.color_bg != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .text-w-image {
+      background: {{ section.settings.color_bg }};
+      padding-top: 10vw;;
+      padding-bottom: 10vw;;
+    }
+    @media all and (max-width: 1280px) {
+      #shopify-section-{{ section.id }} .text-w-image {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+    } 
+    @media all and (max-width: 948px) {
+      #shopify-section-{{ section.id }} .text-w-image {
+        padding-top: 70px;
+        padding-bottom: 70px;
+      }
+    }
+    @media all and (max-width: 480px) {
+      #shopify-section-{{ section.id }} .text-w-image {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+    }
+    #shopify-section-{{ section.id }} {
+      margin-top: 0;
+    }
+  {% endstyle %}
+{% endif %}
+
+{% if section.settings.color_text != 'rgba(0,0,0,0)' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .text-w-image,
+     #shopify-section-{{ section.id }} .text-w-image a {
+      color: {{ section.settings.color_text }};
+    }
+  {% endstyle %}
+{% endif %}
+
+{% schema %}
+  {
+		"name": "Text columns with images",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Custom background color",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color",
+        "default": "rgba(0,0,0,0)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Text with image"
+          },
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Text",
+            "default": "<p>Share your latest products, collections or promotions!</p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Text columns with images",
+      "category": "Text",
+      "blocks": [{
+        "type": "text"
+      },{
+        "type": "text"
+      },{
+        "type": "text"
+      }]
+    }]
+  }
+{% endschema %}

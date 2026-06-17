@@ -1,0 +1,424 @@
+[
+  {
+  "name": "theme_info",
+  "theme_name": "Kingdom",
+  "theme_author": "KrownThemes",
+  "theme_version": "3.8.0",
+  "theme_documentation_url": "https://shopify-support.krownthemes.com/",
+  "theme_support_url": "https://krownthemes.com/shopify-support-contact/"
+},
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Sidebar"
+      },
+      {
+        "type": "color",
+        "id": "sidebar_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "sidebar_txt",
+        "label": "Text",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "sidebar_accent",
+        "label": "Links",
+        "default": "#ff0000"
+      },
+      {
+        "type": "header",
+        "content": "Body"
+      },
+      {
+        "type": "color",
+        "id": "body_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "body_txt",
+        "label": "Text",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "body_accent",
+        "label": "Links",
+        "default": "#ff0000"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "footer_bg",
+        "label": "Background",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "color",
+        "id": "footer_txt",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "footer_accent",
+        "label": "Links",
+        "default": "#909090"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "headings_font",
+        "label": "Headings",
+        "default": "montserrat_n5"
+      },
+      {
+        "type": "range",
+        "id": "headings_size",
+        "label": "Base size",
+        "min": 18,
+        "max": 32,
+        "step": 1,
+        "unit": "px",
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "headings_size_alt",
+        "label": "Large headings",
+        "min": 18,
+        "max": 52,
+        "step": 1,
+        "unit": "px",
+        "default": 32,
+        "info": "Affects large titles from the slider, rich text and image with text sections."
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "label": "Body",
+        "default": "montserrat_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_size",
+        "label": "Base size",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "body_size_alt",
+        "label": "Primary navigation",
+        "min": 12,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 17
+      }
+    ]
+  },
+  {
+    "name": "Product grid",
+    "settings": [
+      {
+        "type": "select",
+        "id": "grid_aspect",
+        "label": "Media aspect ratio",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural",
+            "group": "Uncropped"
+          },
+          {
+            "value": "1.33333",
+            "label": "Short (4:3)",
+            "group": "Cropped"
+          },
+          {
+            "value": "1",
+            "label": "Square (1:1)",
+            "group": "Cropped"
+          },
+          {
+            "value": "0.83333",
+            "label": "Tall (5:6)",
+            "group": "Cropped"
+          },
+          {
+            "value": "0.666667",
+            "label": "Taller (2:3)",
+            "group": "Cropped"
+          }
+        ],
+        "default": "natural",
+        "info": "When using the natural aspect ratio, make sure that you resize your thumbnails at the same size, for a clean grid design. Using one of the cropped setting, all thumbnails will be resized to the same dimension."
+      },
+      {
+        "type": "checkbox",
+        "id": "grid_show_secondary_image",
+        "label": "Show second product media on hover"
+      },
+      {
+        "type": "checkbox",
+        "id": "grid_enhance_featured_product",
+        "label": "Emphasize featured products",
+        "info": "[Learn more](https://shopify-support.krownthemes.com/article/471-general-settings#featured-products)"
+      },
+      {
+        "type": "select",
+        "id": "grid_discount",
+        "label": "Show discount as...",
+        "options": [
+          {
+            "value": "badge",
+            "label": "Text"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          }
+        ],
+        "default": "badge"
+      },
+      {
+        "type": "select",
+        "id": "grid_style",
+        "label": "Caption placement",
+        "options": [
+          {
+            "value": "overlay",
+            "label": "Overlay",
+            "group": "Visible on roll over"
+          },
+          {
+            "value": "classic",
+            "label": "Below image",
+            "group": "Always visible"
+          }
+        ],
+        "default": "classic"
+      },
+      {
+        "type": "color",
+        "id": "grid_color_bg",
+        "label": "Overlay caption background",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "grid_color_text",
+        "label": "Overlay caption text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Product reviews",
+        "info": "You need to install [Shopify's free Product Reviews app](https://apps.shopify.com/product-reviews) before enabling this option."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_reviews_badge",
+        "label": "Show reviews badge",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "32 x 32px .png required"
+      }
+    ]
+  },
+  {
+    "name": "Cart page",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_action",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "no-overlay",
+            "label": "Page"
+          },
+          {
+            "value": "overlay",
+            "label": "Drawer"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_additional_buttons",
+        "label": "Show additional checkout buttons"
+      }
+    ]
+  },
+  {
+    "name": "Embellishments",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_preloader",
+        "label": "Image preloader",
+        "default": true,
+        "info": "Shows a small circular preloader while images on your store are still loading."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_breadcrumb",
+        "label": "Show breadcrumb",
+        "default": true,
+        "info": "Breadcrumb navigation helps users navigating through the store and shows up only on collection, product and search pages."
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable predictive search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "label": "Show price",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_include_articles",
+        "label": "Include articles in search results",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_include_pages",
+        "label": "Include pages in search results",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [ 
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "info": "https://www.facebook.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "info": "https://instagram.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "Twitter",
+        "info": "https://twitter.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_google",
+        "label": "Google+",
+        "info": "https://plus.google.com/+shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube",
+        "info": "https://www.youtube.com/user/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo",
+        "label": "Vimeo",
+        "info": "https://vimeo.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest",
+        "info": "https://www.pinterest.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok",
+        "info": "https://www.tiktok.com/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr",
+        "label": "Tumblr",
+        "info": "http://shopify.tumblr.com"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn",
+        "info": "https://www.linkedin.com/company/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_reddit",
+        "label": "Reddit",
+        "info": "https://www.reddit.com/user/shopify/"
+      },
+      {
+        "type": "text",
+        "id": "social_flickr",
+        "label": "Flickr",
+        "info": "https://www.flickr.com/photos/shopify/"
+      },
+      {
+        "type": "text",
+        "id": "social_email",
+        "label": "Email",
+        "info": "mailto:contact@shopify.com"
+      }
+    ]
+  }
+]
