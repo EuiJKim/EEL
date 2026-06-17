@@ -147,9 +147,8 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     ],
   },
 
-  // ── OBJECT (15 pieces) ─────────────────────────────────────
-  ...Array.from({ length: 15 }, (_, i) => {
-    const n = i + 1;
+  // ── OBJECT (25 pieces) ─────────────────────────────────────
+  ...Array.from({ length: 25 }, (_, i) => i + 1).map((n) => {
     const num = String(n).padStart(2, '0');
     return {
       id: `object-${n}`,
