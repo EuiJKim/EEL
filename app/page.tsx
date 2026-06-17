@@ -39,7 +39,7 @@ export default async function HomePage({
         EEL — Seoul resin atelier. Handmade furniture, objects, and paintings.
         Made-to-order, cured over 21 days.
       </h1>
-      <div className="min-h-screen bg-[#0E1218] text-[#F2EDE4] flex flex-col md:flex-row pb-11 md:pb-0">
+      <div className="min-h-screen bg-[#110D1C] text-[#F2EDE4] flex flex-col md:flex-row pb-11 md:pb-0">
         <Sidebar />
         <MobileHeader />
         <div className="md:hidden h-[8px] flex-shrink-0 relative overflow-hidden">

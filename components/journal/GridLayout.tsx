@@ -25,7 +25,7 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
 
   return (
     <main
-      className="flex-1 min-h-screen bg-[#0E1218]"
+      className="flex-1 min-h-screen bg-[#110D1C]"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Available landing banner — only on /available */}
@@ -54,7 +54,7 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
       )}
 
       {/* Section header + category tabs — sticky on mobile */}
-      <div className="sticky top-0 z-20 bg-[#0E1218] md:static px-6 md:px-14 pt-4 md:pt-6 pb-3 md:pb-8">
+      <div className="sticky top-0 z-20 bg-[#110D1C] md:static px-6 md:px-14 pt-4 md:pt-6 pb-3 md:pb-8">
         <div className="flex items-center justify-between gap-3 md:gap-6">
           <AboutPopover />
           <div className="-mx-2 md:mx-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

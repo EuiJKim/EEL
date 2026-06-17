@@ -48,7 +48,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-hidden bg-[#0E1218] px-6 pt-5 pb-8 justify-between"
+      className="hidden md:flex md:flex-col md:w-[300px] md:h-screen md:sticky md:top-0 md:overflow-hidden bg-[#110D1C] px-6 pt-5 pb-8 justify-between"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       {/* Brand + Clock */}
