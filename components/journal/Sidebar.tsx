@@ -53,7 +53,7 @@ export default function Sidebar() {
     >
       {/* Brand + Clock */}
       <div>
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-start justify-between mb-5">
           <Link
             href="/"
             className="block text-[56px] font-normal tracking-[0.04em] hover:opacity-80 transition-opacity leading-none"
@@ -76,21 +76,22 @@ export default function Sidebar() {
             >EN</span>
           </div>
         </div>
-        <LiveClock size="sm" compact />
 
         {/* Status pill */}
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center gap-2 mb-6">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full rounded-full bg-[#9ccfae] opacity-60 animate-ping" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9ccfae]" />
           </span>
           <span
-            className="text-[10px] tracking-[0.2em] uppercase text-[#9ccfae]"
+            className="text-[11px] tracking-[0.2em] uppercase text-[#9ccfae]"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             {t.status}
           </span>
         </div>
+
+        <LiveClock size="sm" compact />
       </div>
 
       {/* About */}
