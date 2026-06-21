@@ -63,7 +63,7 @@ export default function Sidebar() {
           </Link>
           <button
             onClick={toggle}
-            className="mt-1 text-[10px] tracking-[0.14em] uppercase flex items-center gap-1"
+            className="mt-1 text-[10px] tracking-[0.14em] uppercase flex items-center gap-1 transition-transform duration-150 hover:scale-125 origin-right"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
             aria-label="Toggle language"
           >
