@@ -76,13 +76,6 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
         )}
       </div>
 
-      {/* Footer (desktop only — mobile uses MobileFooter) */}
-      <footer
-        className="hidden md:block px-6 md:px-14 py-12 text-center text-[10px] tracking-[0.22em] uppercase text-[#5a6058] border-t border-[#2a2e2c]"
-        style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
-      >
-        End of Journal · EEL
-      </footer>
     </main>
   );
 }

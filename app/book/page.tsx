@@ -81,13 +81,6 @@ export default function BookPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div
-        className="px-6 md:px-14 py-8 border-t border-[#2a2e2c] text-[9px] tracking-[0.2em] uppercase text-[#5a6058]"
-        style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
-      >
-        EEL Studio · Seoul
-      </div>
     </div>
   );
 }
