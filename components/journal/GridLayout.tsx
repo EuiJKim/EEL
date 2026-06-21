@@ -3,6 +3,7 @@ import type { Category } from '@/types/journal';
 import GridCard from './GridCard';
 import CategoryTabs from './CategoryTabs';
 import AboutPopover from './AboutPopover';
+import Link from 'next/link';
 
 interface Props {
   category?: 'all' | Category;

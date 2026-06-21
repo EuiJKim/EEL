@@ -43,6 +43,13 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
           </Link>
         );
       })}
+      <Link
+        href="/book"
+        className="text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left"
+        style={{ color: '#8a9488' }}
+      >
+        {lang === 'ko' ? '북' : 'Book'}
+      </Link>
     </nav>
   );
 }
