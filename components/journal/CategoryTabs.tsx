@@ -17,7 +17,7 @@ interface Props {
 export default function CategoryTabs({ active, basePath = '/' }: Props) {
   return (
     <nav
-      className="flex items-center gap-1 md:gap-2"
+      className="flex flex-wrap items-center gap-1 md:gap-2"
       style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
     >
       {TABS.map((t) => {

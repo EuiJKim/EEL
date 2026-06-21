@@ -56,9 +56,9 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
 
       {/* Section header + category tabs — sticky on mobile */}
       <div className="sticky top-0 z-20 bg-[#110D1C] md:static px-6 md:px-14 pt-4 md:pt-6 pb-3 md:pb-8">
-        <div className="flex items-center justify-between gap-3 md:gap-6">
+        <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-3 md:gap-6">
           <AboutPopover />
-          <div className="-mx-2 md:mx-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="md:overflow-x-auto md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
             <CategoryTabs active={category} basePath={availableOnly ? '/available' : '/'} />
           </div>
         </div>
