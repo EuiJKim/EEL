@@ -43,6 +43,18 @@ a {
   text-decoration: none;
 }
 
+/* Korean font weight boost */
+body.lang-ko {
+  font-weight: 500;
+}
+body.lang-ko span,
+body.lang-ko p,
+body.lang-ko li,
+body.lang-ko a,
+body.lang-ko div {
+  font-weight: 500;
+}
+
 /* Hero zoom animation */
 @keyframes heroZoom {
   from { transform: scale(1.12); }

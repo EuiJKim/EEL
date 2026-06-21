@@ -17,6 +17,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved === 'ko') setLang('ko');
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle('lang-ko', lang === 'ko');
+  }, [lang]);
+
   const toggle = () =>
     setLang((prev) => {
       const next = prev === 'en' ? 'ko' : 'en';
