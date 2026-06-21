@@ -118,15 +118,15 @@ export default function Sidebar() {
           className="text-[12px] text-[#c0c5c2] space-y-1"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
-          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
+          <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.furniture}</span>
             <span className="text-[#8a9488]">{String(COUNTS.furniture).padStart(2, '0')}</span>
           </li>
-          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
+          <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.object}</span>
             <span className="text-[#8a9488]">{String(COUNTS.object).padStart(2, '0')}</span>
           </li>
-          <li className="flex justify-between tracking-[0.14em] uppercase transition-transform duration-150 hover:scale-[1.1] origin-left">
+          <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.painting}</span>
             <span className="text-[#8a9488]">{String(COUNTS.painting).padStart(2, '0')}</span>
           </li>
