@@ -13,6 +13,16 @@ const COUNTS = {
   painting: JOURNAL_ENTRIES.filter((e) => e.category === 'painting').length,
 };
 
+function Count({ n }: { n: number | string }) {
+  const s = String(n).padStart(2, '0');
+  return (
+    <span className="text-[#8a9488] inline-flex">
+      <span style={{ display: 'inline-block', width: '0.55em', textAlign: 'center' }}>{s[0]}</span>
+      <span style={{ display: 'inline-block', width: '0.55em', textAlign: 'center' }}>{s[1]}</span>
+    </span>
+  );
+}
+
 const ABOUT_KO = '서울 기반 핸드메이드 스튜디오. 독특하고 정교한 무언가를 만듭니다. 주문 제작은 최대 21일, 촬영 소품 대여도 가능합니다.';
 
 const T = {
@@ -97,7 +107,7 @@ export default function Sidebar() {
       {/* About */}
       <section>
         <div
-          className="text-[12px] tracking-[0.18em] uppercase text-[#8a9488] mb-1.5"
+          className="text-[15px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-1.5"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
           {t.about}
@@ -114,7 +124,7 @@ export default function Sidebar() {
       {/* Index */}
       <section>
         <div
-          className="text-[12px] tracking-[0.18em] uppercase text-[#8a9488] mb-1.5"
+          className="text-[15px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-1.5"
           style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
         >
           {t.index}
@@ -125,15 +135,21 @@ export default function Sidebar() {
         >
           <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.furniture}</span>
-            <span className="text-[#8a9488]">{String(COUNTS.furniture).padStart(2, '0')}</span>
+            <Count n={COUNTS.furniture} />
           </li>
           <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.object}</span>
-            <span className="text-[#8a9488]">{String(COUNTS.object).padStart(2, '0')}</span>
+            <Count n={COUNTS.object} />
           </li>
           <li className="flex justify-between tracking-[0.14em] uppercase">
             <span>{t.painting}</span>
-            <span className="text-[#8a9488]">{String(COUNTS.painting).padStart(2, '0')}</span>
+            <Count n={COUNTS.painting} />
+          </li>
+          <li className="flex justify-between tracking-[0.14em] uppercase">
+            <Link href="/book" className="hover:text-white transition-colors">
+              {lang === 'ko' ? '북' : 'Book'}
+            </Link>
+            <Count n={1} />
           </li>
         </ul>
         <Link
@@ -146,7 +162,7 @@ export default function Sidebar() {
 
         <div className="mt-3 pt-3 border-t border-[#2a2e2c]">
           <div
-            className="text-[12px] tracking-[0.18em] uppercase text-[#8a9488] mb-1.5"
+            className="text-[15px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-1.5"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             {t.contact}

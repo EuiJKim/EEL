@@ -35,55 +35,49 @@ export default function BookPage() {
 
       {/* Header */}
       <div className="px-6 md:px-14 pt-6 md:pt-8 pb-8 md:pb-12">
-        <h1
-          className="text-[40px] md:text-[64px] leading-none tracking-[-0.02em] text-[#F2EDE4]"
-          style={{ fontFamily: 'var(--font-gravitas), serif' }}
-        >
-          2026
-        </h1>
         <p
-          className="mt-3 text-[11px] tracking-[0.2em] uppercase text-[#8a9488]"
+          className="text-[20px] tracking-[0.2em] uppercase text-[#F2EDE4]"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
-          Cortis · W Magazine Digital Cover Set Design
+          Cortis
+        </p>
+        <p
+          className="mt-1 text-[15px] tracking-[0.2em] uppercase text-[#F2EDE4]"
+          style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
+        >
+          2026 W Magazine Digital Cover Set Design
         </p>
       </div>
 
       {/* Photos */}
       <div className="px-6 md:px-14 pb-20 space-y-3 md:space-y-4">
-        {/* Row 1: full width */}
+        {/* Row 1: photos 2,3 — two columns, original ratio (no crop) */}
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
+          <Image src={PHOTOS[1]} alt="" width={1697} height={2560} style={{ width: '100%', height: 'auto' }} />
+          <Image src={PHOTOS[2]} alt="" width={1697} height={2560} style={{ width: '100%', height: 'auto' }} />
+        </div>
+
+        {/* Row 2: photo 1 full width */}
         <div className="relative w-full aspect-[3/2]">
           <Image src={PHOTOS[0]} alt="" fill className="object-cover" />
         </div>
 
-        {/* Row 2: two columns */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4">
-          <div className="relative aspect-[3/4]">
-            <Image src={PHOTOS[1]} alt="" fill className="object-cover" />
-          </div>
-          <div className="relative aspect-[3/4]">
-            <Image src={PHOTOS[2]} alt="" fill className="object-cover" />
-          </div>
-        </div>
-
-        {/* Row 3: full width */}
+        {/* Row 3: photo 4 full width */}
         <div className="relative w-full aspect-[3/2]">
           <Image src={PHOTOS[3]} alt="" fill className="object-cover" />
         </div>
 
-        {/* Row 4: two columns */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4">
+        {/* Row 4: three columns */}
+        <div className="grid grid-cols-3 gap-3 md:gap-4">
           <div className="relative aspect-[3/4]">
             <Image src={PHOTOS[4]} alt="" fill className="object-cover" />
           </div>
           <div className="relative aspect-[3/4]">
             <Image src={PHOTOS[5]} alt="" fill className="object-cover" />
           </div>
-        </div>
-
-        {/* Row 5: full width */}
-        <div className="relative w-full aspect-[3/2]">
-          <Image src={PHOTOS[6]} alt="" fill className="object-cover" />
+          <div className="relative aspect-[3/4]">
+            <Image src={PHOTOS[6]} alt="" fill className="object-cover" />
+          </div>
         </div>
       </div>
 
