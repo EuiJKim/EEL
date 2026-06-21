@@ -61,16 +61,20 @@ export default function Sidebar() {
           >
             {STUDIO.name}
           </Link>
-          <button
-            onClick={toggle}
-            className="mt-1 text-[10px] tracking-[0.14em] uppercase flex items-center gap-1 transition-transform duration-150 hover:scale-125 origin-right"
+          <div
+            className="mt-1 flex items-center gap-1"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
-            aria-label="Toggle language"
           >
-            <span className={lang === 'ko' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>KR</span>
-            <span className="text-[#3a403c]">·</span>
-            <span className={lang === 'en' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}>EN</span>
-          </button>
+            <span
+              onClick={toggle}
+              className={`text-[10px] tracking-[0.14em] uppercase cursor-pointer transition-transform duration-150 hover:scale-125 inline-block ${lang === 'ko' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}`}
+            >KR</span>
+            <span className="text-[#3a403c] text-[10px]">·</span>
+            <span
+              onClick={toggle}
+              className={`text-[10px] tracking-[0.14em] uppercase cursor-pointer transition-transform duration-150 hover:scale-125 inline-block ${lang === 'en' ? 'text-[#F2EDE4]' : 'text-[#5a6058]'}`}
+            >EN</span>
+          </div>
         </div>
         <LiveClock size="sm" compact />
 
