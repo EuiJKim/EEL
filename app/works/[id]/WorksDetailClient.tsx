@@ -5,7 +5,10 @@ import Image from 'next/image';
 import { useLanguage } from '@/lib/language-context';
 import PieceInquiryButton from '@/components/journal/PieceInquiryButton';
 import MobileStickyCTA from '@/components/journal/MobileStickyCTA';
+import { projectsFeaturing } from '@/data/projects';
 import type { PieceStatus, FeedEntry } from '@/types/journal';
+
+const FEATURED_IN_LABEL = { en: 'Featured in', ko: '소개된 프로젝트' };
 
 const STATUS_COLOR: Record<PieceStatus, string> = {
   available: '#9ccfae',
@@ -37,6 +40,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
   const { lang } = useLanguage();
   const gallery = entry.gallery?.length ? entry.gallery : [entry.image];
   const hasSpec = entry.size || entry.price || entry.status;
+  const featuredIn = projectsFeaturing(entry.id);
 
   return (
     <div
@@ -156,6 +160,32 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
               entry.status !== 'sold_out' && <PieceInquiryButton entry={entry} />
             )}
           </div>
+
+          {/* Featured in — cross-link to projects */}
+          {featuredIn.length > 0 && (
+            <div className="mt-8 pt-6 border-t border-[#3a403c]">
+              <div
+                className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
+                style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+              >
+                {FEATURED_IN_LABEL[lang]}
+              </div>
+              <div className="flex flex-col gap-2">
+                {featuredIn.map((p) => (
+                  <Link
+                    key={p.id}
+                    href={`/projects/${p.id}`}
+                    className="group inline-flex items-baseline gap-2 text-[14px] text-[#c0c5c2] hover:text-white transition-colors"
+                  >
+                    <span style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}>
+                      {p.client} · {p.year}
+                    </span>
+                    <span className="text-[#8a9488] group-hover:text-white transition-colors">→</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </aside>
 
         {/* Gallery */}

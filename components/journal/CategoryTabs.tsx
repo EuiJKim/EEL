@@ -1,20 +1,20 @@
 import Link from 'next/link';
 import type { Category } from '@/types/journal';
 
-const TABS: { key: 'all' | Category; en: string; ko: string }[] = [
-  { key: 'all', en: 'All', ko: '전체' },
+const TABS: { key: Category; en: string; ko: string }[] = [
   { key: 'furniture', en: 'Furniture', ko: '가구' },
   { key: 'object', en: 'Object', ko: '오브제' },
   { key: 'painting', en: 'Painting', ko: '페인팅' },
 ];
 
 interface Props {
-  active: 'all' | Category;
+  active: 'all' | Category | 'projects';
   /** Base path for tab links. '/' for home, '/available' for Available landing. */
   basePath?: '/' | '/available';
 }
 
 export default function CategoryTabs({ active, basePath = '/' }: Props) {
+  const projectsActive = active === 'projects';
   return (
     <nav
       className="flex flex-wrap items-center gap-1 md:gap-2"
@@ -22,7 +22,7 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
     >
       {TABS.map((t) => {
         const isActive = t.key === active;
-        const href = t.key === 'all' ? basePath : `${basePath}?category=${t.key}`;
+        const href = `${basePath}?category=${t.key}`;
         return (
           <Link
             key={t.key}
@@ -39,11 +39,13 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
         );
       })}
       <Link
-        href="/book"
-        className="text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left"
-        style={{ color: '#8a9488' }}
+        href="/projects"
+        className={`tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left ${
+          projectsActive ? 'text-[15px]' : 'text-[12px]'
+        }`}
+        style={{ color: projectsActive ? '#F2EDE4' : '#8a9488' }}
       >
-        Book
+        Projects
       </Link>
     </nav>
   );

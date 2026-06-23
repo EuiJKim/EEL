@@ -41,7 +41,7 @@ export default function MobileHeader() {
         >
           {STUDIO.name}
         </Link>
-        <div className="flex flex-col items-end gap-2 pt-0.5">
+        <div className="flex flex-col items-end gap-2 leading-none">
           <LiveClock size="sm" compact />
           <button
             onClick={toggle}

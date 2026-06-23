@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { STUDIO } from '@/data/studio';
 
 interface Props {
-  /** Visual size — sm (default) for sidebar/mobile, lg for legacy large headers. */
-  size?: 'sm' | 'lg';
-  /** If true, render in 2 lines (day+date on one line). Otherwise 3 lines. */
+  /** Visual size — sm (default), lg, or xl (Porto Rocha-style hero clock). */
+  size?: 'sm' | 'lg' | 'xl';
+  /** @deprecated kept for caller compatibility; clock is always 2 lines now. */
   compact?: boolean;
 }
 
@@ -16,7 +16,7 @@ interface Props {
  * updates every second. Time digits use tabular-nums so the colon position
  * doesn't shift as seconds tick.
  */
-export default function LiveClock({ size = 'sm', compact = false }: Props) {
+export default function LiveClock({ size = 'sm' }: Props) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -25,7 +25,12 @@ export default function LiveClock({ size = 'sm', compact = false }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  const sizeClass = size === 'lg' ? 'text-lg leading-[1.6]' : 'text-sm leading-[1.6]';
+  const sizeClass =
+    size === 'xl'
+      ? 'text-[16px] md:text-[18px] leading-[1.4]'
+      : size === 'lg'
+      ? 'text-lg leading-[1.6]'
+      : 'text-sm leading-[1.6]';
 
   if (!now) {
     return (
@@ -33,18 +38,8 @@ export default function LiveClock({ size = 'sm', compact = false }: Props) {
         className={`opacity-0 select-none ${sizeClass}`}
         style={{ fontFamily: 'var(--font-inter), sans-serif' }}
       >
-        {compact ? (
-          <>
-            <div>Thursday, May 19</div>
-            <div>Seoul · 00:00:00</div>
-          </>
-        ) : (
-          <>
-            <div>Thursday</div>
-            <div>May 19</div>
-            <div>Seoul · 00:00:00</div>
-          </>
-        )}
+        <div>Thursday, May 19</div>
+        <div>Seoul · 00:00:00</div>
       </div>
     );
   }
@@ -62,19 +57,8 @@ export default function LiveClock({ size = 'sm', compact = false }: Props) {
         fontVariantNumeric: 'tabular-nums',
       }}
     >
-      {compact ? (
-        <>
-          <div>
-            {day}, {date} · {STUDIO.city}
-          </div>
-          <div>{time}</div>
-        </>
-      ) : (
-        <>
-          <div>{day}, {date} · {STUDIO.city}</div>
-          <div>{time}</div>
-        </>
-      )}
+      <div>{day}, {date}</div>
+      <div>{STUDIO.city} · {time}</div>
     </div>
   );
 }
