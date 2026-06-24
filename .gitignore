@@ -52,3 +52,6 @@ public/og-source.*
 /sections/
 /snippets/
 /templates/
+
+# Brainstorm visual companion artifacts
+.superpowers/
