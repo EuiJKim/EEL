@@ -38,7 +38,7 @@ const VARIANT: Record<
   large: {
     image: 'aspect-[4/5]',
     title: 'text-lg md:text-xl leading-[1.2]',
-    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleWrap: 'whitespace-nowrap overflow-hidden text-ellipsis',
     titleFont: 'var(--font-inter), sans-serif',
     titleWeight: 600,
     sizes: '(max-width: 768px) 100vw, 45vw',
@@ -46,7 +46,7 @@ const VARIANT: Record<
   medium: {
     image: 'aspect-[4/5]',
     title: 'text-base leading-[1.2]',
-    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleWrap: 'whitespace-nowrap overflow-hidden text-ellipsis',
     titleFont: 'var(--font-inter), sans-serif',
     titleWeight: 600,
     sizes: '(max-width: 768px) 100vw, 33vw',
@@ -54,7 +54,7 @@ const VARIANT: Record<
   small: {
     image: 'aspect-square',
     title: 'text-[13px] md:text-[14px] leading-[1.18]',
-    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleWrap: 'whitespace-nowrap overflow-hidden text-ellipsis',
     titleFont: 'var(--font-inter), sans-serif',
     titleWeight: 600,
     sizes: '(max-width: 768px) 50vw, 22vw',
@@ -77,8 +77,21 @@ export default function GridCard({
       className="group block"
       style={{ fontFamily: 'var(--font-inter), sans-serif' }}
     >
+      {/* Image — first, so images top-align across a row regardless of
+          caption height (prevents staggered/jagged rows) */}
+      <div className={`relative w-full ${v.image} overflow-hidden bg-[#2a2e2c] rounded-lg`}>
+        <Image
+          src={entry.image}
+          alt={entry.title}
+          fill
+          sizes={v.sizes}
+          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+      </div>
+
       {/* Meta row */}
-      <div className="flex items-center gap-2.5 mb-2.5">
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 mt-3 mb-1.5">
         <span
           className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
@@ -100,7 +113,7 @@ export default function GridCard({
           <>
             <span className="text-[#bbb] text-[10px]">·</span>
             <span
-              className="text-[10px] tracking-[0.18em] uppercase"
+              className="text-[10px] tracking-[0.18em] uppercase whitespace-nowrap"
               style={{
                 fontFamily: 'var(--font-staatliches), sans-serif',
                 color: STATUS_COLOR[entry.status],
@@ -114,23 +127,11 @@ export default function GridCard({
 
       {/* Title */}
       <h3
-        className={`${v.title} ${v.titleWrap} text-[#F2EDE4] mb-3 tracking-[-0.005em] group-hover:text-white transition-colors duration-300`}
+        className={`${v.title} ${v.titleWrap} text-[#F2EDE4] tracking-[-0.005em] group-hover:text-white transition-colors duration-300`}
         style={{ fontFamily: v.titleFont, fontWeight: v.titleWeight }}
       >
         {entry.title}
       </h3>
-
-      {/* Image */}
-      <div className={`relative w-full ${v.image} overflow-hidden bg-[#2a2e2c] rounded-lg`}>
-        <Image
-          src={entry.image}
-          alt={entry.title}
-          fill
-          sizes={v.sizes}
-          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-      </div>
     </Link>
   );
 }
