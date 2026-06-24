@@ -21,20 +21,67 @@ const CATEGORY_LABEL = {
   ko: { furniture: '가구', object: '오브제', painting: '페인팅' },
 };
 
-export default function GridCard({ entry }: { entry: FeedEntry }) {
+export type CardVariant = 'hero' | 'large' | 'medium' | 'small';
+
+const VARIANT: Record<
+  CardVariant,
+  { image: string; title: string; titleWrap: string; titleFont: string; titleWeight: number; sizes: string }
+> = {
+  hero: {
+    image: 'aspect-[4/5] md:aspect-[3/2]',
+    title: 'text-2xl md:text-4xl leading-[1.1] text-balance',
+    titleWrap: '',
+    titleFont: 'var(--font-gravitas), serif',
+    titleWeight: 400,
+    sizes: '(max-width: 768px) 100vw, 70vw',
+  },
+  large: {
+    image: 'aspect-[4/5]',
+    title: 'text-lg md:text-xl leading-[1.2]',
+    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleFont: 'var(--font-inter), sans-serif',
+    titleWeight: 600,
+    sizes: '(max-width: 768px) 100vw, 45vw',
+  },
+  medium: {
+    image: 'aspect-[4/5]',
+    title: 'text-base leading-[1.2]',
+    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleFont: 'var(--font-inter), sans-serif',
+    titleWeight: 600,
+    sizes: '(max-width: 768px) 100vw, 33vw',
+  },
+  small: {
+    image: 'aspect-square',
+    title: 'text-[13px] md:text-[14px] leading-[1.18]',
+    titleWrap: 'whitespace-nowrap overflow-hidden',
+    titleFont: 'var(--font-inter), sans-serif',
+    titleWeight: 600,
+    sizes: '(max-width: 768px) 50vw, 22vw',
+  },
+};
+
+export default function GridCard({
+  entry,
+  variant = 'small',
+}: {
+  entry: FeedEntry;
+  variant?: CardVariant;
+}) {
   const { lang } = useLanguage();
+  const v = VARIANT[variant];
 
   return (
     <Link
       href={`/works/${entry.id}`}
       className="group block"
-      style={{ fontFamily: "var(--font-inter), sans-serif" }}
+      style={{ fontFamily: 'var(--font-inter), sans-serif' }}
     >
       {/* Meta row */}
       <div className="flex items-center gap-2.5 mb-2.5">
         <span
           className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
-          style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+          style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           {CATEGORY_LABEL[lang][entry.category]}
         </span>
@@ -43,7 +90,7 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
             <span className="text-[#bbb] text-[10px]">·</span>
             <span
               className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
-              style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+              style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
             >
               {entry.year}
             </span>
@@ -55,7 +102,7 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
             <span
               className="text-[10px] tracking-[0.18em] uppercase"
               style={{
-                fontFamily: "var(--font-staatliches), sans-serif",
+                fontFamily: 'var(--font-staatliches), sans-serif',
                 color: STATUS_COLOR[entry.status],
               }}
             >
@@ -67,19 +114,19 @@ export default function GridCard({ entry }: { entry: FeedEntry }) {
 
       {/* Title */}
       <h3
-        className="text-[13px] md:text-[14px] leading-[1.18] text-[#F2EDE4] mb-3 tracking-[-0.005em] whitespace-nowrap overflow-hidden group-hover:text-white transition-colors duration-300"
-        style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 600 }}
+        className={`${v.title} ${v.titleWrap} text-[#F2EDE4] mb-3 tracking-[-0.005em] group-hover:text-white transition-colors duration-300`}
+        style={{ fontFamily: v.titleFont, fontWeight: v.titleWeight }}
       >
         {entry.title}
       </h3>
 
       {/* Image */}
-      <div className="relative w-full aspect-square overflow-hidden bg-[#2a2e2c] rounded-lg">
+      <div className={`relative w-full ${v.image} overflow-hidden bg-[#2a2e2c] rounded-lg`}>
         <Image
           src={entry.image}
           alt={entry.title}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes={v.sizes}
           className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
