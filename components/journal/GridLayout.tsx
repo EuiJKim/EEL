@@ -1,9 +1,10 @@
 import { JOURNAL_ENTRIES } from '@/data/journal-entries';
 import type { Category } from '@/types/journal';
+import { buildSpreads } from '@/lib/journal/buildSpreads';
 import GridCard from './GridCard';
+import SpreadRow from './SpreadRow';
 import CategoryTabs from './CategoryTabs';
 import AboutPopover from './AboutPopover';
-import Link from 'next/link';
 
 interface Props {
   category?: 'all' | Category;
@@ -23,6 +24,7 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
   if (availableOnly) {
     entries = entries.filter((e) => e.status === 'available');
   }
+  const layout = buildSpreads(entries);
 
   return (
     <main
@@ -67,16 +69,19 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
         <div className="h-px bg-[#2a2e2c] mt-3 md:mt-6" />
       </div>
 
-      {/* Grid */}
-      <div className="px-6 md:px-10 pt-6 md:pt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-5 md:gap-x-6 gap-y-10 md:gap-y-14 pb-16 md:pb-24">
-        {entries.length === 0 ? (
-          <div className="col-span-full py-16 text-center text-[#8a9488] text-sm">
-            현재 구매 가능한 작품이 없습니다. Commission으로 의뢰해주세요.
-          </div>
-        ) : (
-          entries.map((entry) => <GridCard key={entry.id} entry={entry} />)
-        )}
-      </div>
+      {/* Editorial spreads: hero + rhythm rows */}
+      {entries.length === 0 ? (
+        <div className="px-6 md:px-10 py-16 text-center text-[#8a9488] text-sm">
+          현재 구매 가능한 작품이 없습니다. Commission으로 의뢰해주세요.
+        </div>
+      ) : (
+        <div className="px-6 md:px-10 pt-6 md:pt-2 pb-16 md:pb-24 flex flex-col gap-y-12 md:gap-y-20">
+          {layout.hero && <GridCard entry={layout.hero} variant="hero" />}
+          {layout.rows.map((row, ri) => (
+            <SpreadRow key={ri} row={row} />
+          ))}
+        </div>
+      )}
 
     </main>
   );
