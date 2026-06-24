@@ -13,25 +13,31 @@ interface Props {
   basePath?: '/' | '/available';
 }
 
+/**
+ * Active state is color + underline only — NOT a font-size change. Changing
+ * the size on the active tab reflowed the wrapping row (the active tab would
+ * jump to the next line). Constant size keeps the row stable.
+ */
+const tabCls =
+  'text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center border-b-2 transition-colors duration-150';
+
 export default function CategoryTabs({ active, basePath = '/' }: Props) {
   const projectsActive = active === 'projects';
   return (
     <nav
-      className="flex flex-wrap items-center gap-1 md:gap-2"
-      style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+      className="flex flex-wrap items-center gap-x-1 gap-y-0.5 md:gap-x-2"
+      style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
     >
       {TABS.map((t) => {
         const isActive = t.key === active;
-        const href = `${basePath}?category=${t.key}`;
         return (
           <Link
             key={t.key}
-            href={href}
-            className={`tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left ${
-              isActive ? 'text-[15px]' : 'text-[12px]'
-            }`}
+            href={`${basePath}?category=${t.key}`}
+            className={tabCls}
             style={{
               color: isActive ? '#F2EDE4' : '#8a9488',
+              borderColor: isActive ? '#F2EDE4' : 'transparent',
             }}
           >
             {t.en}
@@ -40,10 +46,11 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
       })}
       <Link
         href="/projects"
-        className={`tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center transition-all duration-150 hover:scale-[1.18] origin-left ${
-          projectsActive ? 'text-[15px]' : 'text-[12px]'
-        }`}
-        style={{ color: projectsActive ? '#F2EDE4' : '#8a9488' }}
+        className={tabCls}
+        style={{
+          color: projectsActive ? '#F2EDE4' : '#8a9488',
+          borderColor: projectsActive ? '#F2EDE4' : 'transparent',
+        }}
       >
         Projects
       </Link>
