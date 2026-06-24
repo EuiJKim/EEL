@@ -29,10 +29,10 @@ const VARIANT: Record<
 > = {
   hero: {
     image: 'aspect-[4/5] md:aspect-[3/2]',
-    title: 'text-2xl md:text-4xl leading-[1.1] text-balance',
+    title: 'text-xl md:text-2xl leading-[1.2] text-balance',
     titleWrap: '',
-    titleFont: 'var(--font-gravitas), serif',
-    titleWeight: 400,
+    titleFont: 'var(--font-inter), sans-serif',
+    titleWeight: 600,
     sizes: '(max-width: 768px) 100vw, 70vw',
   },
   large: {
