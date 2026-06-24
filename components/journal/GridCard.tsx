@@ -21,7 +21,7 @@ const CATEGORY_LABEL = {
   ko: { furniture: '가구', object: '오브제', painting: '페인팅' },
 };
 
-export type CardVariant = 'hero' | 'large' | 'medium' | 'small';
+export type CardVariant = 'hero' | 'wide' | 'large' | 'medium' | 'small';
 
 const VARIANT: Record<
   CardVariant,
@@ -31,6 +31,16 @@ const VARIANT: Record<
     image: 'aspect-[4/5] md:aspect-[3/2]',
     title: 'text-xl md:text-2xl leading-[1.2] text-balance',
     titleWrap: '',
+    titleFont: 'var(--font-inter), sans-serif',
+    titleWeight: 600,
+    sizes: '(max-width: 768px) 100vw, 70vw',
+  },
+  // Full-width closing band for a lone tail item (wide on desktop so it
+  // doesn't become a giant portrait, full-width portrait on mobile).
+  wide: {
+    image: 'aspect-[4/5] md:aspect-[3/2]',
+    title: 'text-lg md:text-xl leading-[1.2]',
+    titleWrap: 'whitespace-nowrap overflow-hidden text-ellipsis',
     titleFont: 'var(--font-inter), sans-serif',
     titleWeight: 600,
     sizes: '(max-width: 768px) 100vw, 70vw',

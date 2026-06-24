@@ -4,11 +4,17 @@ import GridCard from './GridCard';
 /** One editorial row. Reflows to mobile: largeDuo → big then 2-col smalls;
  *  triptych → 2-col; duo → stacked. */
 export default function SpreadRow({ row }: { row: SpreadRowData }) {
+  // A lone leftover item (any row kind) closes the feed as a full-width band
+  // instead of sitting orphaned in a half-empty multi-col grid on desktop.
+  if (row.items.length === 1) {
+    return <GridCard entry={row.items[0]} variant="wide" />;
+  }
+
   if (row.kind === 'largeDuo') {
     const [large, ...smalls] = row.items;
     if (!large) return null;
     if (smalls.length === 0) {
-      return <GridCard entry={large} variant="large" />;
+      return <GridCard entry={large} variant="wide" />;
     }
     return (
       <div className="flex flex-col md:flex-row gap-x-5 gap-y-8 md:gap-6">
