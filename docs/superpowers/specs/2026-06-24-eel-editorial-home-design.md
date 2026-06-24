@@ -107,6 +107,6 @@
 
 ---
 
-## 8. 미해결 — 사용자 확정 필요
+## 8. 확정 사항
 
-1. **히어로 대표작**: 어느 작품을 `featured`로? (기본 제안: Turquoise Resin Table). 여러 점을 featured로 두고 로테이션할지도 선택지.
+1. **히어로 대표작**: **Turquoise Resin Table** (`table-first`)에 `featured: true`. 나중에 플래그만 옮기면 변경 가능 — 단일 점 방식(로테이션 없음)으로 시작.
