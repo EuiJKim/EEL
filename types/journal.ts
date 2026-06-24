@@ -13,6 +13,7 @@ export interface FeedEntry {
   price?: string; // '₩ 1,500,000'
   status?: PieceStatus;
   gallery?: string[]; // additional images for detail page
+  featured?: boolean; // hero piece on the editorial home (one piece)
 }
 
 export interface FeaturedWork {

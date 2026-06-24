@@ -17,6 +17,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     size: 'Ø 74 - 76 cm  /  H 76 cm',
     price: '₩ 1,500,000',
     status: 'sold_out',
+    featured: true,
     gallery: [
       '/products/table-first/1.jpg',
       '/products/table-first/2.jpg',
