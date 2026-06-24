@@ -59,7 +59,7 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
           {project.title[lang]}
         </h1>
         {project.summary && (
-          <p className="text-[14px] md:text-[15px] text-[#c0c5c2] leading-[1.7] max-w-[640px] mb-5">
+          <p className="text-[14px] md:text-[15px] text-[#c0c5c2] leading-[1.7] max-w-[640px] md:max-w-none mb-5">
             {project.summary[lang]}
           </p>
         )}

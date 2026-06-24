@@ -17,11 +17,11 @@ export default function SpreadRow({ row }: { row: SpreadRowData }) {
       return <GridCard entry={large} variant="wide" />;
     }
     return (
-      <div className="flex flex-col md:flex-row gap-x-5 gap-y-8 md:gap-6">
+      <div className="flex flex-col md:flex-row gap-y-12 md:gap-6">
         <div className="md:flex-[2]">
           <GridCard entry={large} variant="large" />
         </div>
-        <div className="md:flex-1 grid grid-cols-2 md:grid-cols-1 gap-x-5 gap-y-8 md:gap-6">
+        <div className="md:flex-1 grid grid-cols-2 md:grid-cols-1 gap-x-12 gap-y-12 md:gap-6">
           {smalls.map((e) => (
             <GridCard key={e.id} entry={e} variant="small" />
           ))}
@@ -32,7 +32,7 @@ export default function SpreadRow({ row }: { row: SpreadRowData }) {
 
   if (row.kind === 'triptych') {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-8 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-12 gap-y-12 md:gap-6">
         {row.items.map((e) => (
           <GridCard key={e.id} entry={e} variant="small" />
         ))}
@@ -42,7 +42,7 @@ export default function SpreadRow({ row }: { row: SpreadRowData }) {
 
   // duo
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-6">
       {row.items.map((e) => (
         <GridCard key={e.id} entry={e} variant="medium" />
       ))}
