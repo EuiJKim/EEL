@@ -25,7 +25,7 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
   const projectsActive = active === 'projects';
   return (
     <nav
-      className="flex flex-wrap items-center gap-x-1 gap-y-0.5 md:gap-x-2"
+      className="flex items-center justify-between w-full md:w-auto md:flex-wrap md:justify-start md:gap-x-2"
       style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
     >
       {TABS.map((t) => {
@@ -36,7 +36,7 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
             href={`${basePath}?category=${t.key}`}
             className={tabCls}
             style={{
-              color: isActive ? '#F2EDE4' : '#8a9488',
+              color: isActive ? '#F2EDE4' : '#c0c5c2',
               borderColor: isActive ? '#F2EDE4' : 'transparent',
             }}
           >
@@ -48,7 +48,7 @@ export default function CategoryTabs({ active, basePath = '/' }: Props) {
         href="/projects"
         className={tabCls}
         style={{
-          color: projectsActive ? '#F2EDE4' : '#8a9488',
+          color: projectsActive ? '#F2EDE4' : '#c0c5c2',
           borderColor: projectsActive ? '#F2EDE4' : 'transparent',
         }}
       >

@@ -83,12 +83,12 @@ export default function AboutPopover() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className={`text-[12px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
+        className={`text-[14px] tracking-[0.18em] md:tracking-[0.2em] uppercase px-2.5 md:px-3 py-2 min-h-[44px] flex items-center gap-1.5 whitespace-nowrap transition-colors ${
           open ? 'border-b' : 'border-b border-transparent'
         }`}
         style={{
           fontFamily: 'var(--font-staatliches), sans-serif',
-          color: open ? '#F2EDE4' : '#8a9488',
+          color: open ? '#F2EDE4' : '#c0c5c2',
           borderColor: open ? '#F2EDE4' : 'transparent',
         }}
       >
