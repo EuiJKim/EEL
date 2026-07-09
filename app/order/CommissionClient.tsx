@@ -175,7 +175,7 @@ export default function CommissionClient() {
         {colorName}
       </p>
 
-      <div className="flex flex-wrap gap-3 mb-6" style={{ minHeight: '88px' }}>
+      <div className="grid grid-cols-5 gap-x-3 gap-y-4 mb-6" style={{ minHeight: '88px' }}>
         {COLOR_CATEGORIES[selectedCategory].colors.map((c) => (
           <button key={c.hex} type="button"
             onClick={() => { setSelectedColor(c.hex); setColorName(c.name); setPreviewColor(c.hex); }}
@@ -354,16 +354,19 @@ export default function CommissionClient() {
     /* 5 — Inquiry */
     <div key="inquiry">
 
-      <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Inquiry</h2>
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-[#999] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-white" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Inquiry</h2>
         {!submitted && (
           <button form="inquiry-form" type="submit" disabled={submitting}
-            className="bg-white text-black border-none py-2.5 px-8 text-xs tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity disabled:opacity-40 shrink-0"
+            className="bg-white text-black border-none py-1.5 px-4 text-xs tracking-[0.08em] cursor-pointer hover:opacity-75 transition-opacity disabled:opacity-40 shrink-0"
             style={{ fontFamily: "'Telex', sans-serif" }}>
             {submitting ? '전송 중...' : '문의 보내기'}
           </button>
         )}
+      </div>
+      <div className="flex flex-col gap-1 mb-6">
+        <p className="text-sm text-[#999] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
+        <p className="text-[11px] text-[#666] tracking-[0.02em]" style={{ fontFamily: "'Telex', sans-serif" }}>레진 작업 특성상 미세한 기포나 표면 흔적이 생길 수 있습니다.</p>
       </div>
 
       <div className="border-t border-b border-[#222] py-4 mb-7">
