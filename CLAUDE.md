@@ -24,7 +24,7 @@ bun run prisma:gen   # Prisma 클라이언트 재생성
 
 ### 라우팅 함정
 - `/order` = Commission 빌더 / `/orders` = 내 주문 내역 — **헷갈리지 말 것**
-- `/journal` = Porto Rocha 스타일 작업 피드 (현재 로컬 전용, main 미반영). 기존 `/`는 그대로 둠
+- `/journal` = Porto Rocha 스타일 작업 피드 (main 반영 완료). 기존 `/`는 그대로 둠
 
 ### 데이터
 - `products` 페이지는 **Prisma 아님 — Supabase 직접 쿼리** (DB pooler 호환). 제품/이미지는 `public/products/` 하드코딩 패치
@@ -46,7 +46,6 @@ bun run prisma:gen   # Prisma 클라이언트 재생성
 ## 알려진 함정
 
 - `product_images.id`: Prisma 스키마(String) vs 실제 DB(integer) 불일치 → P2032 에러. Prisma로 이 테이블 쿼리 금지
-- 레거시/미사용 컴포넌트 다수 (`BTOBuilder`, `TableHero`, `CraftBridge`, `Footer`, `TablePreview3DLegacy` 등) — 수정 대상 아님
 - Next.js `Script`(next/script)는 jsdom 테스트에서 inline children 미렌더 → 테스트 시 mock 필요
 
 ## 디자인
@@ -74,10 +73,9 @@ bun run prisma:gen   # Prisma 클라이언트 재생성
 - 진행 저장·재개 → checkpoint
 - 코드 품질·헬스체크 → health
 
-## 작업 환경 (Windows + git 워크트리)
+## 작업 환경 (Windows)
 
-- **dev 서버는 워크트리에서 실행** — `.claude/worktrees/recursing-kepler`. 메인 EEL 폴더에서 띄우면 `/journal` 등 신규 라우트 404
-- `.env.local`은 메인 EEL 폴더에 있고 워크트리엔 없음 — 새 env는 양쪽 + Vercel 대시보드 별도 등록
+- dev 서버는 메인 EEL 폴더에서 직접 실행 (`bun run dev`) — 별도 워크트리 불필요
 - Vercel 환경변수 변경은 자동 배포 안 됨 — Deployments → Redeploy(캐시 OFF) 수동
 - git pull/rebase가 `.claude/settings.local.json` 변경으로 자주 막힘 → `git stash push .claude/` 후 진행
 - one-off 스크립트는 `node -e` (`bun run -e`는 prisma postinstall 노이즈 발생)
