@@ -107,7 +107,7 @@ export default function Sidebar() {
             type="button"
             onClick={() => setAboutOpen((v) => !v)}
             aria-expanded={aboutOpen}
-            className="flex items-center gap-1.5 text-[13px] tracking-[0.18em] uppercase text-[#F2EDE4] hover:opacity-80 transition-opacity"
+            className="flex items-center gap-1.5 text-[14px] tracking-[0.18em] uppercase text-[#F2EDE4] hover:opacity-80 transition-opacity"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             {t.about}
@@ -142,7 +142,7 @@ export default function Sidebar() {
         {/* Works */}
         <div className="mt-6">
           <div
-            className="text-[13px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-2"
+            className="text-[14px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-2"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             {t.works}
@@ -168,7 +168,7 @@ export default function Sidebar() {
         <div className="mt-5">
           <Link
             href="/projects"
-            className="block text-[13px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-2 hover:opacity-80 transition-opacity"
+            className="block text-[14px] tracking-[0.18em] uppercase text-[#F2EDE4] mb-2 hover:opacity-80 transition-opacity"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             {t.projects}

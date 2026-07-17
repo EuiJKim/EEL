@@ -38,8 +38,8 @@ export default function LiveClock({ size = 'sm' }: Props) {
         className={`opacity-0 select-none ${sizeClass}`}
         style={{ fontFamily: 'var(--font-inter), sans-serif' }}
       >
-        <div>Thursday, May 19</div>
-        <div>Seoul · 00:00:00</div>
+        <div>Seoul · Thursday, May 19</div>
+        <div>00:00:00</div>
       </div>
     );
   }
@@ -57,8 +57,8 @@ export default function LiveClock({ size = 'sm' }: Props) {
         fontVariantNumeric: 'tabular-nums',
       }}
     >
-      <div>{day}, {date}</div>
-      <div>{STUDIO.city} · {time}</div>
+      <div>{STUDIO.city} · {day}, {date}</div>
+      <div>{time}</div>
     </div>
   );
 }
