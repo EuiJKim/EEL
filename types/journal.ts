@@ -14,6 +14,8 @@ export interface FeedEntry {
   status?: PieceStatus;
   gallery?: string[]; // additional images for detail page
   featured?: boolean; // hero piece on the editorial home (one piece)
+  cardImagePosition?: string; // CSS object-position for the feed card thumbnail only (detail page gallery stays uncropped)
+  cardAspectRatio?: string; // CSS aspect-ratio override for the feed card thumbnail only, e.g. '4 / 3'
 }
 
 export interface FeaturedWork {

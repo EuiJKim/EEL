@@ -24,7 +24,10 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
   if (availableOnly) {
     entries = entries.filter((e) => e.status === 'available');
   }
-  const layout = buildSpreads(entries);
+  // Newest arrivals (Turquoise/Glacier Blue, Black Coated/Ceramic Tile) lead
+  // the furniture feed as two equal-weight duo rows instead of a hero card.
+  const leadingDuoRows = category === 'all' || category === 'furniture' ? 2 : 0;
+  const layout = buildSpreads(entries, leadingDuoRows);
 
   return (
     <main

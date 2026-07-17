@@ -9,6 +9,31 @@ import type { FeedEntry } from '@/types/journal';
 export const JOURNAL_ENTRIES: FeedEntry[] = [
   // ── FURNITURE ──────────────────────────────────────────────
   {
+    id: 'black-purple-table',
+    category: 'furniture',
+    title: 'Black & Deep Purple Resin Side Table',
+    image: '/products/black-purple-table/1.jpg',
+    year: '2026',
+    size: 'Ø 36 cm  /  H 49.5 cm',
+    price: '₩ 1,500,000',
+    status: 'available',
+    featured: true,
+    cardImagePosition: 'center 85%',
+    cardAspectRatio: '1.05',
+    gallery: [
+      '/products/black-purple-table/1.jpg',
+      '/products/black-purple-table/2.jpg',
+      '/products/black-purple-table/3.jpg',
+      '/products/black-purple-table/4.jpg',
+      '/products/black-purple-table/5.jpg',
+      '/products/black-purple-table/6.jpg',
+      '/products/black-purple-table/7.jpg',
+      '/products/black-purple-table/8.jpg',
+      '/products/black-purple-table/9.jpg',
+      '/products/black-purple-table/10.jpg',
+    ],
+  },
+  {
     id: 'table-first',
     category: 'furniture',
     title: 'Turquoise Resin Table',
@@ -17,7 +42,6 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     size: 'Ø 74 - 76 cm  /  H 76 cm',
     price: '₩ 1,500,000',
     status: 'sold_out',
-    featured: true,
     gallery: [
       '/products/table-first/1.jpg',
       '/products/table-first/2.jpg',

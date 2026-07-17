@@ -161,13 +161,21 @@ export default async function ProductsPage({
   ];
 
   // Override product data
-  const patchedProducts = [...(products ?? []), ...extraProducts].map((p) => {
+  const allProducts = [...(products ?? []), ...extraProducts].map((p) => {
     if (p.id === 'table-first') return { ...p, name: 'Turquoise Resin Table' };
     if (p.id === 'table-second') return { ...p, name: 'Leaking Light Cabinet' };
     if (p.id === 'acrylic-blue-leg') return { ...p, name: 'Acrylic Table' };
     if (p.id === 'cabinet-black') return { ...p, name: 'Glacier Blue Resin Table' };
     return p;
   });
+
+  // Newest pieces first: row 1 = Turquoise + Glacier Blue, row 2 = Black Coated + Ceramic Tile
+  const newestOrder = ['table-first', 'cabinet-black', 'black-table', 'tile-table'];
+  const newestProducts = newestOrder
+    .map((id) => allProducts.find((p) => p.id === id))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const remainingProducts = allProducts.filter((p) => !newestOrder.includes(p.id));
+  const patchedProducts = [...newestProducts, ...remainingProducts];
   const otherSpecs = (allSpecs ?? []).filter(
     (s) => s.product_id !== 'table-first' && s.product_id !== 'table-second' && s.product_id !== 'acrylic-blue-leg' && s.product_id !== 'cabinet-black'
   );

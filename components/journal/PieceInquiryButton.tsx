@@ -108,8 +108,8 @@ export default function PieceInquiryButton({ entry }: Props) {
           reset();
           setOpen(true);
         }}
-        className="inline-block text-center px-5 py-3 bg-[#F2EDE4] text-[#1a1d1b] text-[11px] tracking-[0.2em] uppercase hover:bg-white transition-colors min-h-[44px]"
-        style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
+        className="inline-block text-center px-5 py-3 bg-[#F2EDE4] text-[#1a1d1b] text-[12px] tracking-[0.16em] uppercase hover:bg-white transition-colors min-h-[44px]"
+        style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 500 }}
       >
         {lang === 'ko' ? '이 제품 구매하기 →' : 'Inquire about this piece →'}
       </button>

@@ -27,8 +27,8 @@ const CATEGORY_LABEL = {
 };
 
 const SPEC_LABEL = {
-  en: { size: 'Size', price: 'Price', status: 'Status' },
-  ko: { size: '사이즈', price: '가격', status: '상태' },
+  en: { size: 'Size', price: 'Price' },
+  ko: { size: '사이즈', price: '가격' },
 };
 
 const COMMISSION_LABEL = {
@@ -39,7 +39,7 @@ const COMMISSION_LABEL = {
 export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
   const { lang } = useLanguage();
   const gallery = entry.gallery?.length ? entry.gallery : [entry.image];
-  const hasSpec = entry.size || entry.price || entry.status;
+  const hasSpec = entry.size || entry.price;
   const featuredIn = projectsFeaturing(entry.id);
 
   return (
@@ -76,7 +76,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
 
       <div className="flex flex-col md:flex-row">
         {/* Info column */}
-        <aside className="md:w-[40%] md:max-w-[480px] md:sticky md:top-14 md:h-[calc(100vh-3.5rem)] md:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-6 md:px-10 py-10 md:py-14">
+        <aside className="md:w-[40%] md:max-w-[480px] md:sticky md:top-14 md:h-[calc(100vh-3.5rem)] md:flex md:flex-col px-6 md:px-10 py-10 md:py-14">
           {/* Category + year meta */}
           <div
             className="flex items-center gap-2.5 text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
@@ -89,16 +89,28 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
                 <span>{entry.year}</span>
               </>
             )}
+            {entry.status && (
+              <>
+                <span className="text-[#4a4f4b]">·</span>
+                <span style={{ color: STATUS_COLOR[entry.status] }}>
+                  {STATUS_LABEL[lang][entry.status]}
+                </span>
+              </>
+            )}
           </div>
 
-          {/* Title */}
+          {/* Title — wraps on mobile (no room to overflow into), single line
+              on desktop where it can overflow past the column without being
+              clipped (kept outside the scrollable region below, since
+              overflow-y-auto there forces overflow-x to clip too). */}
           <h1
-            className="text-2xl md:text-3xl lg:text-[34px] text-[#e8ebe8] mb-6 tracking-[-0.005em] leading-[1.12] whitespace-nowrap overflow-hidden"
+            className="text-2xl md:text-3xl lg:text-[34px] text-[#e8ebe8] mb-6 tracking-[-0.005em] leading-[1.12] text-balance md:whitespace-nowrap"
             style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}
           >
             {entry.title}
           </h1>
 
+          <div className="md:flex-1 md:min-h-0 md:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {/* Specs */}
           {hasSpec && (
             <dl className="space-y-2 mb-7">
@@ -122,22 +134,6 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
                     {SPEC_LABEL[lang].price}
                   </dt>
                   <dd className="text-[15px] text-[#e8ebe8]">{entry.price}</dd>
-                </div>
-              )}
-              {entry.status && (
-                <div className="flex items-baseline gap-3">
-                  <dt
-                    className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
-                    style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
-                  >
-                    {SPEC_LABEL[lang].status}
-                  </dt>
-                  <dd
-                    className="text-[13px] tracking-[0.2em] uppercase"
-                    style={{ fontFamily: "var(--font-staatliches), sans-serif", color: STATUS_COLOR[entry.status] }}
-                  >
-                    {STATUS_LABEL[lang][entry.status]}
-                  </dd>
                 </div>
               )}
             </dl>
@@ -186,6 +182,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
               </div>
             </div>
           )}
+          </div>
         </aside>
 
         {/* Gallery */}

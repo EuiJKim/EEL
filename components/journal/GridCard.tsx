@@ -28,8 +28,8 @@ const VARIANT: Record<
   { image: string; title: string; titleWrap: string; titleFont: string; titleWeight: number; sizes: string }
 > = {
   hero: {
-    image: 'aspect-[4/5] md:aspect-[3/2]',
-    title: 'text-xl md:text-2xl leading-[1.2] text-balance',
+    image: 'aspect-[4/5]',
+    title: 'text-base whitespace-nowrap md:text-2xl md:whitespace-normal md:text-balance leading-[1.2]',
     titleWrap: '',
     titleFont: 'var(--font-inter), sans-serif',
     titleWeight: 600,
@@ -89,13 +89,17 @@ export default function GridCard({
     >
       {/* Image — first, so images top-align across a row regardless of
           caption height (prevents staggered/jagged rows) */}
-      <div className={`relative w-full ${v.image} overflow-hidden bg-[#2a2e2c] rounded-lg`}>
+      <div
+        className={`relative w-full ${v.image} overflow-hidden bg-[#2a2e2c] rounded-lg`}
+        style={entry.cardAspectRatio ? { aspectRatio: entry.cardAspectRatio } : undefined}
+      >
         <Image
           src={entry.image}
           alt={entry.title}
           fill
           sizes={v.sizes}
           className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
+          style={entry.cardImagePosition ? { objectPosition: entry.cardImagePosition } : undefined}
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>
