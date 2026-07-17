@@ -164,6 +164,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
     size: 'W 38 cm  /  D 40 cm  /  H 52 cm',
     price: '₩ 200,000',
     status: 'available',
+    cardAspectRatio: '4 / 5',
     gallery: [
       '/products/acrylic-blue-leg/1.jpg',
       '/products/acrylic-blue-leg/2.jpg',
