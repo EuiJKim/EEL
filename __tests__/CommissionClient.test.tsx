@@ -106,6 +106,37 @@ describe('CommissionClient', () => {
     expect(legsRow).toHaveTextContent('Wood · Pedestal');
   });
 
+  it('높이 미선택이면 추천 배지가 없고, 다이닝 높이(72–75) 선택 시 Stainless/Titanium에 추천 배지가 붙는다', () => {
+    render(<CommissionClient />);
+
+    clickNext(); // Color -> Shape
+    clickNext(); // Shape -> Size
+    clickNext(); // Size -> Height
+
+    fireEvent.click(screen.getByRole('button', { name: /72–75 cm/ }));
+    clickNext(); // Height -> Legs
+
+    const badges = screen.getAllByText('추천');
+    expect(badges).toHaveLength(2);
+    expect(screen.getByRole('button', { name: /Stainless/ })).toHaveTextContent('추천');
+    expect(screen.getByRole('button', { name: /Titanium/ })).toHaveTextContent('추천');
+    expect(screen.getByRole('button', { name: /Wood/ })).not.toHaveTextContent('추천');
+  });
+
+  it('로우 높이(40–50) 선택 시 Wood에만 추천 배지가 붙는다', () => {
+    render(<CommissionClient />);
+
+    clickNext(); // Color -> Shape
+    clickNext(); // Shape -> Size
+    clickNext(); // Size -> Height
+
+    fireEvent.click(screen.getByRole('button', { name: /40–50 cm/ }));
+    clickNext(); // Height -> Legs
+
+    expect(screen.getAllByText('추천')).toHaveLength(1);
+    expect(screen.getByRole('button', { name: /Wood/ })).toHaveTextContent('추천');
+  });
+
   it('Legs 스텝에서 미선택 시 다음 버튼이 비활성화되고, 소재+다리 선택 후 활성화된다', () => {
     render(<CommissionClient />);
 

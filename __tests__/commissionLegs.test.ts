@@ -5,6 +5,7 @@ import {
   isLegShapeAllowed,
   resolveLegShape,
   formatLegs,
+  recommendedLegMaterials,
 } from '@/data/commission-legs';
 
 describe('legShapesFor', () => {
@@ -70,5 +71,18 @@ describe('formatLegs', () => {
 describe('LEG_MATERIALS', () => {
   it('wood/stainless/titanium 순서로 3개', () => {
     expect(LEG_MATERIALS.map(m => m.value)).toEqual(['wood', 'stainless', 'titanium']);
+  });
+});
+
+describe('recommendedLegMaterials (제작 이력 기반 높이 추천)', () => {
+  it('다이닝 높이(72–75 cm)는 금속 추천 — 실제 H72+ 작품 전부 금속 페데스탈', () => {
+    expect(recommendedLegMaterials('72–75 cm')).toEqual(['stainless', 'titanium']);
+  });
+  it('로우 테이블 높이(30–40, 40–50 cm)는 Wood 추천 — 실제 로우 작품은 원목 커스텀 주력', () => {
+    expect(recommendedLegMaterials('30–40 cm')).toEqual(['wood']);
+    expect(recommendedLegMaterials('40–50 cm')).toEqual(['wood']);
+  });
+  it('높이 미선택이면 추천 없음', () => {
+    expect(recommendedLegMaterials(null)).toEqual([]);
   });
 });

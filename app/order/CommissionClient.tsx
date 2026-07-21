@@ -7,6 +7,7 @@ import type { TableShape } from '@/components/CommissionPreview3D';
 import { fireLeadEvent } from './fireLeadEvent';
 import {
   LEG_MATERIALS, LEG_SHAPES, legShapesFor, isLegShapeAllowed, resolveLegShape, formatLegs,
+  recommendedLegMaterials,
   type LegMaterial, type LegShapeValue,
 } from '@/data/commission-legs';
 import { getFromPrice, formatFromPrice } from '@/data/commission-pricing';
@@ -335,14 +336,26 @@ export default function CommissionClient() {
       <div className="flex gap-3 mb-8">
         {LEG_MATERIALS.map((m) => {
           const isActive = selectedLegMaterial === m.value;
+          const recommended = recommendedLegMaterials(selectedHeight).includes(m.value);
           return (
             <button key={m.value}
               onClick={() => {
                 setSelectedLegMaterial(m.value);
                 setSelectedLegs(resolveLegShape(m.value, selectedLegs, selectedShape));
               }}
-              className="flex-1 border py-6 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98]"
+              className="relative flex-1 border py-6 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98]"
               style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
+              {recommended && (
+                <span
+                  className="absolute top-2 right-2 text-[9px] tracking-[0.14em] uppercase px-1.5 py-0.5 border"
+                  style={{
+                    fontFamily: 'var(--font-staatliches), sans-serif',
+                    color: isActive ? '#0e0e0e' : '#e8e8e8',
+                    borderColor: isActive ? '#0e0e0e' : '#555',
+                  }}>
+                  추천
+                </span>
+              )}
               <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{m.label}</span>
               <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{m.desc}</span>
             </button>
