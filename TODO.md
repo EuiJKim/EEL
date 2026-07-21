@@ -67,7 +67,6 @@
 - [ ] `app/eel/` + `components/eel/*` — 다른 곳에서 링크되지 않는 고아 라우트 (과거 merge 충돌 해결 과정에서 유입된 것으로 보임, 삭제 검토 필요)
 - [ ] Prisma 스키마 타입 불일치 — `product_images.id` DB integer vs 스키마 String
 - [ ] products 페이지 외 다른 페이지들도 Prisma → Supabase 직접 쿼리 전환 검토
-- [ ] `__tests__/MetaPixel.test.tsx` — `@testing-library/react` 미설치로 `tsc --noEmit`에서 에러 (devDependency 설치 필요)
 
 ---
 
