@@ -61,6 +61,8 @@
 
 ## 현재 이슈
 
+- [ ] `data/commission-pricing.ts` FROM_PRICE 시작가 숫자 기입 (기입 즉시 Inquiry에 예상 시작가 노출됨)
+
 ### 코드 정리
 - [ ] `app/eel/` + `components/eel/*` — 다른 곳에서 링크되지 않는 고아 라우트 (과거 merge 충돌 해결 과정에서 유입된 것으로 보임, 삭제 검토 필요)
 - [ ] Prisma 스키마 타입 불일치 — `product_images.id` DB integer vs 스키마 String
@@ -74,6 +76,7 @@
 ### 기능
 - [x] Commission 문의 폼 실제 이메일 발송 연동 (`/api/commission-inquiry`)
 - [x] 저널 스타일 에디토리얼 홈 + Available/Projects 섹션
+- [x] Commission 빌더: 반투명 제거 + 다리 소재(Wood/Stainless/Titanium)→모양 2단 선택 + 시작가 구조 (값 미기입 시 미노출)
 - [ ] 결제 시스템 연동 (Toss Payments / 카카오페이)
 - [ ] 모바일 반응형 전면 점검
 - [ ] AR 미리보기 (WebXR)
