@@ -552,8 +552,7 @@ export default function CommissionClient() {
         <div className="hidden md:flex w-[44%] min-w-[280px] max-w-[520px] shrink-0 flex-col border-l border-[#1a1a1a]">
           <div className="flex-1 w-full flex items-center justify-center p-8 min-h-0">
             <div className="w-full h-full">
-              <CommissionPreview3D resinColor={previewColor} size={selectedSize} height={selectedHeight}
-                legs={selectedLegs === 'custom' ? '4' : selectedLegs} shape={selectedShape} opacity={selectedOpacity} />
+              <CommissionPreview3D resinColor={previewColor} size={selectedSize} height={selectedHeight} legs={selectedLegs} shape={selectedShape} opacity={selectedOpacity} legMaterial={selectedLegMaterial} />
             </div>
           </div>
           <div className="w-full border-t border-[#1a1a1a] px-6 py-5 shrink-0">
