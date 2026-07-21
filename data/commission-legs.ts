@@ -53,21 +53,6 @@ export function resolveLegShape(
   return isLegShapeAllowed(material, current, tableShape) ? current : null;
 }
 
-export type CommissionHeight = '30–40 cm' | '40–50 cm' | '72–75 cm';
-
-/**
- * 제작 이력 기반 소재 추천 (소프트 가이드 — 제약 아님).
- * 실제 이력: 다이닝 높이(H72+) 작품은 전부 금속 페데스탈(하중·안정성),
- * 로우 테이블(H55 이하)은 원목 커스텀(선반 페데스탈·박스·테이퍼드)이 주력.
- */
-export function recommendedLegMaterials(
-  height: CommissionHeight | null,
-): LegMaterial[] {
-  if (height === '72–75 cm') return ['stainless', 'titanium'];
-  if (height === '30–40 cm' || height === '40–50 cm') return ['wood'];
-  return [];
-}
-
 /** 요약/이메일용 표기: "Wood · Pedestal". 미완성 선택은 "—". */
 export function formatLegs(
   material: LegMaterial | null,
