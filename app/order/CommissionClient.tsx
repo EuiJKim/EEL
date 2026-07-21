@@ -164,14 +164,14 @@ export default function CommissionClient() {
         {COLOR_CATEGORIES.map((cat, i) => (
           <button key={cat.label} type="button" onClick={() => setSelectedCategory(i)}
             className="px-3 sm:px-4 py-2 text-xs tracking-[0.06em] cursor-pointer bg-transparent border-0 transition-colors relative"
-            style={{ color: selectedCategory === i ? '#e8e8e8' : '#888', fontFamily: "'Telex', sans-serif" }}>
+            style={{ color: selectedCategory === i ? '#e8e8e8' : '#ccc', fontFamily: "'Telex', sans-serif" }}>
             {cat.label}
             {selectedCategory === i && <span className="absolute bottom-0 left-0 right-0 h-px bg-white" />}
           </button>
         ))}
       </div>
 
-      <p className={`text-sm tracking-[0.06em] min-h-[20px] mb-4 transition-colors duration-300 ${selectedColor ? 'text-[#e8e8e8]' : 'text-[#888]'}`}>
+      <p className={`text-sm tracking-[0.06em] min-h-[20px] mb-4 transition-colors duration-300 ${selectedColor ? 'text-[#e8e8e8]' : 'text-[#ccc]'}`}>
         {colorName}
       </p>
 
@@ -189,7 +189,7 @@ export default function CommissionClient() {
                 border: LIGHT_COLORS.includes(c.hex) ? '1px solid #444' : 'none',
               }} />
             <span className="text-[10px] tracking-[0.02em] text-center leading-tight max-w-[44px]"
-              style={{ color: selectedColor === c.hex ? '#e8e8e8' : '#888', fontFamily: "'Telex', sans-serif" }}>
+              style={{ color: selectedColor === c.hex ? '#e8e8e8' : '#ccc', fontFamily: "'Telex', sans-serif" }}>
               {c.name}
             </span>
           </button>
@@ -198,7 +198,7 @@ export default function CommissionClient() {
 
       {/* Opacity — 3 columns */}
       <div className="mb-6">
-        <p className="text-sm text-[#aaa] tracking-[0.06em] mb-3">투명도</p>
+        <p className="text-sm text-[#ccc] tracking-[0.06em] mb-3">투명도</p>
         <div className="grid grid-cols-3 border border-[#2a2a2a]">
           {(['투명', '반투명', '불투명'] as const).map((op, i) => (
             <button key={op} onClick={() => setSelectedOpacity(op)}
@@ -206,7 +206,7 @@ export default function CommissionClient() {
               style={{
                 fontFamily: "'Telex', sans-serif",
                 background: selectedOpacity === op ? '#fff' : 'transparent',
-                color: selectedOpacity === op ? '#0e0e0e' : '#999',
+                color: selectedOpacity === op ? '#0e0e0e' : '#ccc',
                 borderRight: i < 2 ? '1px solid #2a2a2a' : 'none',
               }}>
               {op}
@@ -217,19 +217,19 @@ export default function CommissionClient() {
 
       {/* 커스텀 컬러 */}
       <div className="mb-6">
-        <p className="text-sm text-[#aaa] tracking-[0.06em] mb-3">커스텀 컬러</p>
+        <p className="text-sm text-[#ccc] tracking-[0.06em] mb-3">커스텀 컬러</p>
         <input type="text" placeholder="원하는 컬러를 설명해주세요" className="comm-input" value={customColor} onChange={e => setCustomColor(e.target.value)} />
       </div>
 
-      <p className="text-[#666] text-xs leading-relaxed">
-        레진 소재의 특성상 실제 색상은 선택하신 컬러와<br />다소 차이가 있을 수 있습니다.
+      <p className="text-[#ccc] text-xs leading-relaxed">
+        레진 소재의 특성상 실제 색상은 선택하신 컬러와 다소 차이가 있을 수 있습니다.
       </p>
     </div>,
 
     /* 1 — Shape */
     <div key="shape">
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Shape</h2>
-      <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 상판 모양을 선택해주세요</p>
+      <p className="text-sm text-[#ccc] mb-8 tracking-[0.04em]">테이블 상판 모양을 선택해주세요</p>
       <div className="grid grid-cols-2 gap-3">
         {SHAPE_OPTIONS.map((s) => {
           const isActive = selectedShape === s.value;
@@ -261,7 +261,7 @@ export default function CommissionClient() {
               )}
             </div>
             <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{s.label}</span>
-            <span className="text-xs tracking-[0.04em]" style={{ color: isActive ? '#555' : '#999' }}>{s.desc}</span>
+            <span className="text-xs tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{s.desc}</span>
           </button>
         );
         })}
@@ -272,7 +272,7 @@ export default function CommissionClient() {
     <div key="size">
 
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Size</h2>
-      <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 상판 지름 또는 폭을 선택해주세요</p>
+      <p className="text-sm text-[#ccc] mb-8 tracking-[0.04em]">테이블 상판 지름 또는 폭을 선택해주세요</p>
       <div className="flex gap-3">
         {(['S', 'M', 'L'] as const).map((letter) => {
           const range = letter === 'S' ? '40–50 cm' : letter === 'M' ? '50–65 cm' : '70–90 cm';
@@ -282,15 +282,15 @@ export default function CommissionClient() {
               className="flex-1 border py-8 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98]"
               style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
               <span className="text-3xl leading-none" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{letter}</span>
-              <span className="text-xs tracking-[0.04em] text-center" style={{ color: isActive ? '#555' : '#999' }}>{range}</span>
+              <span className="text-xs tracking-[0.04em] text-center" style={{ color: isActive ? '#555' : '#ccc' }}>{range}</span>
             </button>
           );
         })}
       </div>
       <div className="mt-6">
-        <p className="text-sm text-[#aaa] tracking-[0.06em] mb-3">원하는 사이즈 직접 입력</p>
+        <p className="text-sm text-[#ccc] tracking-[0.06em] mb-3">원하는 사이즈 직접 입력</p>
         <input type="text" placeholder="예: 가로 120cm × 세로 60cm" className="comm-input" value={customSize} onChange={e => setCustomSize(e.target.value)} />
-        <p className="mt-3 text-xs text-[#555] leading-relaxed">
+        <p className="mt-3 text-xs text-[#ccc] leading-relaxed">
           ※ 너무 큰 사이즈는 제작이 제한될 수 있으니 참고해 주세요.
         </p>
       </div>
@@ -300,7 +300,7 @@ export default function CommissionClient() {
     <div key="height">
 
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Height</h2>
-      <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">테이블 높이를 선택해주세요</p>
+      <p className="text-sm text-[#ccc] mb-8 tracking-[0.04em]">테이블 높이를 선택해주세요</p>
       <div className="flex gap-3">
         {HEIGHT_OPTIONS.map((h) => {
           const isActive = selectedHeight === h.label;
@@ -322,7 +322,7 @@ export default function CommissionClient() {
     <div key="legs">
 
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Legs</h2>
-      <p className="text-sm text-[#999] mb-8 tracking-[0.04em]">다리 형태를 선택해주세요</p>
+      <p className="text-sm text-[#ccc] mb-8 tracking-[0.04em]">다리 형태를 선택해주세요</p>
       <div className="flex gap-3">
         {LEG_OPTIONS.map((l) => {
           const disabled = l.value === '1' && selectedShape === 'rectangle';
@@ -343,8 +343,8 @@ export default function CommissionClient() {
                 )}
               </div>
               <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{l.label}</span>
-              <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#999' }}>{l.desc}</span>
-              {disabled && <span className="text-xs text-[#777]">직사각형은 불가</span>}
+              <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{l.desc}</span>
+              {disabled && <span className="text-xs text-[#ccc]">직사각형은 불가</span>}
             </button>
           );
         })}
@@ -365,14 +365,14 @@ export default function CommissionClient() {
         )}
       </div>
       <div className="flex flex-col gap-1 mb-6">
-        <p className="text-sm text-[#999] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
-        <p className="text-[11px] text-[#666] tracking-[0.02em]" style={{ fontFamily: "'Telex', sans-serif" }}>레진 작업 특성상 미세한 기포나 표면 흔적이 생길 수 있습니다.</p>
+        <p className="text-sm text-[#ccc] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
+        <p className="text-[11px] text-[#ccc] tracking-[0.02em]" style={{ fontFamily: "'Telex', sans-serif" }}>레진 작업 특성상 미세한 기포나 표면 흔적이 생길 수 있습니다.</p>
       </div>
 
       <div className="border-t border-b border-[#222] py-4 mb-7">
         {summaryRows.map((row) => (
           <div key={row.label} className="flex justify-between py-1.5 text-sm">
-            <span className="text-[#888] tracking-[0.06em]">{row.label}</span>
+            <span className="text-[#ccc] tracking-[0.06em]">{row.label}</span>
             <span className="text-[#e8e8e8]">{row.value}</span>
           </div>
         ))}
@@ -396,13 +396,13 @@ export default function CommissionClient() {
         }}>
           <div className="flex gap-6">
             <div className="flex-1">
-              <p className="text-sm text-[#aaa] mb-1" style={{ fontFamily: "'Telex', sans-serif" }}>
+              <p className="text-sm text-[#ccc] mb-1" style={{ fontFamily: "'Telex', sans-serif" }}>
                 이름<span className="text-red-500 ml-0.5">*</span>
               </p>
               <input name="name" type="text" required className="comm-input" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-[#aaa] mb-1" style={{ fontFamily: "'Telex', sans-serif" }}>
+              <p className="text-sm text-[#ccc] mb-1" style={{ fontFamily: "'Telex', sans-serif" }}>
                 전화번호<span className="text-red-500 ml-0.5">*</span>
               </p>
               <input name="phone" type="tel" required inputMode="numeric" pattern="[0-9]*"
@@ -462,7 +462,7 @@ export default function CommissionClient() {
               이전
             </button>
 
-            <span className="text-[#888] tracking-[0.1em]" style={{ fontFamily: "var(--font-staatliches)", fontSize: '16px' }}>
+            <span className="text-[#ccc] tracking-[0.1em]" style={{ fontFamily: "var(--font-staatliches)", fontSize: '16px' }}>
               {currentStep + 1} / {TOTAL_STEPS}
             </span>
 
@@ -491,7 +491,7 @@ export default function CommissionClient() {
           <div className="w-full border-t border-[#1a1a1a] px-6 py-5 shrink-0">
             {summaryRows.map((row) => (
               <div key={row.label} className="flex justify-between py-1 text-xs">
-                <span className="text-[#888] tracking-[0.08em]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}>{row.label}</span>
+                <span className="text-[#ccc] tracking-[0.08em]" style={{ fontFamily: "var(--font-staatliches, 'Staatliches'), sans-serif" }}>{row.label}</span>
                 <span className="text-[#e8e8e8] transition-colors duration-300">{row.value}</span>
               </div>
             ))}
@@ -505,7 +505,7 @@ export default function CommissionClient() {
           color: #e8e8e8; font-family: 'Telex', sans-serif; font-size: 14px;
           padding: 12px 0; outline: none; width: 100%; transition: border-color 0.2s;
         }
-        .comm-input::placeholder { color: #777; }
+        .comm-input::placeholder { color: #ccc; }
         .comm-input:focus { border-bottom-color: #fff; }
       `}</style>
     </div>
