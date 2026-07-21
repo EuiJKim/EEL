@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import type { LegMaterial } from '@/data/commission-legs';
 
 export type TableShape = 'organic' | 'round' | 'square' | 'rectangle';
 
@@ -9,9 +10,10 @@ interface Props {
   resinColor: string;
   size: 'S' | 'M' | 'L' | null;
   height: '30–40 cm' | '40–50 cm' | '72–75 cm' | null;
-  legs: '4' | '1' | null;
+  legs: '4' | '1' | 'custom' | null;
   shape: TableShape;
-  opacity?: '투명' | '반투명' | '불투명' | null;
+  opacity?: '투명' | '불투명' | null;
+  legMaterial?: LegMaterial | null;
 }
 
 const SIZE_SCALE: Record<string, number> = { S: 0.62, M: 0.75, L: 0.88 };
@@ -89,7 +91,7 @@ const EXTRUDE_SETTINGS: THREE.ExtrudeGeometryOptions = {
   bevelSegments: 4,
 };
 
-export default function CommissionPreview3D({ resinColor, size, height, legs, shape, opacity }: Props) {
+export default function CommissionPreview3D({ resinColor, size, height, legs, shape, opacity, legMaterial }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     renderer: THREE.WebGLRenderer;
@@ -244,7 +246,6 @@ export default function CommissionPreview3D({ resinColor, size, height, legs, sh
     if (!sceneRef.current) return;
     const mat = sceneRef.current.tableMat;
     if (opacity === '투명') { mat.opacity = 0.25; mat.transmission = 0.95; mat.roughness = 0.04; }
-    else if (opacity === '반투명') { mat.opacity = 0.6; mat.transmission = 0.5; mat.roughness = 0.08; }
     else { mat.opacity = 0.93; mat.transmission = 0; mat.roughness = 0.12; }
     mat.needsUpdate = true;
   }, [opacity]);
@@ -279,9 +280,24 @@ export default function CommissionPreview3D({ resinColor, size, height, legs, sh
   /* ── Update legs ── */
   useEffect(() => {
     if (!sceneRef.current || !legs) return;
-    sceneRef.current.legs4Group.visible = legs === '4';
+    sceneRef.current.legs4Group.visible = legs === '4' || legs === 'custom';
     sceneRef.current.legs1Group.visible = legs === '1';
   }, [legs]);
+
+  /* ── Update leg material color ── */
+  useEffect(() => {
+    if (!sceneRef.current) return;
+    const legMat = sceneRef.current.legMat;
+    if (legMaterial === 'wood') {
+      legMat.color.set(0x8a6f4d); legMat.roughness = 0.7; legMat.metalness = 0.05;
+    } else if (legMaterial === 'stainless') {
+      legMat.color.set(0xc0c4c8); legMat.roughness = 0.25; legMat.metalness = 0.9;
+    } else if (legMaterial === 'titanium') {
+      legMat.color.set(0x6b6e72); legMat.roughness = 0.35; legMat.metalness = 0.85;
+    } else {
+      legMat.color.set(0xb0b0b0); legMat.roughness = 0.25; legMat.metalness = 0.9; // 기본(미선택)
+    }
+  }, [legMaterial]);
 
   /* ── Update shape ── */
   useEffect(() => {

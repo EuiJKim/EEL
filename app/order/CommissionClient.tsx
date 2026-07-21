@@ -5,6 +5,11 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import type { TableShape } from '@/components/CommissionPreview3D';
 import { fireLeadEvent } from './fireLeadEvent';
+import {
+  LEG_MATERIALS, LEG_SHAPES, legShapesFor, isLegShapeAllowed, resolveLegShape, formatLegs,
+  type LegMaterial, type LegShapeValue,
+} from '@/data/commission-legs';
+import { getFromPrice, formatFromPrice } from '@/data/commission-pricing';
 
 const CommissionPreview3D = dynamic(() => import('@/components/CommissionPreview3D'), { ssr: false });
 
@@ -74,19 +79,15 @@ const HEIGHT_OPTIONS = [
   { label: '72–75 cm' as const },
 ];
 
-const LEG_OPTIONS = [
-  { value: '4' as const, label: '4 Legs', desc: '안정적인 네 다리' },
-  { value: '1' as const, label: 'Pedestal', desc: '중앙 단일 기둥' },
-];
-
 export default function CommissionClient() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [colorName, setColorName] = useState('컬러를 선택해주세요');
-  const [selectedOpacity, setSelectedOpacity] = useState<'투명' | '반투명' | '불투명' | null>(null);
+  const [selectedOpacity, setSelectedOpacity] = useState<'투명' | '불투명' | null>(null);
   const [selectedShape, setSelectedShape] = useState<TableShape>('organic');
   const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L' | null>(null);
   const [selectedHeight, setSelectedHeight] = useState<'30–40 cm' | '40–50 cm' | '72–75 cm' | null>(null);
-  const [selectedLegs, setSelectedLegs] = useState<'4' | '1' | null>(null);
+  const [selectedLegMaterial, setSelectedLegMaterial] = useState<LegMaterial | null>(null);
+  const [selectedLegs, setSelectedLegs] = useState<LegShapeValue | null>(null);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [previewColor, setPreviewColor] = useState('#EDE4D0');
   const [customColor, setCustomColor] = useState('');
@@ -110,7 +111,7 @@ export default function CommissionClient() {
           shape: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? selectedShape,
           size: selectedSize ? `${selectedSize}${customSize ? ` / "${customSize}"` : ''}` : customSize || '—',
           height: selectedHeight ?? '—',
-          legs: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—',
+          legs: formatLegs(selectedLegMaterial, selectedLegs),
         }),
       });
       if (!res.ok) throw new Error();
@@ -148,7 +149,7 @@ export default function CommissionClient() {
     { label: 'Shape', value: SHAPE_OPTIONS.find(s => s.value === selectedShape)?.label ?? '—' },
     { label: 'Size', value: selectedSize ? `${selectedSize}${customSize ? ` / "${customSize}"` : ''}` : customSize ? `"${customSize}"` : '—' },
     { label: 'Height', value: selectedHeight ?? '—' },
-    { label: 'Legs', value: selectedLegs === '4' ? '4 Legs' : selectedLegs === '1' ? 'Pedestal' : '—' },
+    { label: 'Legs', value: formatLegs(selectedLegMaterial, selectedLegs) },
   ];
 
   const LIGHT_COLORS = ['#F0EDE8', '#E8DAEF', '#D5F5E3', '#FAD7A0', '#F5B7B1', '#AED6F1'];
@@ -196,18 +197,18 @@ export default function CommissionClient() {
         ))}
       </div>
 
-      {/* Opacity — 3 columns */}
+      {/* Opacity — 2 columns */}
       <div className="mb-6">
         <p className="text-sm text-[#ccc] tracking-[0.06em] mb-3">투명도</p>
-        <div className="grid grid-cols-3 border border-[#2a2a2a]">
-          {(['투명', '반투명', '불투명'] as const).map((op, i) => (
+        <div className="grid grid-cols-2 border border-[#2a2a2a]">
+          {(['투명', '불투명'] as const).map((op, i) => (
             <button key={op} onClick={() => setSelectedOpacity(op)}
               className="py-4 text-sm tracking-[0.06em] cursor-pointer transition-all"
               style={{
                 fontFamily: "'Telex', sans-serif",
                 background: selectedOpacity === op ? '#fff' : 'transparent',
                 color: selectedOpacity === op ? '#0e0e0e' : '#ccc',
-                borderRight: i < 2 ? '1px solid #2a2a2a' : 'none',
+                borderRight: i < 1 ? '1px solid #2a2a2a' : 'none',
               }}>
               {op}
             </button>
@@ -235,7 +236,14 @@ export default function CommissionClient() {
           const isActive = selectedShape === s.value;
           return (
           <button key={s.value}
-            onClick={() => { setSelectedShape(s.value); if (s.value === 'rectangle' && selectedLegs === '1') setSelectedLegs('4'); }}
+            onClick={() => {
+              setSelectedShape(s.value);
+              if (selectedLegMaterial) {
+                setSelectedLegs(resolveLegShape(selectedLegMaterial, selectedLegs, s.value));
+              } else if (s.value === 'rectangle' && selectedLegs === '1') {
+                setSelectedLegs(null);
+              }
+            }}
             className="border py-6 px-3 cursor-pointer flex flex-col items-center gap-3 transition-all active:scale-[0.98]"
             style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
             <div className="w-12 h-12 flex items-center justify-center">
@@ -320,35 +328,78 @@ export default function CommissionClient() {
 
     /* 4 — Legs */
     <div key="legs">
-
       <h2 className="text-white mb-2" style={{ fontFamily: "var(--font-gravitas)", fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 400, letterSpacing: '0.02em' }}>Legs</h2>
-      <p className="text-sm text-[#ccc] mb-8 tracking-[0.04em]">다리 형태를 선택해주세요</p>
-      <div className="flex gap-3">
-        {LEG_OPTIONS.map((l) => {
-          const disabled = l.value === '1' && selectedShape === 'rectangle';
-          const isActive = selectedLegs === l.value && !disabled;
+      <p className="text-sm text-[#ccc] mb-6 tracking-[0.04em]">다리 소재를 먼저 선택해주세요</p>
+
+      {/* 소재 선택 */}
+      <div className="flex gap-3 mb-8">
+        {LEG_MATERIALS.map((m) => {
+          const isActive = selectedLegMaterial === m.value;
           return (
-            <button key={l.value}
-              onClick={() => { if (!disabled) setSelectedLegs(l.value); }}
-              className={`flex-1 border py-8 px-3 flex flex-col items-center gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}`}
+            <button key={m.value}
+              onClick={() => {
+                setSelectedLegMaterial(m.value);
+                setSelectedLegs(resolveLegShape(m.value, selectedLegs, selectedShape));
+              }}
+              className="flex-1 border py-6 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98]"
               style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
-              <div className="flex flex-col items-center gap-1 h-14 justify-end">
-                <div className="w-12 h-2 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#888' }} />
-                {l.value === '4' ? (
-                  <div className="flex gap-3">
-                    {[0,1,2,3].map(i => <span key={i} className="block w-[4px] h-6 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#777' }} />)}
-                  </div>
-                ) : (
-                  <span className="block w-2 h-7 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#777' }} />
-                )}
-              </div>
-              <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{l.label}</span>
-              <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{l.desc}</span>
-              {disabled && <span className="text-xs text-[#ccc]">직사각형은 불가</span>}
+              <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{m.label}</span>
+              <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{m.desc}</span>
             </button>
           );
         })}
       </div>
+
+      {/* 모양 선택 — 소재 미선택 시 dim */}
+      <p className="text-sm mb-3 tracking-[0.04em]" style={{ color: selectedLegMaterial ? '#ccc' : '#777' }}>
+        {selectedLegMaterial ? '다리 형태를 선택해주세요' : '소재를 선택하면 형태를 고를 수 있습니다'}
+      </p>
+      <div className={`flex gap-3 ${selectedLegMaterial ? '' : 'opacity-30 pointer-events-none'}`}>
+        {LEG_SHAPES
+          .filter(l => !selectedLegMaterial || legShapesFor(selectedLegMaterial).includes(l.value))
+          .map((l) => {
+            const disabled = !selectedLegMaterial ||
+              !isLegShapeAllowed(selectedLegMaterial, l.value, selectedShape);
+            const isActive = selectedLegs === l.value && !disabled;
+            return (
+              <button key={l.value}
+                onClick={() => { if (!disabled) setSelectedLegs(l.value); }}
+                className={`flex-1 border py-8 px-3 flex flex-col items-center gap-3 transition-all ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}`}
+                style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
+                <div className="flex flex-col items-center gap-1 h-14 justify-end">
+                  <div className="w-12 h-2 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#888' }} />
+                  {l.value === '4' && (
+                    <div className="flex gap-3">
+                      {[0,1,2,3].map(i => <span key={i} className="block w-[4px] h-6 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#777' }} />)}
+                    </div>
+                  )}
+                  {l.value === '1' && (
+                    <span className="block w-2 h-7 rounded-sm" style={{ background: isActive ? '#0e0e0e' : '#777' }} />
+                  )}
+                  {l.value === 'custom' && (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={isActive ? '#0e0e0e' : '#777'} strokeWidth="1.6" strokeLinecap="round">
+                      <path d="M12 4v16M4 12h16" />
+                    </svg>
+                  )}
+                </div>
+                <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{l.label}</span>
+                <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{l.desc}</span>
+                {l.value === 'custom' && (
+                  <span className="text-[10px] tracking-[0.08em] uppercase" style={{ color: isActive ? '#555' : '#ccc' }}>별도 견적</span>
+                )}
+                {selectedLegMaterial && l.value === '1' && selectedShape === 'rectangle' && (
+                  <span className="text-xs text-[#ccc]">직사각형은 불가</span>
+                )}
+              </button>
+            );
+          })}
+      </div>
+
+      {selectedLegs === 'custom' && (
+        <p className="mt-4 text-xs text-[#ccc] leading-relaxed">
+          원하는 다리 모양은 문의 단계의 요청사항에 설명해 주세요. 커스텀 다리는 상담 후 별도 견적으로 안내드립니다.
+        </p>
+      )}
     </div>,
 
     /* 5 — Inquiry */
@@ -367,6 +418,7 @@ export default function CommissionClient() {
       <div className="flex flex-col gap-1 mb-6">
         <p className="text-sm text-[#ccc] tracking-[0.04em]">내용을 확인하고 문의를 보내주세요.</p>
         <p className="text-[11px] text-[#ccc] tracking-[0.02em]" style={{ fontFamily: "'Telex', sans-serif" }}>레진 작업 특성상 미세한 기포나 표면 흔적이 생길 수 있습니다.</p>
+        <p className="text-[11px] text-[#ccc] tracking-[0.02em]" style={{ fontFamily: "'Telex', sans-serif" }}>반투명 등 특수 마감은 요청사항에 적어주시면 상담 시 안내드립니다.</p>
       </div>
 
       <div className="border-t border-b border-[#222] py-4 mb-7">
@@ -376,6 +428,20 @@ export default function CommissionClient() {
             <span className="text-[#e8e8e8]">{row.value}</span>
           </div>
         ))}
+        {selectedLegs === 'custom' ? (
+          <div className="flex justify-between py-1.5 text-sm">
+            <span className="text-[#ccc] tracking-[0.06em]">Est. Price</span>
+            <span className="text-[#e8e8e8]">별도 견적 · 상담 후 확정</span>
+          </div>
+        ) : (() => {
+          const from = getFromPrice(selectedSize, selectedLegMaterial);
+          return from !== null ? (
+            <div className="flex justify-between py-1.5 text-sm">
+              <span className="text-[#ccc] tracking-[0.06em]">Est. Price</span>
+              <span className="text-[#e8e8e8]">예상 시작가 {formatFromPrice(from)} · 상담 후 확정</span>
+            </div>
+          ) : null;
+        })()}
       </div>
 
       {submitted ? (
@@ -468,7 +534,8 @@ export default function CommissionClient() {
 
             {currentStep < TOTAL_STEPS - 1 ? (
               <button onClick={goNext}
-                className="flex items-center gap-3 bg-transparent border-0 cursor-pointer hover:opacity-60 transition-opacity"
+                disabled={currentStep === 4 && (!selectedLegMaterial || !selectedLegs)}
+                className="flex items-center gap-3 bg-transparent border-0 cursor-pointer hover:opacity-60 transition-opacity disabled:opacity-20 disabled:cursor-not-allowed"
                 style={{ color: '#ccc', fontFamily: "'Telex', sans-serif", fontSize: '16px', letterSpacing: '0.06em' }}>
                 다음
                 <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -485,7 +552,7 @@ export default function CommissionClient() {
         <div className="hidden md:flex w-[44%] min-w-[280px] max-w-[520px] shrink-0 flex-col border-l border-[#1a1a1a]">
           <div className="flex-1 w-full flex items-center justify-center p-8 min-h-0">
             <div className="w-full h-full">
-              <CommissionPreview3D resinColor={previewColor} size={selectedSize} height={selectedHeight} legs={selectedLegs} shape={selectedShape} opacity={selectedOpacity} />
+              <CommissionPreview3D resinColor={previewColor} size={selectedSize} height={selectedHeight} legs={selectedLegs} shape={selectedShape} opacity={selectedOpacity} legMaterial={selectedLegMaterial} />
             </div>
           </div>
           <div className="w-full border-t border-[#1a1a1a] px-6 py-5 shrink-0">
