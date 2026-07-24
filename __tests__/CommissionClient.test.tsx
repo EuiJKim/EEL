@@ -45,21 +45,21 @@ describe('CommissionClient', () => {
     expect(screen.queryByText('반투명')).not.toBeInTheDocument();
   });
 
-  it('Legs 스텝에서 소재 3종이 렌더링되고, 소재 미선택 시 모양 카드는 비활성 래퍼로 감싸진다', () => {
+  it('Legs 스텝에서 소재 2종이 렌더링되고, 소재 미선택 시 모양 카드는 비활성 래퍼로 감싸진다', () => {
     const { container } = render(<CommissionClient />);
 
     goToLegsStep();
 
     expect(screen.getByRole('button', { name: /Wood/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Stainless/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Titanium/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Titanium/ })).not.toBeInTheDocument();
 
     const dimWrapper = container.querySelector('.pointer-events-none');
     expect(dimWrapper).toBeTruthy();
     expect(dimWrapper?.className).toContain('opacity-30');
   });
 
-  it('Wood 선택 시 Custom 카드가 나타나고, Stainless/Titanium 선택 시 사라진다', () => {
+  it('Wood 선택 시 Custom 카드가 나타나고, Stainless 선택 시 사라진다', () => {
     render(<CommissionClient />);
 
     goToLegsStep();
@@ -68,9 +68,6 @@ describe('CommissionClient', () => {
     expect(screen.getByText('별도 견적')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Stainless/ }));
-    expect(screen.queryByText('별도 견적')).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: /Titanium/ }));
     expect(screen.queryByText('별도 견적')).not.toBeInTheDocument();
   });
 

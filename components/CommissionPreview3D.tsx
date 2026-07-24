@@ -292,8 +292,6 @@ export default function CommissionPreview3D({ resinColor, size, height, legs, sh
       legMat.color.set(0x8a6f4d); legMat.roughness = 0.7; legMat.metalness = 0.05;
     } else if (legMaterial === 'stainless') {
       legMat.color.set(0xc0c4c8); legMat.roughness = 0.25; legMat.metalness = 0.9;
-    } else if (legMaterial === 'titanium') {
-      legMat.color.set(0x6b6e72); legMat.roughness = 0.35; legMat.metalness = 0.85;
     } else {
       legMat.color.set(0xb0b0b0); legMat.roughness = 0.25; legMat.metalness = 0.9; // 기본(미선택)
     }

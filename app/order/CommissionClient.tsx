@@ -223,7 +223,7 @@ export default function CommissionClient() {
       </div>
 
       <p className="text-[#ccc] text-xs leading-relaxed">
-        레진 소재의 특성상 실제 색상은 선택하신 컬러와 다소 차이가 있을 수 있습니다.
+        레진 특성상 실제 컬러는 선택 항목과 차이가 있을 수 있습니다.
       </p>
     </div>,
 
@@ -341,10 +341,9 @@ export default function CommissionClient() {
                 setSelectedLegMaterial(m.value);
                 setSelectedLegs(resolveLegShape(m.value, selectedLegs, selectedShape));
               }}
-              className="flex-1 border py-6 px-3 cursor-pointer flex flex-col items-center gap-2 transition-all active:scale-[0.98]"
+              className="flex-1 border py-6 px-3 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all active:scale-[0.98]"
               style={{ borderColor: isActive ? '#fff' : '#3a3a3a', background: isActive ? '#fff' : 'transparent' }}>
               <span className="text-sm" style={{ fontFamily: "var(--font-gravitas)", color: isActive ? '#0e0e0e' : '#fff' }}>{m.label}</span>
-              <span className="text-xs text-center tracking-[0.04em]" style={{ color: isActive ? '#555' : '#ccc' }}>{m.desc}</span>
             </button>
           );
         })}

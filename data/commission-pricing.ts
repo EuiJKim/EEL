@@ -8,9 +8,9 @@ export type CommissionSize = 'S' | 'M' | 'L';
  * Wood Custom 모양은 이 테이블과 무관하게 항상 "별도 견적"으로 표기한다.
  */
 export const FROM_PRICE: Record<CommissionSize, Record<LegMaterial, number | null>> = {
-  S: { wood: null, stainless: null, titanium: null },
-  M: { wood: null, stainless: null, titanium: null },
-  L: { wood: null, stainless: null, titanium: null },
+  S: { wood: null, stainless: null },
+  M: { wood: null, stainless: null },
+  L: { wood: null, stainless: null },
 };
 
 /** 조합의 시작가. 미선택이거나 미정이면 null. */

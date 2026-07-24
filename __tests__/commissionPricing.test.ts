@@ -6,9 +6,9 @@ import {
 } from '@/data/commission-pricing';
 
 describe('FROM_PRICE 초기 상태', () => {
-  it('S/M/L × wood/stainless/titanium 전 조합이 null (가격 미정)', () => {
+  it('S/M/L × wood/stainless 전 조합이 null (가격 미정)', () => {
     for (const size of ['S', 'M', 'L'] as const) {
-      for (const mat of ['wood', 'stainless', 'titanium'] as const) {
+      for (const mat of ['wood', 'stainless'] as const) {
         expect(FROM_PRICE[size][mat]).toBeNull();
       }
     }

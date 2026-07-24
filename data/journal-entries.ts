@@ -31,6 +31,7 @@ export const JOURNAL_ENTRIES: FeedEntry[] = [
       '/products/black-purple-table/8.jpg',
       '/products/black-purple-table/9.jpg',
       '/products/black-purple-table/10.jpg',
+      '/products/black-purple-table/11.jpg',
     ],
   },
   {

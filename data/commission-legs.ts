@@ -1,18 +1,17 @@
 import type { TableShape } from '@/components/CommissionPreview3D';
 
-export type LegMaterial = 'wood' | 'stainless' | 'titanium';
+export type LegMaterial = 'wood' | 'stainless';
 export type LegShapeValue = '4' | '1' | 'custom';
 
 export const LEG_MATERIALS: { value: LegMaterial; label: string; desc: string }[] = [
   { value: 'wood', label: 'Wood', desc: '원목 · 형태 자유, 상판과 톤 맞춤' },
   { value: 'stainless', label: 'Stainless', desc: '스테인리스 · 대형·다이닝에 안정' },
-  { value: 'titanium', label: 'Titanium', desc: '티타늄 · 다크 톤 프리미엄' },
 ];
 
 export const LEG_SHAPES: { value: LegShapeValue; label: string; desc: string }[] = [
-  { value: '4', label: '4 Legs', desc: '안정적인 네 다리' },
+  { value: '4', label: '4 Legs', desc: '기본 형태' },
   { value: '1', label: 'Pedestal', desc: '중앙 단일 기둥' },
-  { value: 'custom', label: 'Custom', desc: '원하는 모양 · 별도 견적' },
+  { value: 'custom', label: 'Custom', desc: '원하는 모양' },
 ];
 
 const SHAPE_LABEL: Record<LegShapeValue, string> = {
@@ -24,7 +23,6 @@ const SHAPE_LABEL: Record<LegShapeValue, string> = {
 const MATERIAL_LABEL: Record<LegMaterial, string> = {
   wood: 'Wood',
   stainless: 'Stainless',
-  titanium: 'Titanium',
 };
 
 /** 소재별로 노출되는 다리 모양. custom은 Wood 전용. */

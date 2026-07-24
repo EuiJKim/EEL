@@ -11,9 +11,8 @@ describe('legShapesFor', () => {
   it('Wood는 4/Pedestal/Custom 세 가지', () => {
     expect(legShapesFor('wood')).toEqual(['4', '1', 'custom']);
   });
-  it('Stainless와 Titanium은 기본 모양만 (custom 미노출)', () => {
+  it('Stainless는 기본 모양만 (custom 미노출)', () => {
     expect(legShapesFor('stainless')).toEqual(['4', '1']);
-    expect(legShapesFor('titanium')).toEqual(['4', '1']);
   });
 });
 
@@ -29,10 +28,9 @@ describe('isLegShapeAllowed', () => {
   it('custom은 wood에서만 허용', () => {
     expect(isLegShapeAllowed('wood', 'custom', 'organic')).toBe(true);
     expect(isLegShapeAllowed('stainless', 'custom', 'organic')).toBe(false);
-    expect(isLegShapeAllowed('titanium', 'custom', 'organic')).toBe(false);
   });
   it('Rectangle 외 모양에서 기본 다리는 모두 허용', () => {
-    expect(isLegShapeAllowed('titanium', '1', 'round')).toBe(true);
+    expect(isLegShapeAllowed('stainless', '1', 'round')).toBe(true);
     expect(isLegShapeAllowed('stainless', '4', 'organic')).toBe(true);
   });
 });
@@ -42,7 +40,7 @@ describe('resolveLegShape (소재/상판 변경 시 자동 해제)', () => {
     expect(resolveLegShape('stainless', 'custom', 'organic')).toBeNull();
   });
   it('허용되는 조합이면 현재 선택 유지', () => {
-    expect(resolveLegShape('titanium', '4', 'rectangle')).toBe('4');
+    expect(resolveLegShape('stainless', '4', 'rectangle')).toBe('4');
     expect(resolveLegShape('wood', 'custom', 'rectangle')).toBe('custom');
   });
   it('Rectangle로 바꿔서 Pedestal이 불가능해지면 해제(null)', () => {
@@ -58,7 +56,6 @@ describe('formatLegs', () => {
     expect(formatLegs('wood', '1')).toBe('Wood · Pedestal');
     expect(formatLegs('wood', 'custom')).toBe('Wood · Custom');
     expect(formatLegs('stainless', '4')).toBe('Stainless · 4 Legs');
-    expect(formatLegs('titanium', '4')).toBe('Titanium · 4 Legs');
   });
   it('하나라도 미선택이면 "—"', () => {
     expect(formatLegs(null, '4')).toBe('—');
@@ -68,7 +65,7 @@ describe('formatLegs', () => {
 });
 
 describe('LEG_MATERIALS', () => {
-  it('wood/stainless/titanium 순서로 3개', () => {
-    expect(LEG_MATERIALS.map(m => m.value)).toEqual(['wood', 'stainless', 'titanium']);
+  it('wood/stainless 순서로 2개', () => {
+    expect(LEG_MATERIALS.map(m => m.value)).toEqual(['wood', 'stainless']);
   });
 });
