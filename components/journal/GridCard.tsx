@@ -107,7 +107,7 @@ export default function GridCard({
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 mt-3 mb-1.5">
         <span
-          className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
+          className="text-[10px] tracking-[0.18em] uppercase text-[#b8c2b5]"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           {CATEGORY_LABEL[lang][entry.category]}
@@ -116,7 +116,7 @@ export default function GridCard({
           <>
             <span className="text-[#bbb] text-[10px]">·</span>
             <span
-              className="text-[10px] tracking-[0.18em] uppercase text-[#888]"
+              className="text-[10px] tracking-[0.18em] uppercase text-[#b8c2b5]"
               style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
             >
               {entry.year}

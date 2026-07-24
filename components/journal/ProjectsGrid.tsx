@@ -30,7 +30,6 @@ export default function ProjectsGrid() {
             <CategoryTabs active="projects" />
           </div>
         </div>
-        <div className="h-px bg-[#2a2e2c] mt-3 md:mt-6" />
       </div>
 
       {/* Grid */}
@@ -40,14 +39,14 @@ export default function ProjectsGrid() {
             {/* Meta row */}
             <div className="flex items-center gap-2.5 mb-2.5">
               <span
-                className="text-[12px] tracking-[0.18em] uppercase text-[#8a9488]"
+                className="text-[12px] tracking-[0.18em] uppercase text-[#b8c2b5]"
                 style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
               >
                 {p.client}
               </span>
               <span className="text-[#4a4f4b] text-[12px]">·</span>
               <span
-                className="text-[12px] tracking-[0.18em] uppercase text-[#8a9488]"
+                className="text-[12px] tracking-[0.18em] uppercase text-[#b8c2b5]"
                 style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
               >
                 {p.year}
@@ -76,7 +75,7 @@ export default function ProjectsGrid() {
 
             {/* Role */}
             <div
-              className="mt-2.5 text-[11px] tracking-[0.16em] uppercase text-[#8a9488]"
+              className="mt-2.5 text-[11px] tracking-[0.16em] uppercase text-[#b8c2b5]"
               style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
             >
               {p.role.map((r) => r[lang]).join(' · ')}

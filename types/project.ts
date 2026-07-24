@@ -9,6 +9,7 @@ export interface Project {
   title: { en: string; ko: string };
   client: string;        // 'W Magazine'
   year: string;          // '2026'
+  talent?: string;       // 'CORTIS' — cast/group featured in the shoot, shown in meta line only
   role: { en: string; ko: string }[]; // [{en:'Set Design',ko:'세트 디자인'}, ...]
   cover: string;         // hero image
   summary?: { en: string; ko: string };

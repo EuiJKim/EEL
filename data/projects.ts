@@ -11,6 +11,7 @@ export const PROJECTS: Project[] = [
     title: { en: 'W Magazine Digital Cover', ko: 'W 매거진 디지털 커버' },
     client: 'W Magazine',
     year: '2026',
+    talent: 'CORTIS',
     role: [
       { en: 'Set Design', ko: '세트 디자인' },
       { en: 'Prop Rental', ko: '소품 렌탈' },

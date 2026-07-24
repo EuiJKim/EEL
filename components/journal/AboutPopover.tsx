@@ -68,7 +68,7 @@ export default function AboutPopover() {
 
   const label = (text: string) => (
     <div
-      className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488] mb-2"
+      className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5] mb-2"
       style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
     >
       {text}
@@ -116,7 +116,7 @@ export default function AboutPopover() {
           {label(t.about)}
           <p className="text-[12px] text-[#c0c5c2] leading-[1.7] mb-3 whitespace-pre-line">{t.body}</p>
           <p
-            className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488]"
+            className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5]"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
           >
             {t.tagline}
@@ -139,7 +139,7 @@ export default function AboutPopover() {
                 <Link href={href} onClick={close} className="hover:text-white transition-colors">
                   {name}
                 </Link>
-                <span className="text-[#8a9488]">{pad(n)}</span>
+                <span className="text-[#b8c2b5]">{pad(n)}</span>
               </li>
             ))}
           </ul>
@@ -161,7 +161,7 @@ export default function AboutPopover() {
                 >
                   {p.client}
                 </Link>
-                <span className="text-[#8a9488] shrink-0">{p.year}</span>
+                <span className="text-[#b8c2b5] shrink-0">{p.year}</span>
               </li>
             ))}
           </ul>

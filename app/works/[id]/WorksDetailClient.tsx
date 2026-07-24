@@ -79,7 +79,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
         <aside className="md:w-[40%] md:max-w-[480px] md:sticky md:top-14 md:h-[calc(100vh-3.5rem)] md:flex md:flex-col px-6 md:px-10 py-10 md:py-14">
           {/* Category + year meta */}
           <div
-            className="flex items-center gap-2.5 text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
+            className="flex items-center gap-2.5 text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] mb-3"
             style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
           >
             <span>{CATEGORY_LABEL[lang][entry.category]}</span>
@@ -117,7 +117,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
               {entry.size && (
                 <div className="flex items-baseline gap-3">
                   <dt
-                    className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
+                    className="text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] min-w-[48px]"
                     style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
                   >
                     {SPEC_LABEL[lang].size}
@@ -128,7 +128,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
               {entry.price && entry.status !== 'sold_out' && (
                 <div className="flex items-baseline gap-3">
                   <dt
-                    className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] min-w-[48px]"
+                    className="text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] min-w-[48px]"
                     style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
                   >
                     {SPEC_LABEL[lang].price}
@@ -161,7 +161,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
           {featuredIn.length > 0 && (
             <div className="mt-8 pt-6 border-t border-[#3a403c]">
               <div
-                className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
+                className="text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] mb-3"
                 style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
               >
                 {FEATURED_IN_LABEL[lang]}
@@ -176,7 +176,7 @@ export default function WorksDetailClient({ entry }: { entry: FeedEntry }) {
                     <span style={{ fontFamily: "var(--font-inter), sans-serif", fontWeight: 500 }}>
                       {p.client} · {p.year}
                     </span>
-                    <span className="text-[#8a9488] group-hover:text-white transition-colors">→</span>
+                    <span className="text-[#b8c2b5] group-hover:text-white transition-colors">→</span>
                   </Link>
                 ))}
               </div>

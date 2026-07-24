@@ -70,7 +70,7 @@ export default function MobileHeader() {
           </span>
         </div>
         <span
-          className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488]"
+          className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5]"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           {t.works}

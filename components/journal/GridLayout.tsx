@@ -74,7 +74,6 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
             <CategoryTabs active={category} basePath={availableOnly ? '/available' : '/'} />
           </div>
         </div>
-        <div className="h-px bg-[#2a2e2c] mt-3 md:mt-6" />
       </div>
 
       {/* Editorial spreads: hero + rhythm rows */}

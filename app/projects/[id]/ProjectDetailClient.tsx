@@ -45,12 +45,18 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
       {/* Header */}
       <div className="px-6 md:px-14 pt-6 md:pt-10 pb-8 md:pb-12 max-w-[1100px]">
         <div
-          className="flex items-center gap-2.5 text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-3"
+          className="flex items-center gap-2.5 text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] mb-3"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           <span>{project.client}</span>
           <span className="text-[#4a4f4b]">·</span>
           <span>{project.year}</span>
+          {project.talent && (
+            <>
+              <span className="text-[#4a4f4b]">·</span>
+              <span>{project.talent}</span>
+            </>
+          )}
         </div>
         <h1
           className="text-2xl md:text-4xl lg:text-[44px] text-[#F2EDE4] mb-4 tracking-[-0.01em] leading-[1.1]"
@@ -64,7 +70,7 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
           </p>
         )}
         <div
-          className="text-[11px] tracking-[0.18em] uppercase text-[#8a9488]"
+          className="text-[11px] tracking-[0.18em] uppercase text-[#b8c2b5]"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           {project.role.map((r) => r[lang]).join('  ·  ')}
@@ -103,7 +109,7 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
       {featured.length > 0 && (
         <div className="px-6 md:px-14 pb-24 border-t border-[#2a2e2c] pt-10">
           <div
-            className="text-[13px] tracking-[0.2em] uppercase text-[#8a9488] mb-5"
+            className="text-[13px] tracking-[0.2em] uppercase text-[#b8c2b5] mb-5"
             style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
           >
             {t.featured}

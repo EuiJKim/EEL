@@ -130,7 +130,7 @@ export default function Sidebar() {
             <div className="overflow-hidden">
               <p className="text-[12px] text-[#c0c5c2] leading-[1.6] mb-2 whitespace-pre-line">{t.body}</p>
               <p
-                className="text-[10px] tracking-[0.2em] uppercase text-[#8a9488]"
+                className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5]"
                 style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
               >
                 {t.tagline}
@@ -158,7 +158,7 @@ export default function Sidebar() {
             ] as const).map(([href, name, n]) => (
               <li key={href} className="flex justify-between tracking-[0.14em] uppercase">
                 <Link href={href} className="hover:text-white transition-colors">{name}</Link>
-                <span className="text-[#8a9488]">{pad(n)}</span>
+                <span className="text-[#b8c2b5]">{pad(n)}</span>
               </li>
             ))}
           </ul>
@@ -182,7 +182,7 @@ export default function Sidebar() {
                 <Link href={`/projects/${p.id}`} className="hover:text-white transition-colors truncate">
                   {p.client}
                 </Link>
-                <span className="text-[#8a9488] shrink-0">{p.year}</span>
+                <span className="text-[#b8c2b5] shrink-0">{p.year}</span>
               </li>
             ))}
           </ul>
