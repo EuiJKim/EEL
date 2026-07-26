@@ -24,9 +24,9 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
   if (availableOnly) {
     entries = entries.filter((e) => e.status === 'available');
   }
-  // Newest arrivals (Turquoise/Glacier Blue, Black Coated/Ceramic Tile) lead
-  // the furniture feed as two equal-weight duo rows instead of a hero card.
-  const leadingDuoRows = category === 'all' || category === 'furniture' ? 2 : 0;
+  // Furniture pieces lead the feed as equal-weight duo rows (two per row)
+  // instead of a hero card or the large+small rhythm used further down.
+  const leadingDuoRows = category === 'all' || category === 'furniture' ? 4 : 0;
   const layout = buildSpreads(entries, leadingDuoRows);
 
   return (
@@ -80,6 +80,14 @@ export default function GridLayout({ category = 'all', availableOnly = false }: 
       {entries.length === 0 ? (
         <div className="px-6 md:px-10 py-16 text-center text-[#8a9488] text-sm">
           현재 구매 가능한 작품이 없습니다. Commission으로 의뢰해주세요.
+        </div>
+      ) : category === 'object' || category === 'painting' ? (
+        // Plain 2-up grid at every breakpoint, portrait cards — no hero or
+        // rhythm rows, so pieces don't blow up to hero/large size on desktop.
+        <div className="px-6 md:px-10 pt-6 md:pt-2 pb-16 md:pb-24 grid grid-cols-2 gap-x-6 gap-y-12 md:gap-x-10 md:gap-y-16">
+          {entries.map((e) => (
+            <GridCard key={e.id} entry={e} variant="medium" />
+          ))}
         </div>
       ) : (
         <div className="px-6 md:px-10 pt-6 md:pt-2 pb-16 md:pb-24 flex flex-col gap-y-12 md:gap-y-20">

@@ -98,6 +98,7 @@ export default function GridCard({
           alt={entry.title}
           fill
           sizes={v.sizes}
+          quality={90}
           className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
           style={entry.cardImagePosition ? { objectPosition: entry.cardImagePosition } : undefined}
         />
@@ -105,9 +106,9 @@ export default function GridCard({
       </div>
 
       {/* Meta row */}
-      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 mt-3 mb-1.5">
+      <div className="flex flex-nowrap items-center gap-x-1.5 mt-3 mb-1.5 overflow-hidden">
         <span
-          className="text-[10px] tracking-[0.18em] uppercase text-[#b8c2b5]"
+          className="text-[10px] tracking-[0.1em] uppercase text-[#b8c2b5] whitespace-nowrap"
           style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
         >
           {CATEGORY_LABEL[lang][entry.category]}
@@ -116,7 +117,7 @@ export default function GridCard({
           <>
             <span className="text-[#bbb] text-[10px]">·</span>
             <span
-              className="text-[10px] tracking-[0.18em] uppercase text-[#b8c2b5]"
+              className="text-[10px] tracking-[0.1em] uppercase text-[#b8c2b5] whitespace-nowrap"
               style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
             >
               {entry.year}
@@ -127,7 +128,7 @@ export default function GridCard({
           <>
             <span className="text-[#bbb] text-[10px]">·</span>
             <span
-              className="text-[10px] tracking-[0.18em] uppercase whitespace-nowrap"
+              className="text-[10px] tracking-[0.1em] uppercase whitespace-nowrap"
               style={{
                 fontFamily: 'var(--font-staatliches), sans-serif',
                 color: STATUS_COLOR[entry.status],
