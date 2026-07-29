@@ -121,6 +121,12 @@ export default function AboutPopover() {
           >
             {t.tagline}
           </p>
+          <p
+            className="text-[9px] tracking-[0.05em] text-[#5a6058] mt-1.5"
+            style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+          >
+            © 2025–2026 EEL Studio. Chae Minsoo
+          </p>
 
           <div className="h-px bg-[#2a2e2c] my-5" />
 
