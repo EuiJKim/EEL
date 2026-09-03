@@ -12,15 +12,18 @@ const COUNTS = {
   painting: JOURNAL_ENTRIES.filter((e) => e.category === 'painting').length,
 };
 const TOTAL = COUNTS.furniture + COUNTS.object + COUNTS.painting;
+const AVAILABLE_COUNT = JOURNAL_ENTRIES.filter((e) => e.status === 'available').length;
 
 const T = {
   en: {
     status: 'Accepting commissions',
     works: `${TOTAL} Works`,
+    available: `${AVAILABLE_COUNT} Available`,
   },
   ko: {
     status: '주문 제작 가능',
     works: `${TOTAL}개 작품`,
+    available: `구매 가능 ${AVAILABLE_COUNT}`,
   },
 };
 
@@ -69,12 +72,26 @@ export default function MobileHeader() {
             {t.status}
           </span>
         </div>
-        <span
-          className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5]"
-          style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
-        >
-          {t.works}
-        </span>
+        {/* In-stock pieces — replaces the static works count with a tappable
+            entry point, since /available is otherwise unreachable on mobile.
+            Negative margin keeps the row height while giving a 44px target. */}
+        {AVAILABLE_COUNT > 0 ? (
+          <Link
+            href="/available"
+            className="text-[10px] tracking-[0.2em] uppercase text-[#9ccfae] hover:text-white transition-colors flex items-center gap-1 min-h-[44px] -my-3 px-1 -mr-1"
+            style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
+          >
+            {t.available}
+            <span aria-hidden>→</span>
+          </Link>
+        ) : (
+          <span
+            className="text-[10px] tracking-[0.2em] uppercase text-[#b8c2b5]"
+            style={{ fontFamily: 'var(--font-staatliches), sans-serif' }}
+          >
+            {t.works}
+          </span>
+        )}
       </div>
     </header>
   );

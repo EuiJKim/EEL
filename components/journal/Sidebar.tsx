@@ -15,6 +15,8 @@ const COUNTS = {
   painting: JOURNAL_ENTRIES.filter((e) => e.category === 'painting').length,
 };
 
+const AVAILABLE_COUNT = JOURNAL_ENTRIES.filter((e) => e.status === 'available').length;
+
 const ABOUT_KO = '서울 기반 핸드메이드 스튜디오. 독특하고 정교한 무언가를 만듭니다. 주문 제작은 최대 21일, 촬영 소품 대여도 가능합니다.';
 
 const T = {
@@ -29,6 +31,7 @@ const T = {
     object: 'Object',
     painting: 'Painting',
     commission: 'Commission',
+    available: 'Available Now',
   },
   ko: {
     status: '주문 제작 가능',
@@ -41,6 +44,7 @@ const T = {
     object: '오브제',
     painting: '페인팅',
     commission: '커미션 문의',
+    available: '지금 구매 가능',
   },
 };
 
@@ -144,6 +148,26 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
+
+        {/* Available Now — cross-category, in-stock pieces. Green accent
+            matches the /available banner and the status pill. */}
+        {AVAILABLE_COUNT > 0 && (
+          <div className="mt-6 flex items-center justify-between">
+            <Link
+              href="/available"
+              className="text-[14px] tracking-[0.18em] uppercase text-[#9ccfae] hover:text-white transition-colors"
+              style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+            >
+              {t.available}
+            </Link>
+            <span
+              className="text-[12px] text-[#9ccfae]"
+              style={{ fontFamily: "var(--font-staatliches), sans-serif" }}
+            >
+              {pad(AVAILABLE_COUNT)}
+            </span>
+          </div>
+        )}
 
         {/* Works */}
         <div className="mt-6">
